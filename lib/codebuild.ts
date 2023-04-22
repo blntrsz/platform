@@ -46,7 +46,7 @@ export class CreatorCodeBuild extends Construct {
             ],
           },
           build: {
-            commands: ["pnpm cdk synth --ci --all"],
+            commands: ["pnpm cdk deploy app-$BRANCH"],
           },
         },
       }),

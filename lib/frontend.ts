@@ -52,7 +52,7 @@ export class Frontend extends Construct {
       }
     );
 
-    const clientDir = join(__dirname, "client");
+    const clientDir = join(__dirname);
 
     // Deploy site contents to S3 bucket
     new cdk.aws_s3_deployment.BucketDeployment(
