@@ -9,7 +9,7 @@ export class AbstractPipeline extends Construct {
     super(scope, id);
 
     this.pipeline = new Pipeline(this, "pipeline", {
-      pipelineName: "pipeline",
+      pipelineName: `pipeline-${branch}`,
     });
 
     this.sourceOutput = new Artifact();
