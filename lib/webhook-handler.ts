@@ -26,9 +26,5 @@ export class WebhookHandler extends Construct {
     });
 
     this.api.root.addMethod("POST", new gateway.LambdaIntegration(this.lambda));
-
-    new cdk.CfnOutput(this, "api-endpoint", {
-      value: this.api.url,
-    });
   }
 }

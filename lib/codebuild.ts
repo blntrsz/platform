@@ -35,7 +35,6 @@ export class CreatorCodeBuild extends Construct {
           install: {
             ...runtimeVersion,
             commands: [
-              "n 18",
               "echo $BRANCH",
               "echo $ACTION",
               "npm -v",

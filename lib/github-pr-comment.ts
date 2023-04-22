@@ -1,5 +1,8 @@
 import { Octokit } from "@octokit/core";
 
+// TODO: put output to PR comment
+//  aws cloudformation describe-stacks --stack-name tools --query 'Stacks[0].Outputs' --output text
+
 // or: import { Octokit } from "@octokit/core";
 // Octokit.js
 // https://github.com/octokit/core.js#readme
