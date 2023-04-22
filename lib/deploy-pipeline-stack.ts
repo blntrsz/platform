@@ -1,10 +1,14 @@
 import * as cdk from "aws-cdk-lib";
 import * as iam from "aws-cdk-lib/aws-iam";
-import { LinuxBuildImage, Project } from "aws-cdk-lib/aws-codebuild";
+import {
+  BuildEnvironmentVariableType,
+  LinuxBuildImage,
+  Project,
+} from "aws-cdk-lib/aws-codebuild";
 import { CodeBuildAction } from "aws-cdk-lib/aws-codepipeline-actions";
 import { Construct } from "constructs";
 import { AbstractPipeline } from "./pipeline/abstract-pipeline";
-import { createBuildSpec } from "./pipeline/steps";
+import { createBuildSpec, createUnitTestSpec } from "./pipeline/steps";
 
 export class DeployPipelineStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -16,6 +20,12 @@ export class DeployPipelineStack extends cdk.Stack {
       environment: {
         buildImage: LinuxBuildImage.AMAZON_LINUX_2_4,
       },
+      environmentVariables: {
+        BRANCH: {
+          value: process.env.BRANCH,
+          type: BuildEnvironmentVariableType.PLAINTEXT,
+        },
+      },
       buildSpec: createBuildSpec(),
     });
 
@@ -23,7 +33,7 @@ export class DeployPipelineStack extends cdk.Stack {
       environment: {
         buildImage: LinuxBuildImage.AMAZON_LINUX_2_4,
       },
-      buildSpec: createBuildSpec(),
+      buildSpec: createUnitTestSpec(),
     });
 
     buildProject.addToRolePolicy(
