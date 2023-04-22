@@ -124,17 +124,13 @@ export class BuildAndTestCodebuildAction extends Construct {
     super(scope, id);
 
     this.codebuildAction = [
-      new BuildCodebuildAction(
-        this,
-        "build-action",
-        sourceOutput,
-        process.env.BRANCH
-      ).codebuildAction,
+      new BuildCodebuildAction(this, "build-action", sourceOutput, branch)
+        .codebuildAction,
       new UnitTestCodebuildAction(
         this,
         "unit-test-action",
         sourceOutput,
-        process.env.BRANCH
+        branch
       ).codebuildAction,
     ];
   }
