@@ -27,17 +27,6 @@ export class WebhookHandler extends Construct {
       },
     });
 
-    const policy = new iam.PolicyStatement({
-      effect: iam.Effect.ALLOW,
-      actions: ["codebuild:StartBuild"],
-      resources: [
-        creatorProjectName.projectArn,
-        destroyerProjectName.projectArn,
-      ],
-    });
-
-    this.lambda.addToRolePolicy(policy);
-
     this.api.root.addMethod("POST", new gateway.LambdaIntegration(this.lambda));
   }
 }

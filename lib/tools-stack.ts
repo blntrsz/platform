@@ -1,6 +1,6 @@
 import { Construct } from "constructs";
-import { CreatorCodeBuild, DestroyerCodeBuild } from "./codebuild";
-import { WebhookHandler } from "./webhook-handler";
+import { CreatorCodeBuild, DestroyerCodeBuild } from "./webhook/codebuild";
+import { WebhookHandler } from "./webhook/webhook-handler";
 import * as cdk from "aws-cdk-lib";
 import * as iam from "aws-cdk-lib/aws-iam";
 
@@ -25,7 +25,10 @@ export class ToolsStack extends cdk.Stack {
       new iam.PolicyStatement({
         effect: iam.Effect.ALLOW,
         actions: ["codebuild:StartBuild"],
-        resources: [creatorCodeBuild.project.projectArn],
+        resources: [
+          creatorCodeBuild.project.projectArn,
+          destroyerCodeBuild.project.projectArn,
+        ],
       })
     );
   }

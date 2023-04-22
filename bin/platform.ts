@@ -8,6 +8,7 @@ import { PipelineStack } from "../lib/pipeline-stack";
 const suffix = process.env.BRANCH ?? "";
 
 const app = new cdk.App();
+
 new ToolsStack(app, "tools");
 new PipelineStack(app, `pipeline-${suffix}`);
 new AppStack(app, `app-${suffix}`);
