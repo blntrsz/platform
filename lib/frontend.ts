@@ -67,5 +67,9 @@ export class Frontend extends Construct {
         distributionPaths: ["/*"],
       }
     );
+
+    new cdk.CfnOutput(this, "frontend-endpoint", {
+      value: distribution.distributionDomainName,
+    });
   }
 }

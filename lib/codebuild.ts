@@ -1,4 +1,5 @@
 import * as codebuild from "aws-cdk-lib/aws-codebuild";
+import * as iam from "aws-cdk-lib/aws-iam";
 import { LinuxBuildImage } from "aws-cdk-lib/aws-codebuild";
 import { Construct } from "constructs";
 
@@ -6,6 +7,13 @@ const githubSource = codebuild.Source.gitHub({
   owner: "blntrsz",
   repo: "platform",
   webhook: false,
+});
+
+// TODO: more strict policy
+const policy = new iam.PolicyStatement({
+  effect: iam.Effect.ALLOW,
+  actions: ["*"],
+  resources: ["*"],
 });
 
 const environment = {
@@ -45,11 +53,15 @@ export class CreatorCodeBuild extends Construct {
             ],
           },
           build: {
-            commands: ["pnpm cdk deploy app-$BRANCH"],
+            commands: [
+              "pnpm cdk deploy pipeline-$BRANCH --require-approval never",
+            ],
           },
         },
       }),
     });
+
+    this.project.addToRolePolicy(policy);
   }
 }
 
@@ -71,11 +83,14 @@ export class DestroyerCodeBuild extends Construct {
           },
           build: {
             commands: [
+              "aws cloudformation delete-stack --stack-name pipeline-$BRANCH",
               "aws cloudformation delete-stack --stack-name app-$BRANCH",
             ],
           },
         },
       }),
     });
+
+    this.project.addToRolePolicy(policy);
   }
 }

@@ -17,8 +17,8 @@ export class ToolsStack extends cdk.Stack {
     const { lambda } = new WebhookHandler(
       this,
       "webhook",
-      creatorCodeBuild.project.projectName,
-      destroyerCodeBuild.project.projectName
+      creatorCodeBuild.project,
+      destroyerCodeBuild.project
     );
 
     lambda.addToRolePolicy(

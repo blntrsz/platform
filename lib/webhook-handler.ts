@@ -1,5 +1,7 @@
 import * as cdk from "aws-cdk-lib";
 import * as gateway from "aws-cdk-lib/aws-apigateway";
+import * as iam from "aws-cdk-lib/aws-iam";
+import * as codebuild from "aws-cdk-lib/aws-codebuild";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { Construct } from "constructs";
 import { Runtime } from "aws-cdk-lib/aws-lambda";
@@ -10,8 +12,8 @@ export class WebhookHandler extends Construct {
   constructor(
     scope: Construct,
     id: string,
-    creatorProjectName: string,
-    destroyerProjectName: string
+    creatorProjectName: codebuild.Project,
+    destroyerProjectName: codebuild.Project
   ) {
     super(scope, id);
 
@@ -20,10 +22,21 @@ export class WebhookHandler extends Construct {
     this.lambda = new NodejsFunction(this, "webhook", {
       runtime: Runtime.NODEJS_18_X,
       environment: {
-        CREATOR_PROJECT_NAME: creatorProjectName,
-        DESTROYER_PROJECT_NAME: destroyerProjectName,
+        CREATOR_PROJECT_NAME: creatorProjectName.projectName,
+        DESTROYER_PROJECT_NAME: destroyerProjectName.projectName,
       },
     });
+
+    const policy = new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      actions: ["codebuild:StartBuild"],
+      resources: [
+        creatorProjectName.projectArn,
+        destroyerProjectName.projectArn,
+      ],
+    });
+
+    this.lambda.addToRolePolicy(policy);
 
     this.api.root.addMethod("POST", new gateway.LambdaIntegration(this.lambda));
   }
