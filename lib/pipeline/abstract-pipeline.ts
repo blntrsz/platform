@@ -1,16 +1,14 @@
-import * as pipelines from "aws-cdk-lib/pipelines";
-import * as pip from "aws-cdk-lib/aws-codepipeline";
 import { Construct } from "constructs";
 import { CodeStarConnectionsSourceAction } from "aws-cdk-lib/aws-codepipeline-actions";
-import { Artifact } from "aws-cdk-lib/aws-codepipeline";
+import { Artifact, Pipeline } from "aws-cdk-lib/aws-codepipeline";
 
 export class AbstractPipeline extends Construct {
-  pipeline: pip.Pipeline;
-  sourceOutput: pip.Artifact;
-  constructor(scope: Construct, id: string) {
+  pipeline: Pipeline;
+  sourceOutput: Artifact;
+  constructor(scope: Construct, id: string, branch?: string) {
     super(scope, id);
 
-    this.pipeline = new pip.Pipeline(this, "asd", {
+    this.pipeline = new Pipeline(this, "pipeline", {
       pipelineName: "pipeline",
     });
 
@@ -19,7 +17,7 @@ export class AbstractPipeline extends Construct {
       actionName: "GithubSource",
       owner: "blntrsz",
       repo: "platform",
-      branch: process.env.BRANCH,
+      branch,
       output: this.sourceOutput,
       connectionArn:
         "arn:aws:codestar-connections:eu-central-1:155601209279:connection/51dc3226-ffdd-459d-a034-50f9ff503d2b",
