@@ -57,6 +57,7 @@ class UnitTestCodebuildAction extends Construct {
       actionName: "test",
       input: sourceOutput,
       project: buildProject,
+      executeBatchBuild: true,
     });
   }
 }
@@ -109,6 +110,7 @@ class BuildCodebuildAction extends Construct {
       actionName: "build",
       input: sourceOutput,
       project: buildProject,
+      executeBatchBuild: true,
     });
   }
 }
@@ -177,6 +179,7 @@ export class BuildToolsAction extends Construct {
       actionName: "build-tool-action",
       input: sourceOutput,
       project: buildProject,
+      executeBatchBuild: true,
     });
   }
 }
