@@ -9,11 +9,6 @@ const suffix = process.env.BRANCH ?? "";
 
 const app = new cdk.App();
 
-const MAX_STACK_NAME_LIMIT = 128;
-
 new ToolsStack(app, "tools");
-new DeployPipelineStack(
-  app,
-  `pipeline-${suffix}`.substring(0, MAX_STACK_NAME_LIMIT)
-);
-new AppStack(app, `app-${suffix}`.substring(0, MAX_STACK_NAME_LIMIT));
+new DeployPipelineStack(app, `pipeline-${suffix}`);
+new AppStack(app, `app-${suffix}`);
