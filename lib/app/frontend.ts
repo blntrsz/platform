@@ -12,7 +12,7 @@ export class Frontend extends Construct {
     );
 
     const bucket = new cdk.aws_s3.Bucket(this, "bucket", {
-      bucketName: `platform-fullstack-${process.env.BRANCH}`,
+      bucketName: `platform-fullstack-${process.env.BRANCH}`.substring(0, 63),
       publicReadAccess: false,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       autoDeleteObjects: true,
