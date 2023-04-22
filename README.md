@@ -1,14 +1,13 @@
-# Welcome to your CDK TypeScript project
+# Welcome to the Platform
 
-This is a blank project for CDK development with TypeScript.
+This is an attempt to make an automated workflow using AWS CDK.
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+## Architecture
 
-## Useful commands
+Current Architecture:
 
-* `npm run build`   compile typescript to js
-* `npm run watch`   watch for changes and compile
-* `npm run test`    perform the jest unit tests
-* `cdk deploy`      deploy this stack to your default AWS account/region
-* `cdk diff`        compare deployed stack with current state
-* `cdk synth`       emits the synthesized CloudFormation template
+![current architecture](./assets/platform-architecture.png)
+
+Upcoming Architecture:
+
+![upcoming architecture](./assets/platform-architecture-v2.png)
