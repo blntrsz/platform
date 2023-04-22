@@ -1,51 +1,51 @@
 import * as codebuild from "aws-cdk-lib/aws-codebuild";
-import {
-  BuildEnvironmentVariableType,
-  LinuxBuildImage,
-} from "aws-cdk-lib/aws-codebuild";
+import { LinuxBuildImage } from "aws-cdk-lib/aws-codebuild";
 import { Construct } from "constructs";
 
-export class AbstractCodebuild extends Construct {
-  gitHubSource: codebuild.ISource;
+const githubSource = codebuild.Source.gitHub({
+  owner: "blntrsz",
+  repo: "platform",
+  webhook: false,
+});
+
+const environment = {
+  buildImage: LinuxBuildImage.AMAZON_LINUX_2_4,
+};
+
+const runtimeVersion = {
+  "runtime-versions": {
+    nodejs: "18",
+  },
+};
+
+const version = "0.2";
+
+export class CreatorCodeBuild extends Construct {
   project: codebuild.Project;
 
-  constructor(scope: Construct, id: string, shouldCreate: boolean) {
+  constructor(scope: Construct, id: string) {
     super(scope, id);
 
-    this.gitHubSource = codebuild.Source.gitHub({
-      owner: "blntrsz",
-      repo: "platform",
-      webhook: false,
-    });
-
     this.project = new codebuild.Project(this, "codebuild", {
-      source: this.gitHubSource,
-      environment: {
-        buildImage: LinuxBuildImage.STANDARD_6_0,
-      },
+      source: githubSource,
+      environment,
       buildSpec: codebuild.BuildSpec.fromObject({
-        version: "0.2",
+        version,
         phases: {
           install: {
-            "runtime-versions": {
-              nodejs: "16",
-            },
+            ...runtimeVersion,
             commands: [
               "echo $BRANCH",
               "echo $ACTION",
-              shouldCreate ? "git checkout $BRANCH" : "echo delete stack",
               "npm -v",
               "node -v",
+              "git checkout $BRANCH",
               "npm i -g pnpm",
               "pnpm i",
             ],
           },
           build: {
-            commands: [
-              shouldCreate
-                ? "pnpm cdk synth --ci --all"
-                : "pnpm cdk destroy --ci --all",
-            ],
+            commands: ["pnpm cdk synth --ci --all"],
           },
         },
       }),
@@ -53,21 +53,29 @@ export class AbstractCodebuild extends Construct {
   }
 }
 
-export class Codebuild extends Construct {
-  creatorCodeBuild: AbstractCodebuild;
-  destroyerCodeBuild: AbstractCodebuild;
+export class DestroyerCodeBuild extends Construct {
+  project: codebuild.Project;
+
   constructor(scope: Construct, id: string) {
     super(scope, id);
 
-    this.creatorCodeBuild = new AbstractCodebuild(
-      this,
-      "creator-code-build",
-      true
-    );
-    this.destroyerCodeBuild = new AbstractCodebuild(
-      this,
-      "destroyer-code-build",
-      false
-    );
+    this.project = new codebuild.Project(this, "codebuild", {
+      source: githubSource,
+      environment,
+      buildSpec: codebuild.BuildSpec.fromObject({
+        version,
+        phases: {
+          install: {
+            ...runtimeVersion,
+            commands: ["echo $BRANCH", "echo $ACTION"],
+          },
+          build: {
+            commands: [
+              "aws cloudformation delete-stack --stack-name platform-$BRANCH",
+            ],
+          },
+        },
+      }),
+    });
   }
 }
