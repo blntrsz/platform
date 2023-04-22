@@ -15,7 +15,7 @@ class UnitTestCodebuildAction extends Construct {
     scope: Construct,
     id: string,
     sourceOutput: cdk.aws_codepipeline.Artifact,
-    branch?: string
+    branch: string = ""
   ) {
     super(scope, id);
 
@@ -67,7 +67,7 @@ class BuildCodebuildAction extends Construct {
     scope: Construct,
     id: string,
     sourceOutput: cdk.aws_codepipeline.Artifact,
-    branch?: string
+    branch: string = ""
   ) {
     super(scope, id);
 
@@ -119,7 +119,7 @@ export class BuildAndTestCodebuildAction extends Construct {
     scope: Construct,
     id: string,
     sourceOutput: cdk.aws_codepipeline.Artifact,
-    branch?: string
+    branch: string = ""
   ) {
     super(scope, id);
 
