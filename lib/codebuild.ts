@@ -14,7 +14,7 @@ const environment = {
 
 const runtimeVersion = {
   "runtime-versions": {
-    nodejs: "18",
+    nodejs: "16",
   },
 };
 
@@ -35,6 +35,7 @@ export class CreatorCodeBuild extends Construct {
           install: {
             ...runtimeVersion,
             commands: [
+              "n 18",
               "echo $BRANCH",
               "echo $ACTION",
               "npm -v",
@@ -71,7 +72,7 @@ export class DestroyerCodeBuild extends Construct {
           },
           build: {
             commands: [
-              "aws cloudformation delete-stack --stack-name platform-$BRANCH",
+              "aws cloudformation delete-stack --stack-name app-$BRANCH",
             ],
           },
         },
