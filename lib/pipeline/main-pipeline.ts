@@ -1,3 +1,4 @@
+import { ManualApprovalAction } from "aws-cdk-lib/aws-codepipeline-actions";
 import { Construct } from "constructs";
 import { AbstractPipeline } from "./abstract-pipeline";
 import { BuildAndTestCodebuildAction, BuildToolsAction } from "./steps";
@@ -32,6 +33,15 @@ export class MainPipelineStack extends Construct {
       actions: devActions,
     });
 
+    pipeline.addStage({
+      stageName: "promote-to-prod",
+      actions: [
+        new ManualApprovalAction({
+          actionName: "manual-approval",
+        }),
+      ],
+    });
+
     const prodActions = new BuildAndTestCodebuildAction(
       this,
       "prod-build-and-test-actions",
@@ -42,7 +52,6 @@ export class MainPipelineStack extends Construct {
     pipeline.addStage({
       stageName: "build-and-test-prod",
       actions: prodActions,
-      transitionToEnabled: false,
     });
   }
 }
