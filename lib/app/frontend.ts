@@ -54,14 +54,14 @@ export class Frontend extends Construct {
       }
     );
 
-    const clientDir = join(__dirname);
-
     // Deploy site contents to S3 bucket
     new cdk.aws_s3_deployment.BucketDeployment(
       this,
       "deploy-with-invalidation",
       {
-        sources: [cdk.aws_s3_deployment.Source.asset(join(clientDir, "dist"))],
+        sources: [
+          cdk.aws_s3_deployment.Source.asset(join(__dirname, "..", "dist")),
+        ],
         destinationBucket: bucket,
         distribution,
         distributionPaths: ["/*"],

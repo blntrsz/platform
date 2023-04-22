@@ -56,7 +56,7 @@ export class DeployPipelineStack extends cdk.Stack {
     ];
 
     pipeline.addStage({
-      stageName: "Build & Test",
+      stageName: "build-and-test",
       actions,
     });
   }
