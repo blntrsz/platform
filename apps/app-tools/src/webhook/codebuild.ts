@@ -1,7 +1,9 @@
 import * as codebuild from "aws-cdk-lib/aws-codebuild";
 import * as iam from "aws-cdk-lib/aws-iam";
+import * as cdk from "aws-cdk-lib";
 import { LinuxBuildImage } from "aws-cdk-lib/aws-codebuild";
 import { Construct } from "constructs";
+import { Bucket } from "aws-cdk-lib/aws-s3";
 
 const githubSource = codebuild.Source.gitHub({
   owner: "blntrsz",
@@ -31,10 +33,11 @@ const version = "0.2";
 export class CreatorCodeBuild extends Construct {
   project: codebuild.Project;
 
-  constructor(scope: Construct, id: string) {
+  constructor(scope: Construct, id: string, cacheBucket: Bucket) {
     super(scope, id);
 
     this.project = new codebuild.Project(this, "codebuild", {
+      cache: cdk.aws_codebuild.Cache.bucket(cacheBucket),
       source: githubSource,
       environment,
       buildSpec: codebuild.BuildSpec.fromObject({
@@ -58,6 +61,9 @@ export class CreatorCodeBuild extends Construct {
             ],
           },
         },
+        cache: {
+          paths: ["~/.local/share/pnpm/store/**/*"],
+        },
       }),
     });
 
@@ -68,10 +74,11 @@ export class CreatorCodeBuild extends Construct {
 export class DestroyerCodeBuild extends Construct {
   project: codebuild.Project;
 
-  constructor(scope: Construct, id: string) {
+  constructor(scope: Construct, id: string, cacheBucket: Bucket) {
     super(scope, id);
 
     this.project = new codebuild.Project(this, "codebuild", {
+      cache: cdk.aws_codebuild.Cache.bucket(cacheBucket),
       source: githubSource,
       environment,
       buildSpec: codebuild.BuildSpec.fromObject({
@@ -87,6 +94,9 @@ export class DestroyerCodeBuild extends Construct {
               "aws cloudformation delete-stack --stack-name app-$BRANCH",
             ],
           },
+        },
+        cache: {
+          paths: ["~/.local/share/pnpm/store/**/*"],
         },
       }),
     });

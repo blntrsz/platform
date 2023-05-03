@@ -2,9 +2,10 @@ import { ManualApprovalAction } from "aws-cdk-lib/aws-codepipeline-actions";
 import { Construct } from "constructs";
 import { AbstractPipeline } from "./abstract-pipeline";
 import { BuildAndTestCodebuildAction, BuildToolsAction } from "./steps";
+import { Bucket } from "aws-cdk-lib/aws-s3";
 
 export class MainPipelineStack extends Construct {
-  constructor(scope: Construct, id: string) {
+  constructor(scope: Construct, id: string, cacheBucket: Bucket) {
     super(scope, id);
 
     const { pipeline, sourceOutput } = new AbstractPipeline(
@@ -16,8 +17,12 @@ export class MainPipelineStack extends Construct {
     pipeline.addStage({
       stageName: "update-tools",
       actions: [
-        new BuildToolsAction(this, "build-tools-action", sourceOutput)
-          .codebuildAction,
+        new BuildToolsAction(
+          this,
+          "build-tools-action",
+          sourceOutput,
+          cacheBucket
+        ).codebuildAction,
       ],
     });
 
@@ -25,7 +30,8 @@ export class MainPipelineStack extends Construct {
       this,
       "dev-build-and-test-actions",
       sourceOutput,
-      "dev"
+      "dev",
+      cacheBucket
     ).codebuildAction;
 
     pipeline.addStage({
@@ -46,7 +52,8 @@ export class MainPipelineStack extends Construct {
       this,
       "prod-build-and-test-actions",
       sourceOutput,
-      "prod"
+      "prod",
+      cacheBucket
     ).codebuildAction;
 
     pipeline.addStage({

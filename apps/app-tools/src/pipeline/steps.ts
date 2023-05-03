@@ -15,11 +15,15 @@ class UnitTestCodebuildAction extends Construct {
     scope: Construct,
     id: string,
     sourceOutput: cdk.aws_codepipeline.Artifact,
-    branch = ""
+    branch = "",
+    cacheBucket?: cdk.aws_s3.Bucket
   ) {
     super(scope, id);
 
     const buildProject = new Project(this, "build-project", {
+      cache: cacheBucket
+        ? cdk.aws_codebuild.Cache.bucket(cacheBucket)
+        : undefined,
       environment: {
         buildImage: LinuxBuildImage.AMAZON_LINUX_2_4,
       },
@@ -41,6 +45,9 @@ class UnitTestCodebuildAction extends Construct {
           build: {
             commands: ["pnpm test"],
           },
+        },
+        cache: {
+          paths: ["~/.local/share/pnpm/store/**/*"],
         },
       }),
     });
@@ -67,11 +74,15 @@ class BuildCodebuildAction extends Construct {
     scope: Construct,
     id: string,
     sourceOutput: cdk.aws_codepipeline.Artifact,
-    branch = ""
+    branch = "",
+    cacheBucket?: cdk.aws_s3.Bucket
   ) {
     super(scope, id);
 
     const buildProject = new Project(this, "build-project", {
+      cache: cacheBucket
+        ? cdk.aws_codebuild.Cache.bucket(cacheBucket)
+        : undefined,
       environment: {
         buildImage: LinuxBuildImage.AMAZON_LINUX_2_4,
       },
@@ -93,6 +104,9 @@ class BuildCodebuildAction extends Construct {
           build: {
             commands: ["pnpm cdk deploy app-$BRANCH --require-approval never"],
           },
+        },
+        cache: {
+          paths: ["~/.local/share/pnpm/store/**/*"],
         },
       }),
     });
@@ -119,18 +133,25 @@ export class BuildAndTestCodebuildAction extends Construct {
     scope: Construct,
     id: string,
     sourceOutput: cdk.aws_codepipeline.Artifact,
-    branch = ""
+    branch = "",
+    cacheBucket?: cdk.aws_s3.Bucket
   ) {
     super(scope, id);
 
     this.codebuildAction = [
-      new BuildCodebuildAction(this, "build-action", sourceOutput, branch)
-        .codebuildAction,
+      new BuildCodebuildAction(
+        this,
+        "build-action",
+        sourceOutput,
+        branch,
+        cacheBucket
+      ).codebuildAction,
       new UnitTestCodebuildAction(
         this,
         "unit-test-action",
         sourceOutput,
-        branch
+        branch,
+        cacheBucket
       ).codebuildAction,
     ];
   }
@@ -141,11 +162,13 @@ export class BuildToolsAction extends Construct {
   constructor(
     scope: Construct,
     id: string,
-    sourceOutput: cdk.aws_codepipeline.Artifact
+    sourceOutput: cdk.aws_codepipeline.Artifact,
+    cacheBucket: cdk.aws_s3.Bucket
   ) {
     super(scope, id);
 
     const buildProject = new Project(this, "build-project", {
+      cache: cdk.aws_codebuild.Cache.bucket(cacheBucket),
       environment: {
         buildImage: LinuxBuildImage.AMAZON_LINUX_2_4,
       },
@@ -161,6 +184,9 @@ export class BuildToolsAction extends Construct {
           build: {
             commands: ["pnpm cdk deploy tools --require-approval never"],
           },
+        },
+        cache: {
+          paths: ["~/.local/share/pnpm/store/**/*"],
         },
       }),
     });

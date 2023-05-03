@@ -9,12 +9,25 @@ export class ToolsStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    new MainPipelineStack(this, "main-pipeline");
+    const cacheBucket = new cdk.aws_s3.Bucket(this, "CacheBucket", {
+      bucketName: "platform-remote-pnpm-cache",
+      publicReadAccess: false,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: true,
+      blockPublicAccess: cdk.aws_s3.BlockPublicAccess.BLOCK_ALL,
+    });
 
-    const creatorCodeBuild = new CreatorCodeBuild(this, "creator-code-build");
+    new MainPipelineStack(this, "main-pipeline", cacheBucket);
+
+    const creatorCodeBuild = new CreatorCodeBuild(
+      this,
+      "creator-code-build",
+      cacheBucket
+    );
     const destroyerCodeBuild = new DestroyerCodeBuild(
       this,
-      "destroyer-code-build"
+      "destroyer-code-build",
+      cacheBucket
     );
 
     const { lambda } = new WebhookHandler(
