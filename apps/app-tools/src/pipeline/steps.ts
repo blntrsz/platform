@@ -36,7 +36,7 @@ class UnitTestCodebuildAction extends Construct {
             "runtime-versions": {
               nodejs: "16",
             },
-            commands: ["npm install -g aws-cdk pnpm@7.15.0", "pnpm i"],
+            commands: ["npm install -g aws-cdk pnpm@7.32.2", "pnpm i"],
           },
           build: {
             commands: ["pnpm test"],
@@ -88,7 +88,7 @@ class BuildCodebuildAction extends Construct {
             "runtime-versions": {
               nodejs: "16",
             },
-            commands: ["npm install -g aws-cdk pnpm@7.15.0", "pnpm i"],
+            commands: ["npm install -g aws-cdk pnpm@7.32.2", "pnpm i"],
           },
           build: {
             commands: ["pnpm cdk deploy app-$BRANCH --require-approval never"],
@@ -156,7 +156,7 @@ export class BuildToolsAction extends Construct {
             "runtime-versions": {
               nodejs: "16",
             },
-            commands: ["npm install -g aws-cdk pnpm@7.15.0", "pnpm i"],
+            commands: ["npm install -g aws-cdk pnpm@7.32.2", "pnpm i"],
           },
           build: {
             commands: ["pnpm cdk deploy tools --require-approval never"],

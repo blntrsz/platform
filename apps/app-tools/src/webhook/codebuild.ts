@@ -48,7 +48,7 @@ export class CreatorCodeBuild extends Construct {
               "npm -v",
               "node -v",
               "git checkout $BRANCH --",
-              "npm i -g pnpm@7.30.3",
+              "npm i -g pnpm@7.32.2",
               "pnpm i",
             ],
           },
