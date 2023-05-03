@@ -4,6 +4,7 @@ import * as codebuild from "aws-cdk-lib/aws-codebuild";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { Construct } from "constructs";
 import { Runtime } from "aws-cdk-lib/aws-lambda";
+import { join } from "path";
 
 export class WebhookHandler extends Construct {
   api: cdk.aws_apigateway.RestApi;
@@ -20,6 +21,7 @@ export class WebhookHandler extends Construct {
 
     this.lambda = new NodejsFunction(this, "webhook", {
       runtime: Runtime.NODEJS_16_X,
+      entry: join(__dirname, "webhook-handler.webhook.ts"),
       environment: {
         CREATOR_PROJECT_NAME: creatorProjectName.projectName,
         DESTROYER_PROJECT_NAME: destroyerProjectName.projectName,
