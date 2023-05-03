@@ -16,14 +16,12 @@ class UnitTestCodebuildAction extends Construct {
     id: string,
     sourceOutput: cdk.aws_codepipeline.Artifact,
     branch = "",
-    cacheBucket?: cdk.aws_s3.Bucket
+    cacheBucket: cdk.aws_s3.IBucket
   ) {
     super(scope, id);
 
     const buildProject = new Project(this, "build-project", {
-      cache: cacheBucket
-        ? cdk.aws_codebuild.Cache.bucket(cacheBucket)
-        : undefined,
+      cache: cdk.aws_codebuild.Cache.bucket(cacheBucket),
       environment: {
         buildImage: LinuxBuildImage.AMAZON_LINUX_2_4,
       },
@@ -75,14 +73,12 @@ class BuildCodebuildAction extends Construct {
     id: string,
     sourceOutput: cdk.aws_codepipeline.Artifact,
     branch = "",
-    cacheBucket?: cdk.aws_s3.Bucket
+    cacheBucket: cdk.aws_s3.IBucket
   ) {
     super(scope, id);
 
     const buildProject = new Project(this, "build-project", {
-      cache: cacheBucket
-        ? cdk.aws_codebuild.Cache.bucket(cacheBucket)
-        : undefined,
+      cache: cdk.aws_codebuild.Cache.bucket(cacheBucket),
       environment: {
         buildImage: LinuxBuildImage.AMAZON_LINUX_2_4,
       },
@@ -134,7 +130,7 @@ export class BuildAndTestCodebuildAction extends Construct {
     id: string,
     sourceOutput: cdk.aws_codepipeline.Artifact,
     branch = "",
-    cacheBucket?: cdk.aws_s3.Bucket
+    cacheBucket: cdk.aws_s3.IBucket
   ) {
     super(scope, id);
 

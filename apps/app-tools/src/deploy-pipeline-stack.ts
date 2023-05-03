@@ -7,6 +7,12 @@ export class DeployPipelineStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
+    const cachedBucket = cdk.aws_s3.Bucket.fromBucketName(
+      this,
+      "CacheBucket",
+      "platform-remote-pnpm-cache"
+    );
+
     const { pipeline, sourceOutput } = new AbstractPipeline(
       this,
       "pipeline",
@@ -17,7 +23,8 @@ export class DeployPipelineStack extends cdk.Stack {
       this,
       "build-and-test-actions",
       sourceOutput,
-      process.env.BRANCH
+      process.env.BRANCH,
+      cachedBucket
     ).codebuildAction;
 
     pipeline.addStage({
