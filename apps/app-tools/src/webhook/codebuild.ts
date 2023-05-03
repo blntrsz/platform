@@ -62,7 +62,7 @@ export class CreatorCodeBuild extends Construct {
           },
         },
         cache: {
-          paths: ["~/.local/share/pnpm/store/**/*"],
+          paths: ["/codebuild/output/.pnpm-store/v3/**/*"],
         },
       }),
     });
@@ -96,7 +96,7 @@ export class DestroyerCodeBuild extends Construct {
           },
         },
         cache: {
-          paths: ["~/.local/share/pnpm/store/**/*"],
+          paths: ["/codebuild/output/.pnpm-store/v3/**/*"],
         },
       }),
     });

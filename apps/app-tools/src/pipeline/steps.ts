@@ -47,7 +47,7 @@ class UnitTestCodebuildAction extends Construct {
           },
         },
         cache: {
-          paths: ["~/.local/share/pnpm/store/**/*"],
+          paths: ["/codebuild/output/.pnpm-store/v3/**/*"],
         },
       }),
     });
@@ -106,7 +106,7 @@ class BuildCodebuildAction extends Construct {
           },
         },
         cache: {
-          paths: ["~/.local/share/pnpm/store/**/*"],
+          paths: ["/codebuild/output/.pnpm-store/v3/**/*"],
         },
       }),
     });
@@ -186,7 +186,7 @@ export class BuildToolsAction extends Construct {
           },
         },
         cache: {
-          paths: ["~/.local/share/pnpm/store/**/*"],
+          paths: ["/codebuild/output/.pnpm-store/v3/**/*"],
         },
       }),
     });
