@@ -19,7 +19,7 @@ export class WebhookHandler extends Construct {
     this.api = new gateway.RestApi(this, "api");
 
     this.lambda = new NodejsFunction(this, "webhook", {
-      runtime: Runtime.NODEJS_18_X,
+      runtime: Runtime.NODEJS_16_X,
       environment: {
         CREATOR_PROJECT_NAME: creatorProjectName.projectName,
         DESTROYER_PROJECT_NAME: destroyerProjectName.projectName,
