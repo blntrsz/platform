@@ -4,8 +4,7 @@
   "private": true,
   "main": "src/index.ts",
   "scripts": {
-    "lint": "eslint \"**/*.ts*\"",
-    "test": "jest"
+    "lint": "eslint \"**/*.ts*\""
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.115",
