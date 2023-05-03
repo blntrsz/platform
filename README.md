@@ -6,8 +6,8 @@ This is an attempt to make an automated workflow using AWS CDK.
 
 Current Architecture:
 
-![current architecture](./assets/platform-architecture.png)
+![current architecture](./docs/assets/platform-architecture.png)
 
 Upcoming Architecture:
 
-![upcoming architecture](./assets/platform-architecture-v2.png)
+![upcoming architecture](./docs/assets/platform-architecture-v2.png)

@@ -1,0 +1,14 @@
+{
+  "name": "@platform/bin",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "lint": "eslint \"**/*.ts*\""
+  },
+  "devDependencies": {
+    "@platform/app-tools": "workspace:*",
+    "aws-cdk-lib": "2.73.0",
+    "constructs": "^10.0.0",
+    "source-map-support": "^0.5.21"
+   }
+}

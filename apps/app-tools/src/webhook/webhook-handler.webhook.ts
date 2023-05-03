@@ -15,7 +15,7 @@ const headersParser = z
   })
   .transform(({ "X-GitHub-Event": event }) => ({ action: event }));
 
-export const handler: Handler = async (event, context) => {
+export const handler: Handler = async (event) => {
   console.log(event);
 
   const { branch } = bodyParser.parse(JSON.parse(event.body));

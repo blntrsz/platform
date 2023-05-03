@@ -1,6 +1,5 @@
 import * as cdk from "aws-cdk-lib";
 import * as gateway from "aws-cdk-lib/aws-apigateway";
-import * as iam from "aws-cdk-lib/aws-iam";
 import * as codebuild from "aws-cdk-lib/aws-codebuild";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { Construct } from "constructs";
