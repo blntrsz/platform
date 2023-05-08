@@ -7,6 +7,7 @@
     "lint": "eslint \"**/*.ts*\""
   },
   "devDependencies": {
+    "@platform/app": "workspace:*",
     "@types/aws-lambda": "^8.10.115",
     "@types/aws-sdk": "^2.7.0",
     "@types/jest": "^29.5.1",
@@ -16,16 +17,17 @@
     "aws-sdk": "^2.1371.0",
     "esbuild": "^0.17.18",
     "eslint-config-custom": "workspace:*",
-    "tsconfig": "workspace:*",
     "jest": "^29.5.0",
     "ts-jest": "^29.1.0",
     "ts-node": "^10.9.1",
+    "tsconfig": "workspace:*",
     "typescript": "^5.0.4"
   },
   "dependencies": {
     "aws-cdk-lib": "2.77.0",
     "constructs": "^10.2.14",
     "source-map-support": "^0.5.21",
+    "tsoa": "^5.1.1",
     "zod": "^3.21.4"
   }
 }

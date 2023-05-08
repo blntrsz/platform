@@ -43,3 +43,6 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+# openapi schema generation
+*/app-oa/schema.*.ts
