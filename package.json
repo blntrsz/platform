@@ -5,7 +5,8 @@
     "dev": "turbo run dev",
     "test": "turbo run test",
     "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\" --ignore-path .gitignore"
+    "format": "prettier --write \"**/*.{ts,tsx,md}\" --ignore-path .gitignore",
+    "prepare": "husky install"
   },
   "devDependencies": {
     "@aws-cdk/aws-apigatewayv2-alpha": "2.78.0-alpha.0",
