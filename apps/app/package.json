@@ -8,7 +8,7 @@
     "deploy": "npx cdk deploy",
     "destroy": "npx cdk destroy",
     "start": "npx cdk synth && sam local start-api -t ./cdk.out/openapi-backend-example.template.json",
-    "lint": "tslint --format prose --project .",
+    "lint": "eslint \"**/*.ts*\"",
     "test": "jest -i --forceExit"
   },
   "dependencies": {
@@ -20,6 +20,7 @@
     "source-map-support": "^0.5.13"
   },
   "devDependencies": {
+    "@platform/config": "workspace:*",
     "@platform/app-oa": "workspace:*",
     "@types/aws-lambda": "^8.10.109",
     "@types/jest": "^29.2.5",
