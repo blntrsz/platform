@@ -1,12 +1,12 @@
-import { BuildSpec } from "aws-cdk-lib/aws-codebuild";
 import * as cdk from "aws-cdk-lib";
-import * as iam from "aws-cdk-lib/aws-iam";
+import { BuildSpec } from "aws-cdk-lib/aws-codebuild";
 import {
   BuildEnvironmentVariableType,
   LinuxBuildImage,
   Project,
 } from "aws-cdk-lib/aws-codebuild";
 import { CodeBuildAction } from "aws-cdk-lib/aws-codepipeline-actions";
+import * as iam from "aws-cdk-lib/aws-iam";
 import { Construct } from "constructs";
 
 class UnitTestCodebuildAction extends Construct {

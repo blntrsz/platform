@@ -1,9 +1,9 @@
-import * as codebuild from "aws-cdk-lib/aws-codebuild";
-import * as iam from "aws-cdk-lib/aws-iam";
 import * as cdk from "aws-cdk-lib";
+import * as codebuild from "aws-cdk-lib/aws-codebuild";
 import { LinuxBuildImage } from "aws-cdk-lib/aws-codebuild";
-import { Construct } from "constructs";
+import * as iam from "aws-cdk-lib/aws-iam";
 import { Bucket } from "aws-cdk-lib/aws-s3";
+import { Construct } from "constructs";
 
 const githubSource = codebuild.Source.gitHub({
   owner: "blntrsz",

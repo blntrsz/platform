@@ -1,8 +1,9 @@
 #!/usr/bin/env node
-import "source-map-support/register";
 import * as cdk from "aws-cdk-lib";
-import { ToolsStack, DeployPipelineStack } from "@platform/app-tools";
+import "source-map-support/register";
+
 import { Backend } from "@platform/app";
+import { DeployPipelineStack, ToolsStack } from "@platform/app-tools";
 
 const suffix = process.env.BRANCH ?? "";
 

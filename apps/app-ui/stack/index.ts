@@ -1,5 +1,5 @@
-import { Construct } from "constructs";
 import * as cdk from "aws-cdk-lib";
+import { Construct } from "constructs";
 import { join } from "path";
 
 export class Frontend extends Construct {

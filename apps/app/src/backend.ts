@@ -1,11 +1,11 @@
-import { CfnOutput, Duration, Stack, StackProps } from "aws-cdk-lib";
-import { Construct } from "constructs";
-import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import * as apigwv2 from "@aws-cdk/aws-apigatewayv2-alpha";
 import { CorsHttpMethod, HttpMethod } from "@aws-cdk/aws-apigatewayv2-alpha";
-import { resolve } from "path";
-import { Architecture, Runtime } from "aws-cdk-lib/aws-lambda";
 import { HttpLambdaIntegration } from "@aws-cdk/aws-apigatewayv2-integrations-alpha";
+import { CfnOutput, Duration, Stack, StackProps } from "aws-cdk-lib";
+import { Architecture, Runtime } from "aws-cdk-lib/aws-lambda";
+import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
+import { Construct } from "constructs";
+import { resolve } from "path";
 
 const MAXIMUM_HTTP_API_INTEGRATION_TIMEOUT = Duration.seconds(29);
 

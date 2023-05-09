@@ -1,6 +1,6 @@
-import { Construct } from "constructs";
-import { CodeStarConnectionsSourceAction } from "aws-cdk-lib/aws-codepipeline-actions";
 import { Artifact, Pipeline } from "aws-cdk-lib/aws-codepipeline";
+import { CodeStarConnectionsSourceAction } from "aws-cdk-lib/aws-codepipeline-actions";
+import { Construct } from "constructs";
 
 export class AbstractPipeline extends Construct {
   pipeline: Pipeline;

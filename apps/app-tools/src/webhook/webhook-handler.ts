@@ -1,9 +1,9 @@
 import * as cdk from "aws-cdk-lib";
 import * as gateway from "aws-cdk-lib/aws-apigateway";
 import * as codebuild from "aws-cdk-lib/aws-codebuild";
+import { Runtime } from "aws-cdk-lib/aws-lambda";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { Construct } from "constructs";
-import { Runtime } from "aws-cdk-lib/aws-lambda";
 
 export class WebhookHandler extends Construct {
   api: cdk.aws_apigateway.RestApi;
