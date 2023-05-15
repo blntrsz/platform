@@ -5,7 +5,7 @@ import { Frontend } from "./app/frontend";
 
 // import { Backend } from "@platform/app";
 
-const appName = "app";
+// const appName = "app";
 
 export class AppStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {

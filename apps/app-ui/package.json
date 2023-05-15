@@ -10,6 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@platform/app-contract": "workspace:^",
+    "@tanstack/react-query": "^4.29.7",
+    "openapi-fetch": "^0.1.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
