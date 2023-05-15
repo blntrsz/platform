@@ -3,19 +3,20 @@ const config = {
   extends: [
     "next",
     "turbo",
-    "prettier",
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
     "plugin:@typescript-eslint/recommended",
+    "prettier",
   ],
   parser: "@typescript-eslint/parser",
-  plugins: ["@typescript-eslint", "react", "react-hooks"],
+  plugins: ["@typescript-eslint", "react", "react-hooks", "prettier"],
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
     },
   },
   rules: {
+    "prettier/prettier": "error",
     "react/react-in-jsx-scope": "off",
     "no-html-link-for-pages": "off",
   },
