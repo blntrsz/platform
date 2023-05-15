@@ -1,7 +1,7 @@
 import * as cdk from "aws-cdk-lib";
-import { BuildSpec } from "aws-cdk-lib/aws-codebuild";
 import {
   BuildEnvironmentVariableType,
+  BuildSpec,
   LinuxBuildImage,
   Project,
 } from "aws-cdk-lib/aws-codebuild";

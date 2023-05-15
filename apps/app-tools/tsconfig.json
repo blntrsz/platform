@@ -1,5 +1,5 @@
 {
-  "extends": "@platform/config/tsconfig.json",
+  "extends": "@platform/tsconfig/cdk.json",
   "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }

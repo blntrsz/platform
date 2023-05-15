@@ -1,8 +1,8 @@
-import * as cdk from "aws-cdk-lib";
-import { Construct } from "constructs";
-
 import { AbstractPipeline } from "./pipeline/abstract-pipeline";
 import { BuildAndTestCodebuildAction } from "./pipeline/steps";
+
+import * as cdk from "aws-cdk-lib";
+import { Construct } from "constructs";
 
 export class DeployPipelineStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {

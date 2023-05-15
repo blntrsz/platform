@@ -1,6 +1,5 @@
-import { APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from "aws-lambda";
-
 import { operations } from "@platform/app-contract";
+import { APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from "aws-lambda";
 
 type Response =
   operations["getHello"]["responses"]["200"]["content"]["application/json"];

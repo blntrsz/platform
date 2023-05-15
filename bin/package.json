@@ -3,13 +3,19 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "lint": "eslint \"**/*.ts*\""
+    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "@platform/app-tools": "workspace:*",
-    "@platform/app-api": "workspace:*",
+    "@platform/app-api": "0.0.0",
+    "@platform/app-tools": "1.0.0",
+    "@platform/eslint-config": "0.0.0",
+    "@platform/tsconfig": "0.0.0",
     "aws-cdk-lib": "2.77.0",
     "constructs": "^10.2.14",
     "source-map-support": "^0.5.21"
-   }
+  },
+  "dependencies": {
+    "typescript": "^5.0.4"
+  }
 }

@@ -7,22 +7,19 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "typecheck": "tsc --noEmit",
     "preview": "vite preview"
   },
   "dependencies": {
-    "@platform/app-contract": "workspace:^",
+    "@platform/app-contract": "0.0.0",
     "@tanstack/react-query": "^4.29.7",
     "openapi-fetch": "^0.1.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@platform/config": "workspace:*",
-    "@types/node": "^18.16.3",
-    "@types/react": "^18.2.1",
-    "@types/react-dom": "^18.2.3",
-    "@typescript-eslint/eslint-plugin": "^5.59.2",
-    "@typescript-eslint/parser": "^5.59.2",
+    "@platform/eslint-config": "0.0.0",
+    "@platform/tsconfig": "0.0.0",
     "@vitejs/plugin-react-swc": "^3.3.0",
     "aws-cdk-lib": "2.77.0",
     "constructs": "^10.2.14",

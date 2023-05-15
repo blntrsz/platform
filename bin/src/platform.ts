@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 import * as cdk from "aws-cdk-lib";
 import "source-map-support/register";
-
 import { AppApiStack } from "@platform/app-api";
 import { DeployPipelineStack, ToolsStack } from "@platform/app-tools";
 

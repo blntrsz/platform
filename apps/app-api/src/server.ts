@@ -1,8 +1,10 @@
 /* eslint-disable  @typescript-eslint/no-var-requires, @typescript-eslint/no-explicit-any, @typescript-eslint/ban-types */
-import { Response } from "express";
+
 import { readdirSync } from "fs";
-import OpenAPIBackend, { Request } from "openapi-backend";
 import { join } from "path";
+
+import { Response } from "express";
+import OpenAPIBackend, { Request } from "openapi-backend";
 
 // create api with your definition file or object
 const api = new OpenAPIBackend({

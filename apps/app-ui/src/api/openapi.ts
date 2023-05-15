@@ -1,7 +1,6 @@
+import { paths } from "@platform/app-contract";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import createClient from "openapi-fetch";
-
-import { paths } from "@platform/app-contract";
 
 const { get, post } = createClient<paths>({
   baseUrl: "http://localhost:9000",
