@@ -10,7 +10,7 @@
     "@platform/app-tools": "0.0.0",
     "@platform/eslint-config": "0.0.0",
     "@platform/tsconfig": "0.0.0",
-    "aws-cdk-lib": "2.77.0",
+    "aws-cdk-lib": "^2.78.0",
     "constructs": "^10.2.14",
     "source-map-support": "^0.5.21"
   },

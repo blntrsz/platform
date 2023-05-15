@@ -1,6 +1,5 @@
-import { Frontend } from "@platform/app-ui";
 import { AppApiStack } from "@platform/app-api";
-
+import { Frontend } from "@platform/app-ui";
 import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
 
