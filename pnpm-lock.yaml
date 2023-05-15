@@ -171,6 +171,9 @@ importers:
       '@platform/app-api':
         specifier: 0.0.0
         version: link:../app-api
+      '@platform/app-ui':
+        specifier: 0.0.0
+        version: link:../app-ui
       '@platform/eslint-config':
         specifier: 0.0.0
         version: link:../../packages/eslint-config
@@ -257,11 +260,8 @@ importers:
         specifier: ^5.0.4
         version: 5.0.4
     devDependencies:
-      '@platform/app-api':
-        specifier: 0.0.0
-        version: link:../apps/app-api
       '@platform/app-tools':
-        specifier: 1.0.0
+        specifier: 0.0.0
         version: link:../apps/app-tools
       '@platform/eslint-config':
         specifier: 0.0.0

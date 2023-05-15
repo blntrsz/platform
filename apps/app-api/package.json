@@ -3,7 +3,6 @@
   "name": "@platform/app-api",
   "version": "0.0.0",
   "main": "src/stack.ts",
-  "type": "module",
   "scripts": {
     "deploy": "npx cdk deploy",
     "destroy": "npx cdk destroy",
