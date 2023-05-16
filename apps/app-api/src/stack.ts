@@ -9,7 +9,7 @@ import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { Asset } from "aws-cdk-lib/aws-s3-assets";
 import { Construct } from "constructs";
 
-function createLambda(stack: cdk.Stack, name: string) {
+function createLambda(stack: Construct, name: string) {
   const lambda = new NodejsFunction(stack, name, {
     runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
     entry: join(__dirname, "functions", `${name}.ts`),
@@ -18,14 +18,17 @@ function createLambda(stack: cdk.Stack, name: string) {
   (lambda.node.defaultChild as CfnFunction).overrideLogicalId(name);
 
   lambda.grantInvoke(new ServicePrincipal("apigateway.amazonaws.com"));
+
+  return lambda;
 }
 
-export class AppApiStack extends cdk.Stack {
-  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
-    super(scope, id, props);
+export class AppApiStack extends Construct {
+  api: cdk.aws_apigateway.SpecRestApi;
+  constructor(scope: Construct, id: string) {
+    super(scope, id);
 
-    readdirSync(join(__dirname, "functions")).forEach((file) => {
-      createLambda(this, file.replace(".ts", ""));
+    const lambdas = readdirSync(join(__dirname, "functions")).map((file) => {
+      return createLambda(this, file.replace(".ts", ""));
     });
 
     const openApiAsset = new Asset(this, "openApiFile", {
@@ -49,13 +52,14 @@ export class AppApiStack extends cdk.Stack {
 
     apiRole.addToPolicy(
       new PolicyStatement({
-        resources: ["*"],
+        resources: lambdas.map((lambda) => lambda.functionArn),
         actions: ["lambda:InvokeFunction"],
       })
     );
 
-    new cdk.aws_apigateway.SpecRestApi(this, "api", {
+    this.api = new cdk.aws_apigateway.SpecRestApi(this, "api", {
       apiDefinition,
+      endpointExportName: "apiUrl",
     });
   }
 }

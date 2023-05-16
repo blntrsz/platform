@@ -18,6 +18,8 @@
     "@platform/app-contract": "0.0.0",
     "@platform/eslint-config": "0.0.0",
     "@platform/tsconfig": "0.0.0",
+    "@types/fs-extra": "^11.0.1",
+    "@types/node": "^20.1.4",
     "aws-cdk": "^2.78.0",
     "aws-cdk-lib": "^2.78.0",
     "axios": "^1.2.2",

@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "build": "turbo run build",
-    "dev": "turbo run dev",
+    "dev": "dotenv -- turbo dev",
     "test": "turbo run test",
     "lint": "turbo run lint && manypkg check",
     "format": "prettier --write \"**/*.{ts,tsx,md}\" --ignore-path .gitignore",
@@ -30,6 +30,7 @@
     "aws-sdk": "^2.1371.0",
     "commitlint": "^17.6.3",
     "constructs": "^10.2.14",
+    "dotenv-cli": "^7.2.1",
     "esbuild": "^0.17.18",
     "eslint": "^8.39.0",
     "husky": "^8.0.3",

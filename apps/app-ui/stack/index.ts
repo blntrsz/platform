@@ -1,18 +1,52 @@
+import { ExecSyncOptions, execSync } from "child_process";
 import { join } from "path";
 
 import * as cdk from "aws-cdk-lib";
+import { DockerImage } from "aws-cdk-lib";
+import { Source } from "aws-cdk-lib/aws-s3-deployment";
 import { Construct } from "constructs";
+import { copySync } from "fs-extra";
 
 export class Frontend extends Construct {
-  constructor(scope: Construct, id: string) {
+  bucket: cdk.aws_s3.Bucket;
+  constructor(scope: Construct, id: string, config: object) {
     super(scope, id);
+
+    const execOptions: ExecSyncOptions = {
+      stdio: ["ignore", process.stderr, "inherit"],
+    };
+
+    const bundle = Source.asset(join(__dirname, "..", "..", "app-ui"), {
+      bundling: {
+        command: [
+          "sh",
+          "-c",
+          'echo "Docker build not supported. Please install esbuild."',
+        ],
+        image: DockerImage.fromRegistry("alpine"),
+        local: {
+          tryBundle(outputDir: string) {
+            try {
+              execSync("esbuild --version", execOptions);
+            } catch {
+              return false;
+            }
+            execSync("pnpm build", execOptions);
+            copySync(join(__dirname, "..", "dist"), outputDir, {
+              overwrite: true,
+            });
+            return true;
+          },
+        },
+      },
+    });
 
     const oai = new cdk.aws_cloudfront.OriginAccessIdentity(
       this,
       "cloudfront-oai"
     );
 
-    const bucket = new cdk.aws_s3.Bucket(this, "bucket", {
+    this.bucket = new cdk.aws_s3.Bucket(this, "bucket", {
       bucketName: `platform-fullstack-${process.env.BRANCH}`
         .substring(0, 63)
         .toLocaleLowerCase(),
@@ -22,10 +56,10 @@ export class Frontend extends Construct {
       blockPublicAccess: cdk.aws_s3.BlockPublicAccess.BLOCK_ALL,
     });
 
-    bucket.addToResourcePolicy(
+    this.bucket.addToResourcePolicy(
       new cdk.aws_iam.PolicyStatement({
         actions: ["s3:GetObject"],
-        resources: [bucket.arnForObjects("*")],
+        resources: [this.bucket.arnForObjects("*")],
         principals: [
           new cdk.aws_iam.CanonicalUserPrincipal(
             oai.cloudFrontOriginAccessIdentityS3CanonicalUserId
@@ -48,7 +82,7 @@ export class Frontend extends Construct {
         defaultRootObject: "index.html",
         errorResponses: [errorResponse],
         defaultBehavior: {
-          origin: new cdk.aws_cloudfront_origins.S3Origin(bucket, {
+          origin: new cdk.aws_cloudfront_origins.S3Origin(this.bucket, {
             originAccessIdentity: oai,
           }),
           allowedMethods:
@@ -63,15 +97,17 @@ export class Frontend extends Construct {
       "deploy-with-invalidation",
       {
         sources: [
-          cdk.aws_s3_deployment.Source.asset(join(__dirname, "..", "dist")),
+          bundle,
+          cdk.aws_s3_deployment.Source.jsonData("config.json", config),
         ],
-        destinationBucket: bucket,
+        destinationBucket: this.bucket,
         distribution,
         distributionPaths: ["/*"],
       }
     );
 
     new cdk.CfnOutput(this, "frontend-endpoint", {
+      exportName: "frontendUrl",
       value: distribution.distributionDomainName,
     });
   }

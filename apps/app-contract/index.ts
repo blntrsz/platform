@@ -3,6 +3,7 @@
  * Do not make direct changes to the file.
  */
 
+
 export interface paths {
   "/hello": {
     /** @description Receive a general greeting */
@@ -41,6 +42,7 @@ export interface components {
 export type external = Record<string, never>;
 
 export interface operations {
+
   /** @description Receive a general greeting */
   getHello: {
     responses: {

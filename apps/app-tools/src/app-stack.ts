@@ -4,10 +4,12 @@ import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
 
 export class AppStack extends cdk.Stack {
-  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+  constructor(scope: Construct, id: string, props: cdk.StackProps) {
     super(scope, id, props);
 
-    new Frontend(this, "frontend");
-    new AppApiStack(this, "api");
+    const { api } = new AppApiStack(this, "api");
+    new Frontend(this, "frontend", {
+      apiUrl: `https://${api.restApiId}.execute-api.${this.region}.amazonaws.com/prod/`,
+    });
   }
 }
