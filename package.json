@@ -10,7 +10,6 @@
     "lint-staged": "lint-staged",
     "prepare": "husky install",
     "typecheck": "turbo run typecheck",
-    "e2e:install": "npx playwright install",
     "e2e:test": "turbo run e2e:test"
   },
   "dependencies": {

@@ -241,7 +241,7 @@ export class E2EAction extends Construct {
                 " --query 'Stacks[0].Outputs[?ExportName==`frontendUrl-" +
                 process.env.BRANCH +
                 "`].OutputValue' --output text )",
-              "pnpm e2e:install",
+              "npx playwright install --with-deps",
               "pnpm e2e:test",
             ],
           },
