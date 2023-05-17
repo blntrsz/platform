@@ -45,6 +45,19 @@ export class MainPipelineStack extends Construct {
     });
 
     pipeline.addStage({
+      stageName: "e2e",
+      actions: [
+        new E2EAction(
+          this,
+          "e2e",
+          sourceOutput,
+          process.env.BRANCH,
+          cacheBucket
+        ).codebuildAction,
+      ],
+    });
+
+    pipeline.addStage({
       stageName: "promote-to-prod",
       actions: [
         new ManualApprovalAction({
@@ -64,19 +77,6 @@ export class MainPipelineStack extends Construct {
     pipeline.addStage({
       stageName: "build-and-test-prod",
       actions: prodActions,
-    });
-
-    pipeline.addStage({
-      stageName: "e2e",
-      actions: [
-        new E2EAction(
-          this,
-          "e2e",
-          sourceOutput,
-          process.env.BRANCH,
-          cacheBucket
-        ).codebuildAction,
-      ],
     });
   }
 }
