@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "e2e:test": "npx playwright test"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

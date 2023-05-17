@@ -1,5 +1,5 @@
 import { AbstractPipeline } from "./pipeline/abstract-pipeline";
-import { BuildAndTestCodebuildAction } from "./pipeline/steps";
+import { BuildAndTestCodebuildAction, E2EAction } from "./pipeline/steps";
 
 import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
@@ -20,17 +20,28 @@ export class DeployPipelineStack extends cdk.Stack {
       process.env.BRANCH
     );
 
-    const actions = new BuildAndTestCodebuildAction(
-      this,
-      "build-and-test-actions",
-      sourceOutput,
-      process.env.BRANCH,
-      cachedBucket
-    ).codebuildAction;
-
     pipeline.addStage({
       stageName: "build-and-test",
-      actions,
+      actions: new BuildAndTestCodebuildAction(
+        this,
+        "build-and-test-actions",
+        sourceOutput,
+        process.env.BRANCH,
+        cachedBucket
+      ).codebuildAction,
+    });
+
+    pipeline.addStage({
+      stageName: "e2e",
+      actions: [
+        new E2EAction(
+          this,
+          "e2e",
+          sourceOutput,
+          process.env.BRANCH,
+          cachedBucket
+        ).codebuildAction,
+      ],
     });
   }
 }
