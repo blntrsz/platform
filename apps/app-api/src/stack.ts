@@ -59,7 +59,7 @@ export class AppApiStack extends Construct {
 
     this.api = new cdk.aws_apigateway.SpecRestApi(this, "api", {
       apiDefinition,
-      endpointExportName: "apiUrl",
+      endpointExportName: `apiUrl-${process.env.BRANCH}`,
     });
   }
 }

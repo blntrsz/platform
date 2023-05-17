@@ -107,7 +107,7 @@ export class Frontend extends Construct {
     );
 
     new cdk.CfnOutput(this, "frontend-endpoint", {
-      exportName: "frontendUrl",
+      exportName: `frontendUrl-${process.env.BRANCH}`,
       value: distribution.distributionDomainName,
     });
   }

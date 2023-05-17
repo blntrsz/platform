@@ -238,7 +238,9 @@ export class E2EAction extends Construct {
             commands: [
               "export E2E_URL=$( aws cloudformation describe-stacks --stack-name app-" +
                 branch +
-                " --query 'Stacks[0].Outputs[?ExportName==`frontendUrl`].OutputValue' --output text )",
+                " --query 'Stacks[0].Outputs[?ExportName==`frontendUrl-" +
+                process.env.BRANCH +
+                "`].OutputValue' --output text )",
               "pnpm e2e:install",
               "pnpm e2e:test",
             ],
