@@ -26,3 +26,4 @@ Upcoming features:
 - [ ] Kysely query builder with RDS on cloud and SQLite for testing
 - [ ] AsyncAPI with EventBridge
 - [ ] Rollback on failed E2E on PROD
+- [ ] Tool to generate .env for local development (can be gathered with `aws cloudformation describe-stacks`)
