@@ -24,7 +24,7 @@ const environment = {
 
 const runtimeVersion = {
   "runtime-versions": {
-    nodejs: "16",
+    nodejs: "18",
   },
 };
 

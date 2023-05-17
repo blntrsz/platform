@@ -36,7 +36,7 @@ class UnitTestCodebuildAction extends Construct {
         phases: {
           install: {
             "runtime-versions": {
-              nodejs: "16",
+              nodejs: "18",
             },
             commands: ["npm install -g aws-cdk pnpm@7.32.2", "pnpm i"],
           },
@@ -93,7 +93,7 @@ class BuildCodebuildAction extends Construct {
         phases: {
           install: {
             "runtime-versions": {
-              nodejs: "16",
+              nodejs: "18",
             },
             commands: ["npm install -g aws-cdk pnpm@7.32.2", "pnpm i"],
           },
@@ -173,7 +173,7 @@ export class BuildToolsAction extends Construct {
         phases: {
           install: {
             "runtime-versions": {
-              nodejs: "16",
+              nodejs: "18",
             },
             commands: ["npm install -g aws-cdk pnpm@7.32.2", "pnpm i"],
           },
@@ -230,7 +230,7 @@ export class E2EAction extends Construct {
         phases: {
           install: {
             "runtime-versions": {
-              nodejs: "16",
+              nodejs: "18",
             },
             commands: [
               "npm install -g aws-cdk pnpm@7.32.2",
