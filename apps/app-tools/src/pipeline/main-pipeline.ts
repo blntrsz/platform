@@ -47,13 +47,8 @@ export class MainPipelineStack extends Construct {
     pipeline.addStage({
       stageName: "e2e",
       actions: [
-        new E2EAction(
-          this,
-          "e2e",
-          sourceOutput,
-          process.env.BRANCH,
-          cacheBucket
-        ).codebuildAction,
+        new E2EAction(this, "e2e", sourceOutput, "dev", cacheBucket)
+          .codebuildAction,
       ],
     });
 
