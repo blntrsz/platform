@@ -1,4 +1,4 @@
-<img src="./docs/assets/platform-logo.png" >
+<div align="center"><img src="./docs/assets/platform-logo.png" ></div>
 
 # Welcome to the Platform
 
