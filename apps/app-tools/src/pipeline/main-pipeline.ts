@@ -1,5 +1,9 @@
 import { AbstractPipeline } from "./abstract-pipeline";
-import { BuildAndTestCodebuildAction, BuildToolsAction } from "./steps";
+import {
+  BuildAndTestCodebuildAction,
+  BuildToolsAction,
+  E2EAction,
+} from "./steps";
 
 import { ManualApprovalAction } from "aws-cdk-lib/aws-codepipeline-actions";
 import { Bucket } from "aws-cdk-lib/aws-s3";
@@ -60,6 +64,19 @@ export class MainPipelineStack extends Construct {
     pipeline.addStage({
       stageName: "build-and-test-prod",
       actions: prodActions,
+    });
+
+    pipeline.addStage({
+      stageName: "e2e",
+      actions: [
+        new E2EAction(
+          this,
+          "e2e",
+          sourceOutput,
+          process.env.BRANCH,
+          cacheBucket
+        ).codebuildAction,
+      ],
     });
   }
 }
