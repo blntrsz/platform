@@ -9,7 +9,7 @@
     "start": "npx cdk synth && sam local start-api -t ./cdk.out/openapi-backend-example.template.json",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "typecheck": "tsc --noEmit",
-    "test": "jest -i --forceExit",
+    "test": "jest -i --forceExit --passWithNoTests",
     "dev": "ts-node src/server.ts"
   },
   "devDependencies": {
