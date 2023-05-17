@@ -264,7 +264,7 @@ export class E2EAction extends Construct {
     );
 
     this.codebuildAction = new CodeBuildAction({
-      actionName: "build",
+      actionName: "e2e",
       input: sourceOutput,
       project: buildProject,
     });
