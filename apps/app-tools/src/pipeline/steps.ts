@@ -23,7 +23,7 @@ class UnitTestCodebuildAction extends Construct {
     const buildProject = new Project(this, "build-project", {
       cache: cdk.aws_codebuild.Cache.bucket(cacheBucket),
       environment: {
-        buildImage: LinuxBuildImage.AMAZON_LINUX_2_4,
+        buildImage: LinuxBuildImage.STANDARD_7_0,
       },
       environmentVariables: {
         BRANCH: {
@@ -80,7 +80,7 @@ class BuildCodebuildAction extends Construct {
     const buildProject = new Project(this, "build-project", {
       cache: cdk.aws_codebuild.Cache.bucket(cacheBucket),
       environment: {
-        buildImage: LinuxBuildImage.AMAZON_LINUX_2_4,
+        buildImage: LinuxBuildImage.STANDARD_7_0,
       },
       environmentVariables: {
         BRANCH: {
@@ -166,7 +166,7 @@ export class BuildToolsAction extends Construct {
     const buildProject = new Project(this, "build-project", {
       cache: cdk.aws_codebuild.Cache.bucket(cacheBucket),
       environment: {
-        buildImage: LinuxBuildImage.AMAZON_LINUX_2_4,
+        buildImage: LinuxBuildImage.STANDARD_7_0,
       },
       buildSpec: BuildSpec.fromObject({
         version: "0.2",
@@ -217,7 +217,7 @@ export class E2EAction extends Construct {
     const buildProject = new Project(this, "build-project", {
       cache: cdk.aws_codebuild.Cache.bucket(cacheBucket),
       environment: {
-        buildImage: LinuxBuildImage.AMAZON_LINUX_2_4,
+        buildImage: LinuxBuildImage.STANDARD_7_0,
       },
       environmentVariables: {
         BRANCH: {

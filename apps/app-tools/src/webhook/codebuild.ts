@@ -19,7 +19,7 @@ const policy = new iam.PolicyStatement({
 });
 
 const environment = {
-  buildImage: LinuxBuildImage.AMAZON_LINUX_2_4,
+  buildImage: LinuxBuildImage.STANDARD_7_0,
 };
 
 const runtimeVersion = {
