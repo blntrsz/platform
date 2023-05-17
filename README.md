@@ -1,4 +1,4 @@
-![platform logo](./docs/assets/platform-low-resolution-color-logo.png)
+<img src="./docs/assets/platform-logo.png" >
 
 # Welcome to the Platform
 
