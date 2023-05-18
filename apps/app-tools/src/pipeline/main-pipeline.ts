@@ -10,10 +10,10 @@ import { Bucket } from "aws-cdk-lib/aws-s3";
 import { Construct } from "constructs";
 
 export class MainPipelineStack extends Construct {
-  constructor(scope: Construct, id: string, cacheBucket: Bucket) {
+  constructor(scope: Construct, id: string, cache: Bucket) {
     super(scope, id);
 
-    const { pipeline, sourceOutput } = new AbstractPipeline(
+    const { pipeline, source: source } = new AbstractPipeline(
       this,
       "pipeline",
       "main"
@@ -22,21 +22,22 @@ export class MainPipelineStack extends Construct {
     pipeline.addStage({
       stageName: "update-tools",
       actions: [
-        new BuildToolsAction(
-          this,
-          "build-tools-action",
-          sourceOutput,
-          cacheBucket
-        ).codebuildAction,
+        new BuildToolsAction(this, "build-tools-action", {
+          source,
+          stage: "dev",
+          cache,
+        }).codebuildAction,
       ],
     });
 
     const devActions = new BuildAndTestCodebuildAction(
       this,
       "dev-build-and-test-actions",
-      sourceOutput,
-      "dev",
-      cacheBucket
+      {
+        source,
+        stage: "dev",
+        cache,
+      }
     ).codebuildAction;
 
     pipeline.addStage({
@@ -47,8 +48,11 @@ export class MainPipelineStack extends Construct {
     pipeline.addStage({
       stageName: "e2e",
       actions: [
-        new E2EAction(this, "e2e", sourceOutput, "dev", cacheBucket)
-          .codebuildAction,
+        new E2EAction(this, "e2e", {
+          source,
+          stage: "dev",
+          cache,
+        }).codebuildAction,
       ],
     });
 
@@ -64,9 +68,11 @@ export class MainPipelineStack extends Construct {
     const prodActions = new BuildAndTestCodebuildAction(
       this,
       "prod-build-and-test-actions",
-      sourceOutput,
-      "prod",
-      cacheBucket
+      {
+        source,
+        stage: "prod",
+        cache,
+      }
     ).codebuildAction;
 
     pipeline.addStage({

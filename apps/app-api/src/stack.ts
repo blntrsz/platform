@@ -24,7 +24,7 @@ function createLambda(stack: Construct, name: string) {
 
 export class AppApiStack extends Construct {
   api: cdk.aws_apigateway.SpecRestApi;
-  constructor(scope: Construct, id: string) {
+  constructor(scope: Construct, id: string, { stage }: { stage: string }) {
     super(scope, id);
 
     const lambdas = readdirSync(join(__dirname, "functions")).map((file) => {
@@ -59,7 +59,7 @@ export class AppApiStack extends Construct {
 
     this.api = new cdk.aws_apigateway.SpecRestApi(this, "api", {
       apiDefinition,
-      endpointExportName: `apiUrl-${process.env.BRANCH}`,
+      endpointExportName: `apiUrl-${stage}`,
     });
   }
 }

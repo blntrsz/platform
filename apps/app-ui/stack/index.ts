@@ -9,7 +9,12 @@ import { copySync } from "fs-extra";
 
 export class Frontend extends Construct {
   bucket: cdk.aws_s3.Bucket;
-  constructor(scope: Construct, id: string, config: object) {
+  constructor(
+    scope: Construct,
+    id: string,
+    { stage }: { stage: string },
+    config: object
+  ) {
     super(scope, id);
 
     const execOptions: ExecSyncOptions = {
@@ -47,7 +52,7 @@ export class Frontend extends Construct {
     );
 
     this.bucket = new cdk.aws_s3.Bucket(this, "bucket", {
-      bucketName: `platform-fullstack-${process.env.BRANCH}`
+      bucketName: `platform-fullstack-${stage}`
         .substring(0, 63)
         .toLocaleLowerCase(),
       publicReadAccess: false,
@@ -107,7 +112,7 @@ export class Frontend extends Construct {
     );
 
     new cdk.CfnOutput(this, "frontend-endpoint", {
-      exportName: `frontendUrl-${process.env.BRANCH}`,
+      exportName: `frontendUrl-${stage}`,
       value: distribution.distributionDomainName,
     });
   }

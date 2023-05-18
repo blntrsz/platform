@@ -46,18 +46,18 @@ export class CreatorCodeBuild extends Construct {
           install: {
             ...runtimeVersion,
             commands: [
-              "echo $BRANCH",
+              "echo $STAGE",
               "echo $ACTION",
               "npm -v",
               "node -v",
-              "git checkout $BRANCH --",
+              "git checkout $STAGE --",
               "npm i -g pnpm@7.32.2",
               "pnpm i",
             ],
           },
           build: {
             commands: [
-              "pnpm cdk deploy pipeline-$BRANCH --require-approval never",
+              "pnpm cdk deploy pipeline-$STAGE --require-approval never",
             ],
           },
         },
@@ -86,12 +86,12 @@ export class DestroyerCodeBuild extends Construct {
         phases: {
           install: {
             ...runtimeVersion,
-            commands: ["echo $BRANCH", "echo $ACTION"],
+            commands: ["echo $STAGE", "echo $ACTION"],
           },
           build: {
             commands: [
-              "aws cloudformation delete-stack --stack-name pipeline-$BRANCH",
-              "aws cloudformation delete-stack --stack-name app-$BRANCH",
+              "aws cloudformation delete-stack --stack-name pipeline-$STAGE",
+              "aws cloudformation delete-stack --stack-name app-$STAGE",
             ],
           },
         },

@@ -31,7 +31,7 @@ export const handler: Handler = async (event) => {
           : process.env.DESTROYER_PROJECT_NAME) ?? "",
       environmentVariablesOverride: [
         {
-          name: "BRANCH",
+          name: "STAGE",
           value: branch,
         },
       ],

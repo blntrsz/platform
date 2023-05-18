@@ -1,7 +1,13 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "globalDependencies": ["**/.env.*local"],
-  "globalEnv": ["BRANCH", "CREATOR_PROJECT_NAME", "DESTROYER_PROJECT_NAME"],
+  "globalEnv": [
+    "STAGE",
+    "CREATOR_PROJECT_NAME",
+    "DESTROYER_PROJECT_NAME",
+    "CDK_DEFAULT_ACCOUNT",
+    "CDK_DEFAULT_REGION"
+  ],
   "pipeline": {
     "build": {
       "outputs": [".next/**", "!.next/cache/**"]

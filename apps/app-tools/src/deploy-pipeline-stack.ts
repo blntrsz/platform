@@ -8,39 +8,37 @@ export class DeployPipelineStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    const cachedBucket = cdk.aws_s3.Bucket.fromBucketName(
+    const stage = process.env.STAGE;
+
+    if (!stage) {
+      throw new Error("Environment variable STAGE is not defined.");
+    }
+
+    const cache = cdk.aws_s3.Bucket.fromBucketName(
       this,
       "CacheBucket",
       "platform-remote-pnpm-cache"
     );
 
-    const { pipeline, sourceOutput } = new AbstractPipeline(
-      this,
-      "pipeline",
-      process.env.BRANCH
-    );
+    const { pipeline, source } = new AbstractPipeline(this, "pipeline", stage);
 
     pipeline.addStage({
       stageName: "build-and-test",
-      actions: new BuildAndTestCodebuildAction(
-        this,
-        "build-and-test-actions",
-        sourceOutput,
-        process.env.BRANCH,
-        cachedBucket
-      ).codebuildAction,
+      actions: new BuildAndTestCodebuildAction(this, "build-and-test-actions", {
+        source,
+        stage,
+        cache,
+      }).codebuildAction,
     });
 
     pipeline.addStage({
       stageName: "e2e",
       actions: [
-        new E2EAction(
-          this,
-          "e2e",
-          sourceOutput,
-          process.env.BRANCH,
-          cachedBucket
-        ).codebuildAction,
+        new E2EAction(this, "e2e", {
+          source,
+          stage,
+          cache,
+        }).codebuildAction,
       ],
     });
   }
