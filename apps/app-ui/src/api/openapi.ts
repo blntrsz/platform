@@ -1,11 +1,9 @@
-import { queryClient } from "../main";
-
 import { paths } from "@platform/app-contract";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import createClient from "openapi-fetch";
 
-const fetchConfig = () =>
-  queryClient.fetchQuery({
+const useConfig = () =>
+  useQuery({
     queryKey: ["config"],
     cacheTime: 1_000 * 60 * 60 * 24,
     queryFn: async () => {
@@ -24,11 +22,15 @@ const fetchConfig = () =>
   });
 
 export function useGetHello() {
+  const { data: config } = useConfig();
   return useQuery({
     queryKey: ["get-hello"],
     queryFn: async () => {
-      const { get } = await fetchConfig();
-      const { data, error } = await get("/hello", {});
+      if (!config) {
+        return;
+      }
+
+      const { data, error } = await config.get("/hello", {});
 
       if (error) {
         throw error;
@@ -38,15 +40,20 @@ export function useGetHello() {
         return data;
       }
     },
+    enabled: !!config,
   });
 }
 
 export function usePostHello() {
+  const { data: config } = useConfig();
   return useMutation({
     mutationKey: ["post-hello"],
     mutationFn: async (name: string) => {
-      const { post } = await fetchConfig();
-      const { data, error } = await post("/hello", {
+      if (!config) {
+        return;
+      }
+
+      const { data, error } = await config.post("/hello", {
         body: {
           name,
         },
