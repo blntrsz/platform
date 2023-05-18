@@ -7,6 +7,7 @@ import createClient from "openapi-fetch";
 const fetchConfig = () =>
   queryClient.fetchQuery({
     queryKey: ["config"],
+    cacheTime: 1_000 * 60 * 60 * 24,
     queryFn: async () => {
       return createClient<paths>({
         baseUrl: import.meta.env.DEV
