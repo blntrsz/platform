@@ -1,8 +1,8 @@
 import { AbstractPipeline } from "./abstract-pipeline";
 import {
-  BuildAndTestCodebuildAction,
   BuildToolsAction,
   E2EAction,
+  LintBuildAndTestCodebuildAction,
 } from "./steps";
 
 import { ManualApprovalAction } from "aws-cdk-lib/aws-codepipeline-actions";
@@ -30,25 +30,23 @@ export class MainPipelineStack extends Construct {
       ],
     });
 
-    const devActions = new BuildAndTestCodebuildAction(
-      this,
-      "dev-build-and-test-actions",
-      {
-        source,
-        stage: "dev",
-        cache,
-      }
-    ).codebuildAction;
-
     pipeline.addStage({
       stageName: "build-and-test-dev",
-      actions: devActions,
+      actions: new LintBuildAndTestCodebuildAction(
+        this,
+        "dev-build-and-test-actions",
+        {
+          source,
+          stage: "dev",
+          cache,
+        }
+      ).codebuildAction,
     });
 
     pipeline.addStage({
-      stageName: "e2e",
+      stageName: "dev-e2e",
       actions: [
-        new E2EAction(this, "e2e", {
+        new E2EAction(this, "dev-e2e", {
           source,
           stage: "dev",
           cache,
@@ -65,19 +63,28 @@ export class MainPipelineStack extends Construct {
       ],
     });
 
-    const prodActions = new BuildAndTestCodebuildAction(
-      this,
-      "prod-build-and-test-actions",
-      {
-        source,
-        stage: "prod",
-        cache,
-      }
-    ).codebuildAction;
-
     pipeline.addStage({
       stageName: "build-and-test-prod",
-      actions: prodActions,
+      actions: new LintBuildAndTestCodebuildAction(
+        this,
+        "prod-build-and-test-actions",
+        {
+          source,
+          stage: "prod",
+          cache,
+        }
+      ).codebuildAction,
+    });
+
+    pipeline.addStage({
+      stageName: "prod-e2e",
+      actions: [
+        new E2EAction(this, "prod-e2e", {
+          source,
+          stage: "prod",
+          cache,
+        }).codebuildAction,
+      ],
     });
   }
 }

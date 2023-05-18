@@ -98,7 +98,21 @@ class BuildCodebuildAction extends AbstractCodeBuildProject {
   }
 }
 
-export class BuildAndTestCodebuildAction extends Construct {
+class LintCodebuildAction extends AbstractCodeBuildProject {
+  codebuildAction: cdk.aws_codepipeline_actions.CodeBuildAction;
+  constructor(
+    scope: Construct,
+    id: string,
+    configs: Omit<AbstractCodeBuildProjectConfig, "buildCommands">
+  ) {
+    super(scope, id, {
+      ...configs,
+      buildCommands: ["pnpm lint"],
+    });
+  }
+}
+
+export class LintBuildAndTestCodebuildAction extends Construct {
   codebuildAction: cdk.aws_codepipeline_actions.CodeBuildAction[];
   constructor(
     scope: Construct,
@@ -112,6 +126,11 @@ export class BuildAndTestCodebuildAction extends Construct {
     super(scope, id);
 
     this.codebuildAction = [
+      new LintCodebuildAction(this, "lint-action", {
+        source,
+        cache,
+        stage,
+      }).codebuildAction,
       new BuildCodebuildAction(this, "build-action", {
         source,
         cache,
