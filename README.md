@@ -22,6 +22,7 @@ Current Architecture:
 
 Upcoming features:
 
+- [ ] conditional build when subdirectory changed
 - [ ] Post comment on PR with API + Frontend endpoints
 - [ ] Kysely query builder with RDS on cloud and SQLite for testing
 - [ ] AsyncAPI with EventBridge
