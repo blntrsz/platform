@@ -52,6 +52,13 @@ export const handler: Handler = async (event) => {
         ],
       })
       .promise();
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        message: `Deletion of pipeline-${parsedBranchBody.data.branch} has been started.`,
+      }),
+    };
   }
 
   const parsedPushBody = pushEvent.safeParse(JSON.parse(event.body));
@@ -76,6 +83,13 @@ export const handler: Handler = async (event) => {
             name: `pipeline-${parsedPushBody.data.branch}`,
           })
           .promise();
+
+        return {
+          statusCode: 200,
+          body: JSON.stringify({
+            message: `Pipeline: pipeline-${parsedPushBody.data.branch} has been started`,
+          }),
+        };
       } catch (e) {
         await codebuild
           .startBuild({
@@ -88,6 +102,13 @@ export const handler: Handler = async (event) => {
             ],
           })
           .promise();
+
+        return {
+          statusCode: 200,
+          body: JSON.stringify({
+            message: `Pipeline creation with STAGE=${parsedPushBody.data.branch} has been started`,
+          }),
+        };
       }
     }
   }
@@ -95,7 +116,7 @@ export const handler: Handler = async (event) => {
   return {
     statusCode: 200,
     body: JSON.stringify({
-      message: "ok",
+      message: "No event is processed.",
     }),
   };
 };
