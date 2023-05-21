@@ -179,7 +179,7 @@ export class E2EAction extends AbstractCodeBuildProject {
   ) {
     super(scope, id, {
       ...configs,
-      extraInstallCommands: ["npx playwright install --with-deps"],
+      extraInstallCommands: ["pnpm dlx playwright install --with-deps"],
       buildCommands: [
         `export E2E_URL=https://$(aws cloudformation describe-stacks --stack-name app-${configs.stage} --query 'Stacks[0].Outputs[?ExportName==\`frontendUrl-${configs.stage}\`].OutputValue' --output text) && echo $E2E_URL && pnpm e2e:test`,
       ],
