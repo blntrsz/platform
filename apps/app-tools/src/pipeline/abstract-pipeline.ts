@@ -63,6 +63,7 @@ export class AbstractPipeline extends Construct {
       repo: "platform",
       branch,
       output: this.source,
+      triggerOnPush: false,
       connectionArn:
         "arn:aws:codestar-connections:eu-central-1:155601209279:connection/51dc3226-ffdd-459d-a034-50f9ff503d2b",
     });
