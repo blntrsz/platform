@@ -41,11 +41,11 @@ export class ToolsStack extends cdk.Stack {
     lambda.addToRolePolicy(
       new iam.PolicyStatement({
         effect: iam.Effect.ALLOW,
-        actions: ["codebuild:StartBuild"],
-        resources: [
-          creatorCodeBuild.project.projectArn,
-          destroyerCodeBuild.project.projectArn,
+        actions: [
+          "codebuild:StartBuild",
+          "codepipeline:StartPipelineExecution",
         ],
+        resources: ["*"],
       })
     );
   }
