@@ -69,13 +69,13 @@ export const handler: Handler = async (event) => {
     }
 
     if (
-      parsedPushBody.data.commits.some((commit) => {
+      parsedPushBody.data.commits.some((commit) =>
         [
           () => commit.added.some(testIsAppChanged),
           () => commit.removed.some(testIsAppChanged),
           () => commit.modified.some(testIsAppChanged),
-        ].some((fn) => fn());
-      })
+        ].some((fn) => fn())
+      )
     ) {
       try {
         await codepipeline
