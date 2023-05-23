@@ -1,9 +1,12 @@
+import { useRef } from "react";
+
 import "./App.css";
-import { useGetHello, usePostHello } from "./api/openapi";
+import { useGetUsers, usePostUsers } from "./api/openapi";
 
 function App() {
-  const { data, isLoading } = useGetHello();
-  const { mutate, data: postData } = usePostHello();
+  const { data, isLoading } = useGetUsers();
+  const { mutate } = usePostUsers();
+  const ref = useRef<HTMLInputElement>(null);
 
   if (isLoading) {
     return <div>Loading..</div>;
@@ -15,9 +18,12 @@ function App() {
 
   return (
     <>
-      <h1>{postData?.greeting ?? data.greeting}</h1>
+      <h1>Hello, my name is {data.name}</h1>
       <div className="card">
-        <button onClick={() => mutate("Bob")}>Hello, my name is Bob!</button>
+        <input ref={ref} />
+        <button onClick={() => mutate(ref.current?.value ?? "")}>
+          Add name
+        </button>
       </div>
     </>
   );

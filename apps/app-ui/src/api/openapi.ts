@@ -1,5 +1,5 @@
 import { paths } from "@platform/app-contract";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import createClient from "openapi-fetch";
 
 const useConfig = () =>
@@ -54,6 +54,60 @@ export function usePostHello() {
       }
 
       const { data, error } = await config.post("/hello", {
+        body: {
+          name,
+        },
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      if (data) {
+        return data;
+      }
+    },
+  });
+}
+
+export function useGetUsers() {
+  const { data: config } = useConfig();
+  return useQuery({
+    queryKey: ["get-users"],
+    queryFn: async () => {
+      if (!config) {
+        return;
+      }
+
+      const { data, error } = await config.get("/users", {});
+
+      if (error) {
+        throw error;
+      }
+
+      if (data) {
+        return data;
+      }
+    },
+    enabled: !!config,
+  });
+}
+
+export function usePostUsers() {
+  const { data: config } = useConfig();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: ["post-hello"],
+    onSuccess: () => {
+      queryClient.invalidateQueries(["get-users"]);
+    },
+    mutationFn: async (name: string) => {
+      if (!config) {
+        return;
+      }
+
+      const { data, error } = await config.post("/users", {
         body: {
           name,
         },

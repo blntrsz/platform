@@ -10,7 +10,8 @@
     "lint-staged": "lint-staged",
     "prepare": "husky install",
     "typecheck": "turbo run typecheck",
-    "e2e:test": "turbo run e2e:test"
+    "e2e:test": "turbo run e2e:test",
+    "run:migrate": "dotenv -- turbo run:migrate"
   },
   "dependencies": {
     "@aws-cdk/aws-apigatewayv2-alpha": "2.78.0-alpha.0",

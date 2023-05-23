@@ -17,6 +17,18 @@ export interface paths {
       };
     };
   };
+  "/users": {
+    /** @description Get User */
+    get: operations["getUsers"];
+    /** @description create user */
+    post: operations["postUsers"];
+    options: {
+      responses: {
+        /** @description Default response */
+        200: never;
+      };
+    };
+  };
 }
 
 export type webhooks = Record<string, never>;
@@ -30,6 +42,14 @@ export interface components {
     /** HelloResponse */
     HelloResponse: {
       greeting: string;
+    };
+    /** UsersRequest */
+    UsersRequest: {
+      name: string;
+    };
+    /** UsersResponse */
+    UsersResponse: {
+      name: string;
     };
   };
   responses: never;
@@ -66,6 +86,33 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["HelloResponse"];
+        };
+      };
+    };
+  };
+  /** @description Get User */
+  getUsers: {
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "application/json": components["schemas"]["UsersResponse"];
+        };
+      };
+    };
+  };
+  /** @description create user */
+  postUsers: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UsersRequest"];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "application/json": components["schemas"]["UsersResponse"];
         };
       };
     };
