@@ -9,30 +9,27 @@ import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { Asset } from "aws-cdk-lib/aws-s3-assets";
 import { Construct } from "constructs";
 
-function createLambda(stack: Construct, name: string) {
-  const lambda = new NodejsFunction(stack, name, {
-    runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
-    entry: join(__dirname, "functions", `${name}.ts`),
-  });
-
-  (lambda.node.defaultChild as CfnFunction).overrideLogicalId(name);
-
-  lambda.grantInvoke(new ServicePrincipal("apigateway.amazonaws.com"));
-
-  return lambda;
+interface OpenApiProps {
+  stage: string;
+  functionsDir: string;
+  openApiFilePath: string;
 }
 
-export class AppApiStack extends Construct {
+export class OpenApi extends Construct {
   api: cdk.aws_apigateway.SpecRestApi;
-  constructor(scope: Construct, id: string, { stage }: { stage: string }) {
+  constructor(
+    scope: Construct,
+    id: string,
+    { stage, functionsDir, openApiFilePath }: OpenApiProps
+  ) {
     super(scope, id);
 
-    const lambdas = readdirSync(join(__dirname, "functions")).map((file) => {
-      return createLambda(this, file.replace(".ts", ""));
+    const lambdas = readdirSync(functionsDir).map((file) => {
+      return createLambda(this, file.replace(".ts", ""), functionsDir);
     });
 
     const openApiAsset = new Asset(this, "openApiFile", {
-      path: join(__dirname, "..", "..", "app-contract", "api.yaml"),
+      path: openApiFilePath,
     });
 
     const transformMap = {
@@ -62,4 +59,17 @@ export class AppApiStack extends Construct {
       endpointExportName: `apiUrl-${stage}`,
     });
   }
+}
+
+function createLambda(stack: Construct, name: string, functionsDir: string) {
+  const lambda = new NodejsFunction(stack, name, {
+    runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
+    entry: join(functionsDir, `${name}.ts`),
+  });
+
+  (lambda.node.defaultChild as CfnFunction).overrideLogicalId(name);
+
+  lambda.grantInvoke(new ServicePrincipal("apigateway.amazonaws.com"));
+
+  return lambda;
 }

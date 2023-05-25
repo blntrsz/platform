@@ -104,6 +104,9 @@ importers:
       '@platform/app-contract':
         specifier: 0.0.0
         version: link:../app-contract
+      '@platform/cdk':
+        specifier: 0.0.0
+        version: link:../../packages/cdk
       '@platform/eslint-config':
         specifier: 0.0.0
         version: link:../../packages/eslint-config
@@ -230,9 +233,6 @@ importers:
       '@tanstack/react-query':
         specifier: ^4.29.7
         version: 4.29.7(react-dom@18.2.0)(react@18.2.0)
-      fs-extra:
-        specifier: ^11.1.1
-        version: 11.1.1
       openapi-fetch:
         specifier: ^0.1.2
         version: 0.1.2
@@ -246,15 +246,15 @@ importers:
       '@platform/app-contract':
         specifier: 0.0.0
         version: link:../app-contract
+      '@platform/cdk':
+        specifier: 0.0.0
+        version: link:../../packages/cdk
       '@platform/eslint-config':
         specifier: 0.0.0
         version: link:../../packages/eslint-config
       '@platform/tsconfig':
         specifier: 0.0.0
         version: link:../../packages/tsconfig
-      '@types/fs-extra':
-        specifier: ^11.0.1
-        version: 11.0.1
       '@vitejs/plugin-react-swc':
         specifier: ^3.3.0
         version: 3.3.0(vite@4.3.4)
@@ -307,6 +307,40 @@ importers:
       source-map-support:
         specifier: ^0.5.21
         version: 0.5.21
+
+  packages/cdk:
+    dependencies:
+      '@platform/eslint-config':
+        specifier: 0.0.0
+        version: link:../eslint-config
+      '@platform/tsconfig':
+        specifier: 0.0.0
+        version: link:../tsconfig
+      '@types/node':
+        specifier: ^20.1.4
+        version: 20.1.4
+      aws-cdk:
+        specifier: ^2.78.0
+        version: 2.78.0
+      aws-cdk-lib:
+        specifier: ^2.78.0
+        version: 2.78.0(constructs@10.2.14)
+      constructs:
+        specifier: ^10.2.14
+        version: 10.2.14
+      fs-extra:
+        specifier: ^11.1.1
+        version: 11.1.1
+      source-map-support:
+        specifier: ^0.5.21
+        version: 0.5.21
+      typescript:
+        specifier: ^5.0.4
+        version: 5.0.4
+    devDependencies:
+      '@types/fs-extra':
+        specifier: ^11.0.1
+        version: 11.0.1
 
   packages/eslint-config:
     dependencies:

@@ -1,5 +1,5 @@
-import { AppApiStack } from "@platform/app-api";
-import { Frontend } from "@platform/app-ui";
+import { createBackendIfra } from "@platform/app-api/infra";
+import { createFrontendInfra } from "@platform/app-ui/infra";
 import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
 
@@ -13,14 +13,7 @@ export class AppStack extends cdk.Stack {
       throw new Error("Environment variable STAGE is not defined.");
     }
 
-    const { api } = new AppApiStack(this, "api", { stage });
-    new Frontend(
-      this,
-      "frontend",
-      { stage },
-      {
-        apiUrl: `https://${api.restApiId}.execute-api.${this.region}.amazonaws.com/prod/`,
-      }
-    );
+    const { api } = createBackendIfra(this, "api");
+    createFrontendInfra(this, "fronend", api.urlForPath("/"));
   }
 }

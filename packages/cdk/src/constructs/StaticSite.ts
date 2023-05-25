@@ -1,5 +1,6 @@
-import { ExecSyncOptions, execSync } from "child_process";
-import { join } from "path";
+import { execSync } from "child_process";
+
+import { getBuildCmdEnvironment } from "../utils/getBuildCmdEnvironment";
 
 import * as cdk from "aws-cdk-lib";
 import { DockerImage } from "aws-cdk-lib";
@@ -7,40 +8,41 @@ import { Source } from "aws-cdk-lib/aws-s3-deployment";
 import { Construct } from "constructs";
 import { copySync } from "fs-extra";
 
-export class Frontend extends Construct {
+interface StaticSiteProps {
+  stage: string;
+  path: string;
+  buildCommand: string;
+  distDir: string;
+  environment?: Record<string, string>;
+}
+
+export class StaticSite extends Construct {
   bucket: cdk.aws_s3.Bucket;
-  constructor(
-    scope: Construct,
-    id: string,
-    { stage }: { stage: string },
-    config: object
-  ) {
+  constructor(scope: Construct, id: string, props: StaticSiteProps) {
     super(scope, id);
 
-    const execOptions: ExecSyncOptions = {
-      stdio: ["ignore", process.stderr, "inherit"],
-    };
-
-    const bundle = Source.asset(join(__dirname, "..", "..", "app-ui"), {
+    const bundle = Source.asset(props.path, {
       bundling: {
-        command: [
-          "sh",
-          "-c",
-          'echo "Docker build not supported. Please install esbuild."',
-        ],
         image: DockerImage.fromRegistry("alpine"),
         local: {
           tryBundle(outputDir: string) {
             try {
-              execSync("esbuild --version", execOptions);
-            } catch {
+              execSync(props.buildCommand, {
+                cwd: props.path,
+                stdio: "inherit",
+                env: {
+                  ...process.env,
+                  ...getBuildCmdEnvironment(props.environment),
+                },
+              });
+              copySync(props.distDir, outputDir, {
+                overwrite: true,
+              });
+              return true;
+            } catch (e) {
+              console.error(e);
               return false;
             }
-            execSync("pnpm build", execOptions);
-            copySync(join(__dirname, "..", "dist"), outputDir, {
-              overwrite: true,
-            });
-            return true;
           },
         },
       },
@@ -52,7 +54,7 @@ export class Frontend extends Construct {
     );
 
     this.bucket = new cdk.aws_s3.Bucket(this, "bucket", {
-      bucketName: `platform-fullstack-${stage}`
+      bucketName: `platform-fullstack-${props.stage}`
         .substring(0, 63)
         .toLocaleLowerCase(),
       publicReadAccess: false,
@@ -101,10 +103,7 @@ export class Frontend extends Construct {
       this,
       "deploy-with-invalidation",
       {
-        sources: [
-          bundle,
-          cdk.aws_s3_deployment.Source.jsonData("config.json", config),
-        ],
+        sources: [bundle],
         destinationBucket: this.bucket,
         distribution,
         distributionPaths: ["/*"],
@@ -112,7 +111,7 @@ export class Frontend extends Construct {
     );
 
     new cdk.CfnOutput(this, "frontend-endpoint", {
-      exportName: `frontendUrl-${stage}`,
+      exportName: `frontendUrl-${props.stage}`,
       value: distribution.distributionDomainName,
     });
   }
