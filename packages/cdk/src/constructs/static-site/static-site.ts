@@ -109,7 +109,7 @@ export class StaticSite extends Construct {
     );
 
     // Deploy site contents to S3 bucket
-    new cdk.aws_s3_deployment.BucketDeployment(
+    const s3Deployment = new cdk.aws_s3_deployment.BucketDeployment(
       this,
       "deploy-with-invalidation",
       {
@@ -118,7 +118,7 @@ export class StaticSite extends Construct {
       }
     );
 
-    const handler = new NodejsFunction(this, "s3-handler", {
+    const envReplacerFunction = new NodejsFunction(this, "env-replacer", {
       runtime: Runtime.NODEJS_18_X,
       environment: {
         ...props.environment,
@@ -126,6 +126,7 @@ export class StaticSite extends Construct {
         DISTRIBUTON_ID: distribution.distributionId,
       },
       initialPolicy: [
+        // TODO: stricter policy -> get S3, upload S3, invalidate distributon
         new iam.PolicyStatement({
           effect: iam.Effect.ALLOW,
           actions: ["*"],
@@ -134,39 +135,37 @@ export class StaticSite extends Construct {
       ],
     });
 
+    const lifecycleHandler = {
+      service: "Lambda",
+      action: "invoke",
+      parameters: {
+        FunctionName: envReplacerFunction.functionName,
+        InvocationType: "Event",
+      },
+      physicalResourceId: PhysicalResourceId.of(
+        new Date().getTime().toString()
+      ),
+    };
+
     //Run lambda on Create and on Update
-    new AwsCustomResource(this, "StatefunctionTrigger", {
-      policy: AwsCustomResourcePolicy.fromStatements([
-        new iam.PolicyStatement({
-          actions: ["lambda:InvokeFunction"],
-          effect: iam.Effect.ALLOW,
-          resources: [handler.functionArn],
-        }),
-      ]),
-      timeout: cdk.Duration.minutes(15),
-      onCreate: {
-        service: "Lambda",
-        action: "invoke",
-        parameters: {
-          FunctionName: handler.functionName,
-          InvocationType: "Event",
-        },
-        physicalResourceId: PhysicalResourceId.of(
-          new Date().getTime().toString()
-        ),
-      },
-      onUpdate: {
-        service: "Lambda",
-        action: "invoke",
-        parameters: {
-          FunctionName: handler.functionName,
-          InvocationType: "Event",
-        },
-        physicalResourceId: PhysicalResourceId.of(
-          new Date().getTime().toString()
-        ),
-      },
-    });
+    const s3HandlerAwsCustomResource = new AwsCustomResource(
+      this,
+      "s3-handler-trigger",
+      {
+        policy: AwsCustomResourcePolicy.fromStatements([
+          new iam.PolicyStatement({
+            actions: ["lambda:InvokeFunction"],
+            effect: iam.Effect.ALLOW,
+            resources: [envReplacerFunction.functionArn],
+          }),
+        ]),
+        timeout: cdk.Duration.minutes(15),
+        onCreate: lifecycleHandler,
+        onUpdate: lifecycleHandler,
+      }
+    );
+
+    s3HandlerAwsCustomResource.node.addDependency(s3Deployment, distribution);
 
     new cdk.CfnOutput(this, "frontend-endpoint", {
       exportName: `frontendUrl-${props.stage}`,

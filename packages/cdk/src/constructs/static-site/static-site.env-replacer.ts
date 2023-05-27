@@ -11,8 +11,6 @@ export const handler: Handler = async () => {
     .$response;
   if (data) {
     const keys =
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       data.Contents?.reduce((acc, content) => {
         if (content.Key) {
           acc.push(content.Key);
@@ -21,30 +19,48 @@ export const handler: Handler = async () => {
         return acc;
       }, [] as string[]) ?? [];
 
+    console.log("S3 objects keys: ", keys);
+
     for (const key of keys) {
-      const { Body, Metadata, ContentType } = await s3
+      const object = await s3
         .getObject({
           Bucket: bucket,
           Key: key,
         })
-        .promise();
+        .promise()
+        .catch((e) => {
+          console.error("Could not get S3 item. Error: ", e);
+        });
+
+      if (!object) {
+        return {
+          statusCode: 500,
+          body: JSON.stringify({
+            message: "Object not found!",
+          }),
+        };
+      }
 
       const newBody = Object.entries(process.env)
         .filter(([key]) => key.indexOf("VITE") > -1)
         .reduce((acc, [key, value]) => {
-          acc = Body?.toString().replaceAll(`{{ ${key} }}`, value ?? "") ?? "";
+          acc =
+            object?.Body?.toString().replaceAll(`{{ ${key} }}`, value ?? "") ??
+            "";
           return acc;
         }, "");
 
       await s3
-        .upload({
+        .putObject({
           Bucket: bucket,
           Key: key,
+          ContentType: object.ContentType,
           Body: newBody,
-          Metadata,
-          ContentType,
         })
-        .promise();
+        .promise()
+        .catch((e) => {
+          console.error("Could not upload S3 item. Error: ", e);
+        });
     }
   }
 
@@ -60,7 +76,13 @@ export const handler: Handler = async () => {
         CallerReference: new Date().getTime().toString(),
       },
     })
-    .promise();
+    .promise()
+    .catch((e) => {
+      console.error(
+        // eslint-disable-next-line turbo/no-undeclared-env-vars
+        `Invalidation failed for distributon ${process.env.DISTRIBUTON_ID}. Error: ${e}`
+      );
+    });
 
   return {
     statusCode: 200,
