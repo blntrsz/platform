@@ -1,11 +1,9 @@
-import { MainPipelineStack } from "./pipeline/main-pipeline";
+import { MainPipeline } from "./pipeline/main-pipeline";
 import { CreatorCodeBuild, DestroyerCodeBuild } from "./webhook/codebuild";
 import { WebhookHandler } from "./webhook/webhook-handler";
 
 import * as cdk from "aws-cdk-lib";
-import * as ec2 from "aws-cdk-lib/aws-ec2";
 import * as iam from "aws-cdk-lib/aws-iam";
-import * as rds from "aws-cdk-lib/aws-rds";
 import { Construct } from "constructs";
 
 export class ToolsStack extends cdk.Stack {
@@ -20,7 +18,7 @@ export class ToolsStack extends cdk.Stack {
       blockPublicAccess: cdk.aws_s3.BlockPublicAccess.BLOCK_ALL,
     });
 
-    new MainPipelineStack(this, "main-pipeline", cacheBucket);
+    new MainPipeline(this, "main-pipeline", cacheBucket);
 
     const creatorCodeBuild = new CreatorCodeBuild(
       this,
@@ -39,12 +37,6 @@ export class ToolsStack extends cdk.Stack {
       creatorCodeBuild.project,
       destroyerCodeBuild.project
     );
-
-    new rds.DatabaseInstance(this, "database", {
-      engine: rds.DatabaseInstanceEngine.MYSQL,
-      vpc: new ec2.Vpc(this, "vpc"),
-      vpcSubnets: { subnetType: ec2.SubnetType.PUBLIC },
-    });
 
     lambda.addToRolePolicy(
       new iam.PolicyStatement({

@@ -1,6 +1,6 @@
 import { execSync } from "child_process";
 
-import { getBuildCmdEnvironment } from "../utils/getBuildCmdEnvironment";
+import { getBuildCmdEnvironment } from "../utils/get-build-cmd-environment";
 
 import * as cdk from "aws-cdk-lib";
 import { DockerImage } from "aws-cdk-lib";

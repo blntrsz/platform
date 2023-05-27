@@ -1,6 +1,4 @@
-import { AbstractPipeline } from "./pipeline/abstract-pipeline";
-import { E2EAction, LintBuildAndTestCodebuildAction } from "./pipeline/steps";
-
+import { PipelineBuilder } from "@platform/cdk";
 import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
 
@@ -20,30 +18,16 @@ export class DeployPipelineStack extends cdk.Stack {
       "platform-remote-pnpm-cache"
     );
 
-    const { pipeline, source } = new AbstractPipeline(this, "pipeline", stage);
-
-    pipeline.addStage({
-      stageName: "build-and-test",
-      actions: new LintBuildAndTestCodebuildAction(
-        this,
-        "build-and-test-actions",
-        {
-          source,
-          stage,
-          cache,
-        }
-      ).codebuildAction,
-    });
-
-    pipeline.addStage({
-      stageName: "e2e",
-      actions: [
-        new E2EAction(this, "e2e", {
-          source,
-          stage,
-          cache,
-        }).codebuildAction,
-      ],
-    });
+    new PipelineBuilder(this, "pipeline", cache)
+      .addStage({
+        stageName: "lint-test-build",
+        stage: "dev",
+        actions: ["lint", "unitTest", "build"],
+      })
+      .addStage({
+        stageName: "e2e",
+        stage: "dev",
+        actions: ["e2e"],
+      });
   }
 }

@@ -185,6 +185,9 @@ importers:
       '@platform/app-ui':
         specifier: 0.0.0
         version: link:../app-ui
+      '@platform/cdk':
+        specifier: 0.0.0
+        version: link:../../packages/cdk
       '@platform/eslint-config':
         specifier: 0.0.0
         version: link:../../packages/eslint-config
