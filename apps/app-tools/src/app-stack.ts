@@ -14,6 +14,12 @@ export class AppStack extends cdk.Stack {
     }
 
     const { api } = createBackendIfra(this, "api");
-    createFrontendInfra(this, "fronend", api.urlForPath("/"));
+    createFrontendInfra(
+      this,
+      "fronend",
+      api.urlForPath("/"),
+      this.region,
+      this.account
+    );
   }
 }

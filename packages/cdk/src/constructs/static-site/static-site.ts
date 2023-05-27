@@ -1,10 +1,18 @@
 import { execSync } from "child_process";
 
-import { getBuildCmdEnvironment } from "../utils/get-build-cmd-environment";
+import { getBuildCmdEnvironment } from "../../utils/get-build-cmd-environment";
 
 import * as cdk from "aws-cdk-lib";
 import { DockerImage } from "aws-cdk-lib";
+import * as iam from "aws-cdk-lib/aws-iam";
+import { Runtime } from "aws-cdk-lib/aws-lambda";
+import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { Source } from "aws-cdk-lib/aws-s3-deployment";
+import {
+  AwsCustomResource,
+  AwsCustomResourcePolicy,
+  PhysicalResourceId,
+} from "aws-cdk-lib/custom-resources";
 import { Construct } from "constructs";
 import { copySync } from "fs-extra";
 
@@ -14,6 +22,8 @@ interface StaticSiteProps {
   buildCommand: string;
   distDir: string;
   environment?: Record<string, string>;
+  region: string;
+  account: string;
 }
 
 export class StaticSite extends Construct {
@@ -105,10 +115,58 @@ export class StaticSite extends Construct {
       {
         sources: [bundle],
         destinationBucket: this.bucket,
-        distribution,
-        distributionPaths: ["/*"],
       }
     );
+
+    const handler = new NodejsFunction(this, "s3-handler", {
+      runtime: Runtime.NODEJS_18_X,
+      environment: {
+        ...props.environment,
+        BUCKET: this.bucket.bucketName,
+        DISTRIBUTON_ID: distribution.distributionId,
+      },
+      initialPolicy: [
+        new iam.PolicyStatement({
+          effect: iam.Effect.ALLOW,
+          actions: ["*"],
+          resources: ["*"],
+        }),
+      ],
+    });
+
+    //Run lambda on Create and on Update
+    new AwsCustomResource(this, "StatefunctionTrigger", {
+      policy: AwsCustomResourcePolicy.fromStatements([
+        new iam.PolicyStatement({
+          actions: ["lambda:InvokeFunction"],
+          effect: iam.Effect.ALLOW,
+          resources: [handler.functionArn],
+        }),
+      ]),
+      timeout: cdk.Duration.minutes(15),
+      onCreate: {
+        service: "Lambda",
+        action: "invoke",
+        parameters: {
+          FunctionName: handler.functionName,
+          InvocationType: "Event",
+        },
+        physicalResourceId: PhysicalResourceId.of(
+          new Date().getTime().toString()
+        ),
+      },
+      onUpdate: {
+        service: "Lambda",
+        action: "invoke",
+        parameters: {
+          FunctionName: handler.functionName,
+          InvocationType: "Event",
+        },
+        physicalResourceId: PhysicalResourceId.of(
+          new Date().getTime().toString()
+        ),
+      },
+    });
 
     new cdk.CfnOutput(this, "frontend-endpoint", {
       exportName: `frontendUrl-${props.stage}`,

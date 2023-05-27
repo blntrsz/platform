@@ -6,7 +6,9 @@ import { Construct } from "constructs";
 export function createFrontendInfra(
   scope: Construct,
   id: string,
-  apiUrl: string
+  apiUrl: string,
+  region: string,
+  account: string
 ) {
   return new StaticSite(scope, id, {
     path: __dirname,
@@ -16,5 +18,7 @@ export function createFrontendInfra(
     environment: {
       VITE_API_URL: apiUrl,
     },
+    account,
+    region,
   });
 }
