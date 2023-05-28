@@ -12,10 +12,16 @@ export default defineConfig({
       name: "host-app",
       remotes: {
         issues:
-          process.env.VITE_ISSUES_SITE ??
+          `${process.env.VITE_ISSUES_SITE?.replace(
+            /\/$/,
+            ""
+          )}/assets/remoteEntry.js` ??
           "http://localhost:5001/assets/remoteEntry.js",
         users:
-          process.env.VITE_USERS_SITE ??
+          `${process.env.VITE_USERS_SITE?.replace(
+            /\/$/,
+            ""
+          )}/assets/remoteEntry.js` ??
           "http://localhost:5002/assets/remoteEntry.js",
       },
       shared: ["react", "react-dom"],
