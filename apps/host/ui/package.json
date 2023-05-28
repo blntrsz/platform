@@ -1,0 +1,30 @@
+{
+  "name": "@platform/host-ui",
+  "private": true,
+  "version": "0.0.0",
+  "main": "./stack/index.ts",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "typecheck": "tsc --noEmit",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^4.29.7",
+    "openapi-fetch": "^0.1.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@platform/cdk": "0.0.0",
+    "@platform/eslint-config": "0.0.0",
+    "@platform/tsconfig": "0.0.0",
+    "@vitejs/plugin-react-swc": "^3.3.0",
+    "constructs": "^10.2.14",
+    "eslint": "^8.39.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "typescript": "^5.0.4",
+    "vite": "^4.3.4"
+  }
+}

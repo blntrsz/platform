@@ -86,80 +86,26 @@ importers:
         specifier: latest
         version: 1.9.9
 
-  apps/app-api:
-    devDependencies:
-      '@platform/app-contract':
-        specifier: 0.0.0
-        version: link:../app-contract
-      '@platform/cdk':
-        specifier: 0.0.0
-        version: link:../../packages/cdk
-      '@platform/db':
-        specifier: 0.0.0
-        version: link:../../packages/db
-      '@platform/eslint-config':
-        specifier: 0.0.0
-        version: link:../../packages/eslint-config
-      '@platform/local-api':
-        specifier: 0.0.0
-        version: link:../../packages/local-api
-      '@platform/tsconfig':
-        specifier: 0.0.0
-        version: link:../../packages/tsconfig
-      '@types/node':
-        specifier: ^20.1.4
-        version: 20.1.4
-      constructs:
-        specifier: ^10.2.14
-        version: 10.2.14
-      jest:
-        specifier: ^29.5.0
-        version: 29.5.0(@types/node@20.1.4)(ts-node@10.9.1)
-      kysely:
-        specifier: ^0.24.2
-        version: 0.24.2
-      ts-jest:
-        specifier: ^29.1.0
-        version: 29.1.0(@babel/core@7.21.8)(esbuild@0.17.18)(jest@29.5.0)(typescript@5.0.4)
-      ts-node:
-        specifier: ^10.9.1
-        version: 10.9.1(@types/node@20.1.4)(typescript@5.0.4)
-      typescript:
-        specifier: ^5.0.4
-        version: 5.0.4
-
-  apps/app-contract:
-    devDependencies:
-      '@openapi-codegen/cli':
-        specifier: ^2.0.0
-        version: 2.0.0(@types/react@18.2.1)(react@17.0.2)
-      '@openapi-codegen/typescript':
-        specifier: ^6.2.2
-        version: 6.2.2
-
-  apps/app-e2e:
+  apps/host/e2e:
     devDependencies:
       '@playwright/test':
         specifier: ^1.34.0
         version: 1.34.0
 
-  apps/app-stacks:
+  apps/host/stacks:
     devDependencies:
-      '@platform/app-api':
-        specifier: 0.0.0
-        version: link:../app-api
-      '@platform/app-ui':
-        specifier: 0.0.0
-        version: link:../app-ui
       '@platform/cdk':
         specifier: 0.0.0
-        version: link:../../packages/cdk
+        version: link:../../../packages/cdk
       '@platform/eslint-config':
         specifier: 0.0.0
-        version: link:../../packages/eslint-config
+        version: link:../../../packages/eslint-config
+      '@platform/host-ui':
+        specifier: 0.0.0
+        version: link:../ui
       '@platform/tsconfig':
         specifier: 0.0.0
-        version: link:../../packages/tsconfig
+        version: link:../../../packages/tsconfig
       aws-cdk:
         specifier: ^2.78.0
         version: 2.78.0
@@ -182,7 +128,7 @@ importers:
         specifier: ^5.0.4
         version: 5.0.4
 
-  apps/app-ui:
+  apps/host/ui:
     dependencies:
       '@tanstack/react-query':
         specifier: ^4.29.7
@@ -197,18 +143,299 @@ importers:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
     devDependencies:
-      '@platform/app-contract':
-        specifier: 0.0.0
-        version: link:../app-contract
       '@platform/cdk':
         specifier: 0.0.0
-        version: link:../../packages/cdk
+        version: link:../../../packages/cdk
       '@platform/eslint-config':
         specifier: 0.0.0
-        version: link:../../packages/eslint-config
+        version: link:../../../packages/eslint-config
       '@platform/tsconfig':
         specifier: 0.0.0
-        version: link:../../packages/tsconfig
+        version: link:../../../packages/tsconfig
+      '@vitejs/plugin-react-swc':
+        specifier: ^3.3.0
+        version: 3.3.0(vite@4.3.4)
+      constructs:
+        specifier: ^10.2.14
+        version: 10.2.14
+      eslint:
+        specifier: ^8.39.0
+        version: 8.39.0
+      eslint-plugin-react-hooks:
+        specifier: ^4.6.0
+        version: 4.6.0(eslint@8.39.0)
+      typescript:
+        specifier: ^5.0.4
+        version: 5.0.4
+      vite:
+        specifier: ^4.3.4
+        version: 4.3.4(@types/node@20.1.4)
+
+  apps/issues/api:
+    devDependencies:
+      '@platform/cdk':
+        specifier: 0.0.0
+        version: link:../../../packages/cdk
+      '@platform/db':
+        specifier: 0.0.0
+        version: link:../../../packages/db
+      '@platform/eslint-config':
+        specifier: 0.0.0
+        version: link:../../../packages/eslint-config
+      '@platform/issues-contract':
+        specifier: 0.0.0
+        version: link:../contract
+      '@platform/local-api':
+        specifier: 0.0.0
+        version: link:../../../packages/local-api
+      '@platform/tsconfig':
+        specifier: 0.0.0
+        version: link:../../../packages/tsconfig
+      '@types/node':
+        specifier: ^20.1.4
+        version: 20.1.4
+      constructs:
+        specifier: ^10.2.14
+        version: 10.2.14
+      jest:
+        specifier: ^29.5.0
+        version: 29.5.0(@types/node@20.1.4)(ts-node@10.9.1)
+      kysely:
+        specifier: ^0.24.2
+        version: 0.24.2
+      ts-jest:
+        specifier: ^29.1.0
+        version: 29.1.0(@babel/core@7.21.8)(esbuild@0.17.18)(jest@29.5.0)(typescript@5.0.4)
+      ts-node:
+        specifier: ^10.9.1
+        version: 10.9.1(@types/node@20.1.4)(typescript@5.0.4)
+      typescript:
+        specifier: ^5.0.4
+        version: 5.0.4
+
+  apps/issues/contract:
+    devDependencies:
+      '@openapi-codegen/cli':
+        specifier: ^2.0.0
+        version: 2.0.0(@types/react@18.2.1)(react@17.0.2)
+      '@openapi-codegen/typescript':
+        specifier: ^6.2.2
+        version: 6.2.2
+
+  apps/issues/e2e:
+    devDependencies:
+      '@playwright/test':
+        specifier: ^1.34.0
+        version: 1.34.0
+
+  apps/issues/stacks:
+    devDependencies:
+      '@platform/cdk':
+        specifier: 0.0.0
+        version: link:../../../packages/cdk
+      '@platform/eslint-config':
+        specifier: 0.0.0
+        version: link:../../../packages/eslint-config
+      '@platform/issues-api':
+        specifier: 0.0.0
+        version: link:../api
+      '@platform/issues-ui':
+        specifier: 0.0.0
+        version: link:../ui
+      '@platform/tsconfig':
+        specifier: 0.0.0
+        version: link:../../../packages/tsconfig
+      aws-cdk:
+        specifier: ^2.78.0
+        version: 2.78.0
+      aws-cdk-lib:
+        specifier: ^2.78.0
+        version: 2.78.0(constructs@10.2.14)
+      constructs:
+        specifier: ^10.2.14
+        version: 10.2.14
+      jest:
+        specifier: ^29.5.0
+        version: 29.5.0(@types/node@20.1.4)(ts-node@10.9.1)
+      source-map-support:
+        specifier: ^0.5.21
+        version: 0.5.21
+      ts-jest:
+        specifier: ^29.1.0
+        version: 29.1.0(@babel/core@7.21.8)(esbuild@0.17.18)(jest@29.5.0)(typescript@5.0.4)
+      typescript:
+        specifier: ^5.0.4
+        version: 5.0.4
+
+  apps/issues/ui:
+    dependencies:
+      '@tanstack/react-query':
+        specifier: ^4.29.7
+        version: 4.29.7(react-dom@18.2.0)(react@18.2.0)
+      openapi-fetch:
+        specifier: ^0.1.2
+        version: 0.1.2
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.2.0(react@18.2.0)
+    devDependencies:
+      '@platform/cdk':
+        specifier: 0.0.0
+        version: link:../../../packages/cdk
+      '@platform/eslint-config':
+        specifier: 0.0.0
+        version: link:../../../packages/eslint-config
+      '@platform/issues-contract':
+        specifier: 0.0.0
+        version: link:../contract
+      '@platform/tsconfig':
+        specifier: 0.0.0
+        version: link:../../../packages/tsconfig
+      '@vitejs/plugin-react-swc':
+        specifier: ^3.3.0
+        version: 3.3.0(vite@4.3.4)
+      constructs:
+        specifier: ^10.2.14
+        version: 10.2.14
+      eslint:
+        specifier: ^8.39.0
+        version: 8.39.0
+      eslint-plugin-react-hooks:
+        specifier: ^4.6.0
+        version: 4.6.0(eslint@8.39.0)
+      typescript:
+        specifier: ^5.0.4
+        version: 5.0.4
+      vite:
+        specifier: ^4.3.4
+        version: 4.3.4(@types/node@20.1.4)
+
+  apps/users/api:
+    devDependencies:
+      '@platform/cdk':
+        specifier: 0.0.0
+        version: link:../../../packages/cdk
+      '@platform/db':
+        specifier: 0.0.0
+        version: link:../../../packages/db
+      '@platform/eslint-config':
+        specifier: 0.0.0
+        version: link:../../../packages/eslint-config
+      '@platform/local-api':
+        specifier: 0.0.0
+        version: link:../../../packages/local-api
+      '@platform/tsconfig':
+        specifier: 0.0.0
+        version: link:../../../packages/tsconfig
+      '@platform/users-contract':
+        specifier: 0.0.0
+        version: link:../contract
+      '@types/node':
+        specifier: ^20.1.4
+        version: 20.1.4
+      constructs:
+        specifier: ^10.2.14
+        version: 10.2.14
+      jest:
+        specifier: ^29.5.0
+        version: 29.5.0(@types/node@20.1.4)(ts-node@10.9.1)
+      kysely:
+        specifier: ^0.24.2
+        version: 0.24.2
+      ts-jest:
+        specifier: ^29.1.0
+        version: 29.1.0(@babel/core@7.21.8)(esbuild@0.17.18)(jest@29.5.0)(typescript@5.0.4)
+      ts-node:
+        specifier: ^10.9.1
+        version: 10.9.1(@types/node@20.1.4)(typescript@5.0.4)
+      typescript:
+        specifier: ^5.0.4
+        version: 5.0.4
+
+  apps/users/contract:
+    devDependencies:
+      '@openapi-codegen/cli':
+        specifier: ^2.0.0
+        version: 2.0.0(@types/react@18.2.1)(react@17.0.2)
+      '@openapi-codegen/typescript':
+        specifier: ^6.2.2
+        version: 6.2.2
+
+  apps/users/e2e:
+    devDependencies:
+      '@playwright/test':
+        specifier: ^1.34.0
+        version: 1.34.0
+
+  apps/users/stacks:
+    devDependencies:
+      '@platform/cdk':
+        specifier: 0.0.0
+        version: link:../../../packages/cdk
+      '@platform/eslint-config':
+        specifier: 0.0.0
+        version: link:../../../packages/eslint-config
+      '@platform/tsconfig':
+        specifier: 0.0.0
+        version: link:../../../packages/tsconfig
+      '@platform/users-api':
+        specifier: 0.0.0
+        version: link:../api
+      '@platform/users-ui':
+        specifier: 0.0.0
+        version: link:../ui
+      aws-cdk:
+        specifier: ^2.78.0
+        version: 2.78.0
+      aws-cdk-lib:
+        specifier: ^2.78.0
+        version: 2.78.0(constructs@10.2.14)
+      constructs:
+        specifier: ^10.2.14
+        version: 10.2.14
+      jest:
+        specifier: ^29.5.0
+        version: 29.5.0(@types/node@20.1.4)(ts-node@10.9.1)
+      source-map-support:
+        specifier: ^0.5.21
+        version: 0.5.21
+      ts-jest:
+        specifier: ^29.1.0
+        version: 29.1.0(@babel/core@7.21.8)(esbuild@0.17.18)(jest@29.5.0)(typescript@5.0.4)
+      typescript:
+        specifier: ^5.0.4
+        version: 5.0.4
+
+  apps/users/ui:
+    dependencies:
+      '@tanstack/react-query':
+        specifier: ^4.29.7
+        version: 4.29.7(react-dom@18.2.0)(react@18.2.0)
+      openapi-fetch:
+        specifier: ^0.1.2
+        version: 0.1.2
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.2.0(react@18.2.0)
+    devDependencies:
+      '@platform/cdk':
+        specifier: 0.0.0
+        version: link:../../../packages/cdk
+      '@platform/eslint-config':
+        specifier: 0.0.0
+        version: link:../../../packages/eslint-config
+      '@platform/tsconfig':
+        specifier: 0.0.0
+        version: link:../../../packages/tsconfig
+      '@platform/users-contract':
+        specifier: 0.0.0
+        version: link:../contract
       '@vitejs/plugin-react-swc':
         specifier: ^3.3.0
         version: 3.3.0(vite@4.3.4)
@@ -234,15 +461,21 @@ importers:
         specifier: ^5.0.4
         version: 5.0.4
     devDependencies:
-      '@platform/app-stacks':
-        specifier: 0.0.0
-        version: link:../apps/app-stacks
       '@platform/eslint-config':
         specifier: 0.0.0
         version: link:../packages/eslint-config
+      '@platform/host-stacks':
+        specifier: 0.0.0
+        version: link:../apps/host/stacks
+      '@platform/issues-stacks':
+        specifier: 0.0.0
+        version: link:../apps/issues/stacks
       '@platform/tsconfig':
         specifier: 0.0.0
         version: link:../packages/tsconfig
+      '@platform/users-stacks':
+        specifier: 0.0.0
+        version: link:../apps/users/stacks
       '@types/node':
         specifier: ^20.1.4
         version: 20.1.4
@@ -351,62 +584,22 @@ importers:
         version: 47.0.0(eslint@8.39.0)
 
   packages/local-api:
-    dependencies:
-      '@aws-sdk/client-rds-data':
-        specifier: ^3.341.0
-        version: 3.341.0
-      kysely:
-        specifier: ^0.24.2
-        version: 0.24.2
-      kysely-data-api:
-        specifier: ^0.2.1
-        version: 0.2.1(@aws-sdk/client-rds-data@3.341.0)(kysely@0.24.2)
-      mysql2:
-        specifier: ^3.3.2
-        version: 3.3.2
     devDependencies:
-      '@aws-cdk/aws-apigatewayv2-alpha':
-        specifier: 2.78.0-alpha.0
-        version: 2.78.0-alpha.0(aws-cdk-lib@2.78.0)(constructs@10.2.14)
-      '@aws-cdk/aws-apigatewayv2-integrations-alpha':
-        specifier: 2.78.0-alpha.0
-        version: 2.78.0-alpha.0(@aws-cdk/aws-apigatewayv2-alpha@2.78.0-alpha.0)(aws-cdk-lib@2.78.0)(constructs@10.2.14)
-      '@platform/app-contract':
-        specifier: 0.0.0
-        version: link:../../apps/app-contract
-      '@platform/cdk':
-        specifier: 0.0.0
-        version: link:../cdk
       '@platform/eslint-config':
         specifier: 0.0.0
         version: link:../eslint-config
       '@platform/tsconfig':
         specifier: 0.0.0
         version: link:../tsconfig
-      '@types/fs-extra':
-        specifier: ^11.0.1
-        version: 11.0.1
       '@types/node':
         specifier: ^20.1.4
         version: 20.1.4
-      aws-cdk:
-        specifier: ^2.78.0
-        version: 2.78.0
-      aws-cdk-lib:
-        specifier: ^2.78.0
-        version: 2.78.0(constructs@10.2.14)
-      axios:
-        specifier: ^1.2.2
-        version: 1.4.0
       constructs:
         specifier: ^10.2.14
         version: 10.2.14
       cors:
         specifier: ^2.8.5
         version: 2.8.5
-      esbuild:
-        specifier: ^0.17.18
-        version: 0.17.18
       express:
         specifier: ^4.18.2
         version: 4.18.2
@@ -428,9 +621,6 @@ importers:
       typescript:
         specifier: ^5.0.4
         version: 5.0.4
-      wait-on:
-        specifier: ^7.0.1
-        version: 7.0.1
 
   packages/tsconfig: {}
 
@@ -507,6 +697,7 @@ packages:
     dependencies:
       aws-cdk-lib: 2.78.0(constructs@10.2.14)
       constructs: 10.2.14
+    dev: false
 
   /@aws-cdk/aws-apigatewayv2-integrations-alpha@2.78.0-alpha.0(@aws-cdk/aws-apigatewayv2-alpha@2.78.0-alpha.0)(aws-cdk-lib@2.78.0)(constructs@10.2.14):
     resolution: {integrity: sha512-3zYS8N4sLfBuHFNQx31cYMDzNS3KwIbsrkQY5GQdaibdRQINnCA4n2aUH/wOcP/5z5Po9eUGuil5iswzp+K8eQ==}
@@ -519,6 +710,7 @@ packages:
       '@aws-cdk/aws-apigatewayv2-alpha': 2.78.0-alpha.0(aws-cdk-lib@2.78.0)(constructs@10.2.14)
       aws-cdk-lib: 2.78.0(constructs@10.2.14)
       constructs: 10.2.14
+    dev: false
 
   /@aws-crypto/crc32@3.0.0:
     resolution: {integrity: sha512-IzSgsrxUcsrejQbPVilIKy16kAT52EwB6zSaI+M3xxIhKh5+aldEyvI+z6erM7TCLB2BJsFrtHjp6/4/sr+3dA==}
@@ -2242,16 +2434,6 @@ packages:
       graphql: 15.8.0
     dev: true
 
-  /@hapi/hoek@9.3.0:
-    resolution: {integrity: sha512-/c6rf4UJlmHlC9b5BaNvzAcFv7HZ2QHaV0D4/HNlBdvFnvQq8RI4kYdhyPCl7Xj+oWvTWQ8ujhqS53LIgAe6KQ==}
-    dev: true
-
-  /@hapi/topo@5.1.0:
-    resolution: {integrity: sha512-foQZKJig7Ob0BMAYBfcJk8d77QtOe7Wo4ox7ff1lQYoNNAb6jwcY1ncdoy2e9wQZzvNy7ODZCYJkK8kzmcAnAg==}
-    dependencies:
-      '@hapi/hoek': 9.3.0
-    dev: true
-
   /@humanwhocodes/config-array@0.11.8:
     resolution: {integrity: sha512-UybHIJzJnR5Qc/MsD9Kr+RpO2h+/P1GhOwdiLPXK5TWk5sgTdu88bTD9UP+CKbPPh5Rni1u0GjAdYQLemG8g+g==}
     engines: {node: '>=10.10.0'}
@@ -2652,7 +2834,7 @@ packages:
       rxjs: 7.8.1
       slash: 4.0.0
       swagger2openapi: 7.0.8
-      tslib: 2.4.1
+      tslib: 2.5.2
       typanion: 3.12.1
       typescript: 4.8.2
     transitivePeerDependencies:
@@ -2674,7 +2856,7 @@ packages:
       lodash: 4.17.21
       openapi3-ts: 2.0.2
       pluralize: 8.0.0
-      tslib: 2.4.1
+      tslib: 2.5.2
       tsutils: 3.21.0(typescript@4.8.2)
       typescript: 4.8.2
     dev: true
@@ -2705,20 +2887,6 @@ packages:
   /@rushstack/eslint-patch@1.2.0:
     resolution: {integrity: sha512-sXo/qW2/pAcmT43VoRKOJbDOfV3cYpq3szSVfIThQXNt+E4DfKj361vaAt3c88U5tPUxzEswam7GW48PJqtKAg==}
     dev: false
-
-  /@sideway/address@4.1.4:
-    resolution: {integrity: sha512-7vwq+rOHVWjyXxVlR76Agnvhy8I9rpzjosTESvmhNeXOXdZZB15Fl+TI9x1SiHZH5Jv2wTGduSxFDIaq0m3DUw==}
-    dependencies:
-      '@hapi/hoek': 9.3.0
-    dev: true
-
-  /@sideway/formula@3.0.1:
-    resolution: {integrity: sha512-/poHZJJVjx3L+zVD6g9KgHfYnb443oi7wLu/XKojDviHy6HOEOA6z1Trk5aR1dGcmPenJEgb2sK2I80LeS3MIg==}
-    dev: true
-
-  /@sideway/pinpoint@2.0.0:
-    resolution: {integrity: sha512-RNiOoTPkptFtSVzQevY/yWtZwf/RxyVnPy/OcA9HBM3MlGDnBEYL5B41H0MTn0Uec8Hi+2qUtTfG2WWZBmMejQ==}
-    dev: true
 
   /@sinclair/typebox@0.25.24:
     resolution: {integrity: sha512-XJfwUVUKDHF5ugKwIcxEgc9k8b7HbznCp6eUfWgu710hMPNIO4aw4/zB5RogDQz8nd6gyCDpU9O/m6qYEWY6yQ==}
@@ -3571,6 +3739,7 @@ packages:
 
   /asynckit@0.4.0:
     resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
+    dev: false
 
   /at-least-node@1.0.0:
     resolution: {integrity: sha512-+q/t7Ekv1EDY2l6Gda6LLiX14rU9TV20Wa3ofeQmwPFZbOMo9DXrLbOjFaaclkXKWidIaopwAObQDqwWtGUjqg==}
@@ -3656,15 +3825,6 @@ packages:
     engines: {node: '>=4'}
     dev: false
 
-  /axios@0.27.2:
-    resolution: {integrity: sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==}
-    dependencies:
-      follow-redirects: 1.15.2
-      form-data: 4.0.0
-    transitivePeerDependencies:
-      - debug
-    dev: true
-
   /axios@1.4.0:
     resolution: {integrity: sha512-S4XCWMEmzvo64T9GfvQDOXgYRDJ/wsSZc7Jvdgx5u1sd0JwsuPLqb3SYmusag+edF6ziyMensPVqLTSc1PiSEA==}
     dependencies:
@@ -3673,6 +3833,7 @@ packages:
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
       - debug
+    dev: false
 
   /axobject-query@2.2.0:
     resolution: {integrity: sha512-Td525n+iPOOyUQIeBfcASuG6uJsDOITl7Mds5gFyerkWiX7qhUTdYUBlSgNMyVqtSJqwpt1kXGLdUt6SykLMRA==}
@@ -4080,6 +4241,7 @@ packages:
     engines: {node: '>= 0.8'}
     dependencies:
       delayed-stream: 1.0.0
+    dev: false
 
   /commander@10.0.1:
     resolution: {integrity: sha512-y4Mg2tXshplEbSGzx7amzPwKKOCGuoSRP/CjEdwwk0FOGlUbq6lKuoyDZTNZkmxHdJtp54hdfY/JUrdL7Xfdug==}
@@ -4349,10 +4511,6 @@ packages:
   /delayed-stream@1.0.0:
     resolution: {integrity: sha512-ZySD7Nf91aLB0RxL4KGrKHBXl7Eds1DAmEdcoVawXnLD7SDhpNgtuII2aAkg7a7QS41jxPSZ17p4VdGnMHk3MQ==}
     engines: {node: '>=0.4.0'}
-
-  /denque@2.1.0:
-    resolution: {integrity: sha512-HVQE3AAb/pxF8fQAoiqpvg9i3evqug3hoiwakOyZAwJm+6vZehbkYXZ0l4JxS+I3QxM97v5aaRNhj8v5oBhekw==}
-    engines: {node: '>=0.10'}
     dev: false
 
   /depd@2.0.0:
@@ -5123,6 +5281,7 @@ packages:
     peerDependenciesMeta:
       debug:
         optional: true
+    dev: false
 
   /for-each@0.3.3:
     resolution: {integrity: sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw==}
@@ -5142,6 +5301,7 @@ packages:
       asynckit: 0.4.0
       combined-stream: 1.0.8
       mime-types: 2.1.35
+    dev: false
 
   /forwarded@0.2.0:
     resolution: {integrity: sha512-buRG0fpBtRHSTCOASe6hD258tEubFoRLb4ZNA6NxMVHNw2gOcwHo9wyablzMzOA5z9xA9L1KNjk/Nt6MT9aYow==}
@@ -5214,12 +5374,6 @@ packages:
 
   /functions-have-names@1.2.3:
     resolution: {integrity: sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ==}
-    dev: false
-
-  /generate-function@2.3.1:
-    resolution: {integrity: sha512-eeB5GfMNeevm/GRYq20ShmsaGcmI81kIX2K9XQx5miC8KdHaC6Jm0qQ8ZNeGOi7wYB8OsdxKs+Y2oVuTFuVwKQ==}
-    dependencies:
-      is-property: 1.0.2
     dev: false
 
   /gensync@1.0.0-beta.2:
@@ -5555,13 +5709,6 @@ packages:
       safer-buffer: 2.1.2
     dev: true
 
-  /iconv-lite@0.6.3:
-    resolution: {integrity: sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==}
-    engines: {node: '>=0.10.0'}
-    dependencies:
-      safer-buffer: 2.1.2
-    dev: false
-
   /ieee754@1.1.13:
     resolution: {integrity: sha512-4vf7I2LYV/HaWerSo3XmlMkp5eZ83i+/CDluXi/IGTs/O1sejBNhTtnxzmRZfvOUqj7lZjqHkeTvpgSFDlWZTg==}
     dev: false
@@ -5782,10 +5929,6 @@ packages:
   /is-plain-obj@1.1.0:
     resolution: {integrity: sha512-yvkRyxmFKEOQ4pNXCmJG5AEQNlXJS5LaONXo5/cLdTZdWvsZ1ioJEonLGAosKlMWE8lwUy/bJzMjcw8az73+Fg==}
     engines: {node: '>=0.10.0'}
-    dev: false
-
-  /is-property@1.0.2:
-    resolution: {integrity: sha512-Ks/IoX00TtClbGQr4TWXemAnktAQvYB7HzcCxDGqEZU6oCmb2INHuOoKxbtR+HFkmYWBKv/dOZtGRiAjDhj92g==}
     dev: false
 
   /is-regex@1.1.4:
@@ -6327,16 +6470,6 @@ packages:
     engines: {node: '>= 0.6.0'}
     dev: false
 
-  /joi@17.9.2:
-    resolution: {integrity: sha512-Itk/r+V4Dx0V3c7RLFdRh12IOjySm2/WGPMubBT92cQvRfYZhPM2W0hZlctjj72iES8jsRCwp7S/cRmWBnJ4nw==}
-    dependencies:
-      '@hapi/hoek': 9.3.0
-      '@hapi/topo': 5.1.0
-      '@sideway/address': 4.1.4
-      '@sideway/formula': 3.0.1
-      '@sideway/pinpoint': 2.0.0
-    dev: true
-
   /js-sdsl@4.4.0:
     resolution: {integrity: sha512-FfVSdx6pJ41Oa+CF7RDaFmTnCaFhua+SNYQX74riGOpl96x+2jQCqEfQ2bnXu/5DPCqlRuiqyvTJM0Qjz26IVg==}
 
@@ -6624,10 +6757,6 @@ packages:
       wrap-ansi: 6.2.0
     dev: false
 
-  /long@5.2.3:
-    resolution: {integrity: sha512-lcHwpNoggQTObv5apGNCTdJrO69eHOZMi4BNC+rTLER8iHAqGrUVeLh/irVIM7zTw2bOXA8T6uNPeujwOLg/2Q==}
-    dev: false
-
   /loose-envify@1.4.0:
     resolution: {integrity: sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==}
     hasBin: true
@@ -6666,16 +6795,6 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       yallist: 4.0.0
-
-  /lru-cache@7.18.3:
-    resolution: {integrity: sha512-jumlc0BIUrS3qJGgIkWZsyfAM7NCWiBcCDhnd+3NNM5KbBmLTgHVfWBcg6W+rLUsIpzpERPsvwUP7CckAQSOoA==}
-    engines: {node: '>=12'}
-    dev: false
-
-  /lru-cache@8.0.5:
-    resolution: {integrity: sha512-MhWWlVnuab1RG5/zMRRcVGXZLCXrZTgfwMikgzCegsPnG62yDQo5JnqKkrK4jO5iKqDAZGItAqN5CtKBCBWRUA==}
-    engines: {node: '>=16.14'}
-    dev: false
 
   /make-dir@3.1.0:
     resolution: {integrity: sha512-g3FeP20LNwhALb/6Cz6Dd4F2ngze0jz7tbzrD2wAV+o9FeNHe4rL+yK2md0J/fiSf1sa1ADhXqi5+oVwOM/eGw==}
@@ -6817,6 +6936,7 @@ packages:
 
   /minimist@1.2.7:
     resolution: {integrity: sha512-bzfL1YUZsP41gmu/qjrEk0Q6i2ix/cVeAhbCbqH9u3zYutS1cLg00qhrD0M2MVdCcx4Sc0UpP2eBWo9rotpq6g==}
+    dev: false
 
   /minimist@1.2.8:
     resolution: {integrity: sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA==}
@@ -6837,20 +6957,6 @@ packages:
   /ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
 
-  /mysql2@3.3.2:
-    resolution: {integrity: sha512-eAJX3avZcNmVjhm3tWA7PdC0xn5BfEROIyCHDu4L8yr53Ckcj7HmSlUTdCQ6Rhrs3kCgu97dSnodMXO7TGv/Nw==}
-    engines: {node: '>= 8.0'}
-    dependencies:
-      denque: 2.1.0
-      generate-function: 2.3.1
-      iconv-lite: 0.6.3
-      long: 5.2.3
-      lru-cache: 8.0.5
-      named-placeholders: 1.1.3
-      seq-queue: 0.0.5
-      sqlstring: 2.3.3
-    dev: false
-
   /mz@2.7.0:
     resolution: {integrity: sha512-z81GNO7nnYMEhrGh9LeymoE4+Yr0Wn5McHIZMK5cfQCl+NDX08sCZgUc9/6MHni9IWuFLm1Z3HTCXu2z9fN62Q==}
     dependencies:
@@ -6858,13 +6964,6 @@ packages:
       object-assign: 4.1.1
       thenify-all: 1.6.0
     dev: true
-
-  /named-placeholders@1.1.3:
-    resolution: {integrity: sha512-eLoBxg6wE/rZkJPhU/xRX1WTpkFEwDJEN96oxFrTsqBdbT5ec295Q+CoHrL9IT0DipqKhmGcaZmwOt8OON5x1w==}
-    engines: {node: '>=12.0.0'}
-    dependencies:
-      lru-cache: 7.18.3
-    dev: false
 
   /nanoid@3.3.6:
     resolution: {integrity: sha512-BGcqMMJuToF7i1rt+2PWSNVnWIkGCU78jBG3RxO/bZlnZPK2Cmi2QaffxGO/2RvWi9sL+FAiRiXMgsyxQ1DIDA==}
@@ -7382,6 +7481,7 @@ packages:
 
   /proxy-from-env@1.1.0:
     resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==}
+    dev: false
 
   /pseudomap@1.0.2:
     resolution: {integrity: sha512-b/YwNhb8lk1Zz2+bXXpS/LK9OisiZZ1SNsSLxN1x2OXVEhW2Ckr/7mWE5vrC1ZTiJlD9g19jWszTmJsB+oEpFQ==}
@@ -7736,6 +7836,7 @@ packages:
 
   /safer-buffer@2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
+    dev: true
 
   /sax@1.2.1:
     resolution: {integrity: sha512-8I2a3LovHTOpm7NV5yOyO8IHqgVsfK4+UuySrXU8YXkSRX7k6hCV9b3HrkKCr3nMpgj+0bmocaJJWpvp1oc7ZA==}
@@ -7797,10 +7898,6 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
-
-  /seq-queue@0.0.5:
-    resolution: {integrity: sha512-hr3Wtp/GZIc/6DAGPDcV4/9WoZhjrkXsi5B/07QgX8tsdc6ilr7BFM6PM6rbdAX1kFSDYeZGLipIZZKyQP0O5Q==}
-    dev: false
 
   /serve-static@1.15.0:
     resolution: {integrity: sha512-XGuRDNjXUijsUL0vl6nSD7cwURuzEgglbOaFuZM9g3kwDXOWVTck0jLzjPzGD+TazWbboZYu52/9/XPdUgne9g==}
@@ -7987,11 +8084,6 @@ packages:
 
   /sprintf-js@1.0.3:
     resolution: {integrity: sha512-D9cPgkvLlV3t3IzL0D0YLvGA9Ahk4PcvVwUbN0dSGr1aP0Nrt4AEnTUbuGvquEC0mA64Gqt1fzirlRs5ibXx8g==}
-
-  /sqlstring@2.3.3:
-    resolution: {integrity: sha512-qC9iz2FlN7DQl3+wjwn3802RTyjCx7sDvfQEXchwa6CWOx07/WVfh91gBmQ9fahw8snwGEWU3xGzOt4tFyHLxg==}
-    engines: {node: '>= 0.6'}
-    dev: false
 
   /stack-utils@2.0.6:
     resolution: {integrity: sha512-XlkWvfIm6RmsWtNJx+uqtKLS8eqFbxUg0ZzLXqY0caEy9l7hruX8IpiDnjsLavoBgqCCR71TqWO8MaXYheJ3RQ==}
@@ -8355,10 +8447,6 @@ packages:
   /tslib@1.14.1:
     resolution: {integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==}
 
-  /tslib@2.4.1:
-    resolution: {integrity: sha512-tGyy4dAjRIEwI7BzsB0lynWgOpfqjUdq91XXAlIWD2OwKBH7oCl/GZG/HT4BOHrTlPMOASlMQ7veyTqpmRcrNA==}
-    dev: true
-
   /tslib@2.5.2:
     resolution: {integrity: sha512-5svOrSA2w3iGFDs1HibEVBGbDrAY82bFQ3HZ3ixB+88nsbsWQoKqDRb5UBYAUPEzbBn6dAp5gRNXglySbx1MlA==}
 
@@ -8655,20 +8743,6 @@ packages:
       rollup: 3.21.3
     optionalDependencies:
       fsevents: 2.3.2
-    dev: true
-
-  /wait-on@7.0.1:
-    resolution: {integrity: sha512-9AnJE9qTjRQOlTZIldAaf/da2eW0eSRSgcqq85mXQja/DW3MriHxkpODDSUEg+Gri/rKEcXUZHe+cevvYItaog==}
-    engines: {node: '>=12.0.0'}
-    hasBin: true
-    dependencies:
-      axios: 0.27.2
-      joi: 17.9.2
-      lodash: 4.17.21
-      minimist: 1.2.7
-      rxjs: 7.8.1
-    transitivePeerDependencies:
-      - debug
     dev: true
 
   /walker@1.0.8:

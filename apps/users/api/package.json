@@ -1,0 +1,30 @@
+{
+  "license": "MIT",
+  "name": "@platform/users-api",
+  "version": "0.0.0",
+  "main": "src/stack.ts",
+  "scripts": {
+    "deploy": "npx cdk deploy",
+    "destroy": "npx cdk destroy",
+    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "typecheck": "tsc --noEmit",
+    "test": "jest -i --forceExit --passWithNoTests",
+    "dev": "ts-node src/server.ts",
+    "run:migrate": "ts-node src/run-migration.ts"
+  },
+  "devDependencies": {
+    "@platform/cdk": "0.0.0",
+    "@platform/db": "0.0.0",
+    "@platform/eslint-config": "0.0.0",
+    "@platform/local-api": "0.0.0",
+    "@platform/tsconfig": "0.0.0",
+    "@platform/users-contract": "0.0.0",
+    "@types/node": "^20.1.4",
+    "constructs": "^10.2.14",
+    "jest": "^29.5.0",
+    "kysely": "^0.24.2",
+    "ts-jest": "^29.1.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
+  }
+}
