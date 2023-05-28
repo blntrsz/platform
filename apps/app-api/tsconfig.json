@@ -1,6 +1,6 @@
 {
   "extends": "@platform/tsconfig/cdk.json",
-  "include": ["**/*.ts", "**/*.tsx", "../../packages/local-api/src/index.ts"],
+  "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"],
   "compilerOptions": {
     "typeRoots": ["../../node_modules/@types"]
