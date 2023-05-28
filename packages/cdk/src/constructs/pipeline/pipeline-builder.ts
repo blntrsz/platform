@@ -14,7 +14,6 @@ type PredefinedActions =
   | "manualApproval"
   | "e2e"
   | "build"
-  | "buildHost"
   | "lint"
   | "unitTest";
 
@@ -83,20 +82,16 @@ export class PipelineBuilder extends Construct {
         source: this.source,
         stage,
         cache: this.cache,
-        buildCommands: [
-          `pnpm cdk deploy ${this.appName}-$STAGE --require-approval never`,
-        ],
-      }).codebuildAction,
-    buildHost: (stage) =>
-      new AbstractCodeBuildProject(this, `build-${stage}`, {
-        source: this.source,
-        stage,
-        cache: this.cache,
-        buildCommands: [
-          `export VITE_ISSUES_SITE=https://$(aws cloudformation describe-stacks --stack-name issues-app-${stage} --query 'Stacks[0].Outputs[?ExportName==\`frontendUrl-issues-${stage}\`].OutputValue' --output text)`,
-          `export VITE_USERS_SITE=https://$(aws cloudformation describe-stacks --stack-name users-app-${stage} --query 'Stacks[0].Outputs[?ExportName==\`frontendUrl-users-${stage}\`].OutputValue' --output text)`,
-          `pnpm cdk deploy ${this.appName}-app-$STAGE --require-approval never`,
-        ],
+        buildCommands:
+          this.appName === "host"
+            ? [
+                `export VITE_ISSUES_SITE=https://$(aws cloudformation describe-stacks --stack-name issues-app-${stage} --query 'Stacks[0].Outputs[?ExportName==\`frontendUrl-issues-${stage}\`].OutputValue' --output text)`,
+                `export VITE_USERS_SITE=https://$(aws cloudformation describe-stacks --stack-name users-app-${stage} --query 'Stacks[0].Outputs[?ExportName==\`frontendUrl-users-${stage}\`].OutputValue' --output text)`,
+                `pnpm cdk deploy ${this.appName}-app-$STAGE --require-approval never`,
+              ]
+            : [
+                `pnpm cdk deploy ${this.appName}-app-$STAGE --require-approval never`,
+              ],
       }).codebuildAction,
 
     e2e: (stage) =>
