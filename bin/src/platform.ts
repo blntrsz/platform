@@ -30,7 +30,7 @@ const props = {
 
 new HostToolsStack(app, "host-tools");
 new HostDeployPipelineStack(app, `host-pipeline-${stage}`, props);
-new HostAppStack(app, `host-${stage}`, props);
+new HostAppStack(app, `host-app-${stage}`, props);
 
 new IssuesToolsStack(app, "issues-tools");
 new IssuesDeployPipelineStack(app, `issues-pipeline-${stage}`, props);

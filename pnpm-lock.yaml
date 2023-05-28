@@ -300,6 +300,9 @@ importers:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
     devDependencies:
+      '@originjs/vite-plugin-federation':
+        specifier: ^1.2.3
+        version: 1.2.3
       '@platform/cdk':
         specifier: 0.0.0
         version: link:../../../packages/cdk
@@ -442,6 +445,9 @@ importers:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
     devDependencies:
+      '@originjs/vite-plugin-federation':
+        specifier: ^1.2.3
+        version: 1.2.3
       '@platform/cdk':
         specifier: 0.0.0
         version: link:../../../packages/cdk

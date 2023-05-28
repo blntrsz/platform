@@ -14,6 +14,7 @@ type PredefinedActions =
   | "manualApproval"
   | "e2e"
   | "build"
+  | "buildHost"
   | "lint"
   | "unitTest";
 
@@ -28,7 +29,7 @@ export class PipelineBuilder extends Construct {
     const { pipeline, source: source } = new AbstractPipeline(
       this,
       "pipeline",
-      "main"
+      "microfrontends"
     );
     this.pipeline = pipeline;
     this.source = source;
@@ -62,7 +63,9 @@ export class PipelineBuilder extends Construct {
         source: this.source,
         stage,
         cache: this.cache,
-        buildCommands: ["pnpm cdk deploy tools --require-approval never"],
+        buildCommands: [
+          `pnpm cdk deploy ${this.appName}-tools --require-approval never`,
+        ],
       }).codebuildAction,
     manualApproval: (stage) =>
       new ManualApprovalAction({
@@ -84,6 +87,17 @@ export class PipelineBuilder extends Construct {
           `pnpm cdk deploy ${this.appName}-$STAGE --require-approval never`,
         ],
       }).codebuildAction,
+    buildHost: (stage) =>
+      new AbstractCodeBuildProject(this, `build-${stage}`, {
+        source: this.source,
+        stage,
+        cache: this.cache,
+        buildCommands: [
+          `export VITE_ISSUES_SITE=https://$(aws cloudformation describe-stacks --stack-name issues-app-${stage} --query 'Stacks[0].Outputs[?ExportName==\`frontendUrl-issues-${stage}\`].OutputValue' --output text)`,
+          `export VITE_USERS_SITE=https://$(aws cloudformation describe-stacks --stack-name users-app-${stage} --query 'Stacks[0].Outputs[?ExportName==\`frontendUrl-users-${stage}\`].OutputValue' --output text)`,
+          `pnpm cdk deploy ${this.appName}-$STAGE --require-approval never`,
+        ],
+      }).codebuildAction,
 
     e2e: (stage) =>
       new AbstractCodeBuildProject(this, `e2e-${stage}`, {
@@ -92,7 +106,8 @@ export class PipelineBuilder extends Construct {
         cache: this.cache,
         extraInstallCommands: ["pnpm dlx playwright install --with-deps"],
         buildCommands: [
-          `export E2E_URL=https://$(aws cloudformation describe-stacks --stack-name ${this.appName}-${stage} --query 'Stacks[0].Outputs[?ExportName==\`frontendUrl-${stage}\`].OutputValue' --output text) && pnpm e2e:test`,
+          `export E2E_URL=https://$(aws cloudformation describe-stacks --stack-name ${this.appName}-${stage} --query 'Stacks[0].Outputs[?ExportName==\`frontendUrl-${stage}\`].OutputValue' --output text)`,
+          "pnpm e2e:test",
         ],
       }).codebuildAction,
 

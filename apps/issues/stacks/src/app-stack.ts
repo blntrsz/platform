@@ -14,7 +14,7 @@ export class IssuesAppStack extends cdk.Stack {
       throw new Error("Environment variable STAGE is not defined.");
     }
 
-    const database = new Database(this, "database", "myClusterDatabase");
+    const database = new Database(this, "database", `issuesDB${stage}`);
     const { api } = new Backend(this, "api", database);
     new Frontend(this, "fronend", {
       region: this.region,

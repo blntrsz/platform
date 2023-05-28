@@ -8,8 +8,9 @@ export class Backend extends OpenApi {
     super(scope, id, {
       functionsDir: join(__dirname, "src", "functions"),
       stage: process.env.STAGE ?? "",
-      openApiFilePath: join(__dirname, "..", "app-contract", "api.yaml"),
+      openApiFilePath: join(__dirname, "..", "contract", "api.yaml"),
       database,
+      app: "issues",
     });
   }
 }

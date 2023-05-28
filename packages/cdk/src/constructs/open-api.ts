@@ -16,6 +16,7 @@ interface OpenApiProps {
   functionsDir: string;
   openApiFilePath: string;
   database: Database;
+  app: string;
 }
 
 export class OpenApi extends Construct {
@@ -23,7 +24,7 @@ export class OpenApi extends Construct {
   constructor(
     scope: Construct,
     id: string,
-    { stage, functionsDir, openApiFilePath, database }: OpenApiProps
+    { stage, functionsDir, openApiFilePath, database, app }: OpenApiProps
   ) {
     super(scope, id);
 
@@ -64,7 +65,7 @@ export class OpenApi extends Construct {
 
     this.api = new cdk.aws_apigateway.SpecRestApi(this, "api", {
       apiDefinition,
-      endpointExportName: `apiUrl-${stage}`,
+      endpointExportName: `apiUrl-${app}-${stage}`,
     });
   }
 }

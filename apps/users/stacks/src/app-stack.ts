@@ -4,7 +4,7 @@ import { Frontend } from "@platform/users-ui/infra";
 import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
 
-export class IssuesAppStack extends cdk.Stack {
+export class UsersAppStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props: cdk.StackProps) {
     super(scope, id, props);
 
@@ -14,7 +14,7 @@ export class IssuesAppStack extends cdk.Stack {
       throw new Error("Environment variable STAGE is not defined.");
     }
 
-    const database = new Database(this, "database", "myClusterDatabase");
+    const database = new Database(this, "database", `usersDB${stage}`);
     const { api } = new Backend(this, "api", database);
     new Frontend(this, "fronend", {
       region: this.region,

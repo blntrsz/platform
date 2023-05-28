@@ -4,6 +4,11 @@ import { getBuildCmdEnvironment } from "../../utils/get-build-cmd-environment";
 
 import * as cdk from "aws-cdk-lib";
 import { DockerImage } from "aws-cdk-lib";
+import {
+  Function as CfFunction,
+  FunctionCode as CfFunctionCode,
+  FunctionEventType as CfFunctionEventType,
+} from "aws-cdk-lib/aws-cloudfront";
 import * as iam from "aws-cdk-lib/aws-iam";
 import { Runtime } from "aws-cdk-lib/aws-lambda";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
@@ -17,6 +22,7 @@ import { Construct } from "constructs";
 import { copySync } from "fs-extra";
 
 interface StaticSiteProps {
+  app: string;
   stage: string;
   path: string;
   buildCommand: string;
@@ -64,7 +70,7 @@ export class StaticSite extends Construct {
     );
 
     this.bucket = new cdk.aws_s3.Bucket(this, "bucket", {
-      bucketName: `platform-fullstack-${props.stage}`
+      bucketName: `platform-${props.app}-${props.stage}`
         .substring(0, 63)
         .toLocaleLowerCase(),
       publicReadAccess: false,
@@ -104,6 +110,26 @@ export class StaticSite extends Construct {
           }),
           allowedMethods:
             cdk.aws_cloudfront.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
+
+          functionAssociations: [
+            {
+              function: new CfFunction(this, "CloudFrontFunction", {
+                code: CfFunctionCode.fromInline(`
+function handler(event) {
+  var response  = event.response;
+  var headers  = response.headers;
+
+  headers['access-control-allow-headers'] = {value: "*"};
+  headers['access-control-allow-origin'] = {value: "*"};
+  headers['access-control-allow-methods'] = {value: "*"};
+
+  return response;
+}
+          `),
+              }),
+              eventType: CfFunctionEventType.VIEWER_RESPONSE,
+            },
+          ],
         },
       }
     );
@@ -168,7 +194,7 @@ export class StaticSite extends Construct {
     s3HandlerAwsCustomResource.node.addDependency(s3Deployment, distribution);
 
     new cdk.CfnOutput(this, "frontend-endpoint", {
-      exportName: `frontendUrl-${props.stage}`,
+      exportName: `frontendUrl-${props.app}-${props.stage}`,
       value: distribution.distributionDomainName,
     });
   }

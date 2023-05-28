@@ -2,6 +2,7 @@ import React, { Suspense } from "react";
 
 import {
   Link,
+  NavLink,
   Outlet,
   RouterProvider,
   createBrowserRouter,
@@ -25,10 +26,24 @@ const router = createBrowserRouter([
           <nav>
             <ul className="flex gap-4">
               <li>
-                <Link to={"/users"}>Users</Link>
+                <NavLink
+                  className={({ isActive }) =>
+                    isActive ? "text-cyan-500" : ""
+                  }
+                  to={"/users"}
+                >
+                  Users
+                </NavLink>
               </li>
               <li>
-                <Link to={"/issues"}>Issues</Link>
+                <NavLink
+                  className={({ isActive }) =>
+                    isActive ? "text-cyan-500" : ""
+                  }
+                  to={"/issues"}
+                >
+                  Issues
+                </NavLink>
               </li>
             </ul>
           </nav>

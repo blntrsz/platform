@@ -18,6 +18,7 @@ export class Frontend extends StaticSite {
     }
   ) {
     super(scope, id, {
+      app: "issues",
       path: __dirname,
       buildCommand: "pnpm build",
       distDir: join(__dirname, "dist"),
