@@ -95,7 +95,7 @@ export class PipelineBuilder extends Construct {
         buildCommands: [
           `export VITE_ISSUES_SITE=https://$(aws cloudformation describe-stacks --stack-name issues-app-${stage} --query 'Stacks[0].Outputs[?ExportName==\`frontendUrl-issues-${stage}\`].OutputValue' --output text)`,
           `export VITE_USERS_SITE=https://$(aws cloudformation describe-stacks --stack-name users-app-${stage} --query 'Stacks[0].Outputs[?ExportName==\`frontendUrl-users-${stage}\`].OutputValue' --output text)`,
-          `pnpm cdk deploy ${this.appName}-$STAGE --require-approval never`,
+          `pnpm cdk deploy ${this.appName}-app-$STAGE --require-approval never`,
         ],
       }).codebuildAction,
 
