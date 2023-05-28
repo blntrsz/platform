@@ -6,7 +6,7 @@ export class MainPipeline extends Construct {
   constructor(scope: Construct, id: string, cache: Bucket) {
     super(scope, id);
 
-    new PipelineBuilder(this, "pipeline", cache)
+    new PipelineBuilder(this, "pipeline", "users", cache)
       .addStage({
         stage: "dev",
         stageName: "update-tools",

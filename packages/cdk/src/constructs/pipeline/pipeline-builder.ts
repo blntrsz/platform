@@ -21,7 +21,8 @@ export class PipelineBuilder extends Construct {
   pipeline: Pipeline;
   private source: Artifact;
   private cache: IBucket;
-  constructor(scope: Construct, id: string, cache: IBucket) {
+  appName: string;
+  constructor(scope: Construct, id: string, appName: string, cache: IBucket) {
     super(scope, id);
 
     const { pipeline, source: source } = new AbstractPipeline(
@@ -32,6 +33,7 @@ export class PipelineBuilder extends Construct {
     this.pipeline = pipeline;
     this.source = source;
     this.cache = cache;
+    this.appName = appName;
   }
 
   addStage({
@@ -78,7 +80,9 @@ export class PipelineBuilder extends Construct {
         source: this.source,
         stage,
         cache: this.cache,
-        buildCommands: ["pnpm cdk deploy app-$STAGE --require-approval never"],
+        buildCommands: [
+          `pnpm cdk deploy ${this.appName}-$STAGE --require-approval never`,
+        ],
       }).codebuildAction,
 
     e2e: (stage) =>
@@ -88,7 +92,7 @@ export class PipelineBuilder extends Construct {
         cache: this.cache,
         extraInstallCommands: ["pnpm dlx playwright install --with-deps"],
         buildCommands: [
-          `export E2E_URL=https://$(aws cloudformation describe-stacks --stack-name app-${stage} --query 'Stacks[0].Outputs[?ExportName==\`frontendUrl-${stage}\`].OutputValue' --output text) && pnpm e2e:test`,
+          `export E2E_URL=https://$(aws cloudformation describe-stacks --stack-name ${this.appName}-${stage} --query 'Stacks[0].Outputs[?ExportName==\`frontendUrl-${stage}\`].OutputValue' --output text) && pnpm e2e:test`,
         ],
       }).codebuildAction,
 

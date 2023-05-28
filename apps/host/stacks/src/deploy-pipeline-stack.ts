@@ -18,7 +18,7 @@ export class HostDeployPipelineStack extends cdk.Stack {
       "platform-remote-pnpm-cache"
     );
 
-    new PipelineBuilder(this, "pipeline", cache)
+    new PipelineBuilder(this, "pipeline", "host", cache)
       .addStage({
         stageName: "lint-test-build",
         stage: "dev",
