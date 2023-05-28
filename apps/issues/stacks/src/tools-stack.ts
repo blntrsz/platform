@@ -38,7 +38,8 @@ export class IssuesToolsStack extends cdk.Stack {
       this,
       "webhook",
       creatorCodeBuild.project,
-      destroyerCodeBuild.project
+      destroyerCodeBuild.project,
+      "issues"
     );
 
     lambda.addToRolePolicy(

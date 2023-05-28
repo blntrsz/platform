@@ -38,7 +38,8 @@ export class HostToolsStack extends cdk.Stack {
       this,
       "webhook",
       creatorCodeBuild.project,
-      destroyerCodeBuild.project
+      destroyerCodeBuild.project,
+      "host"
     );
 
     lambda.addToRolePolicy(

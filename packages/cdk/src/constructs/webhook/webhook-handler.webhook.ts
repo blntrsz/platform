@@ -65,7 +65,8 @@ export const handler: Handler = async (event) => {
 
   if (parsedPushBody.success) {
     function testIsAppChanged(toTest: string) {
-      return /^apps\/app/.test(toTest);
+      // eslint-disable-next-line turbo/no-undeclared-env-vars
+      return new RegExp(`^apps\/${process.env.APP}`).test(toTest);
     }
 
     if (

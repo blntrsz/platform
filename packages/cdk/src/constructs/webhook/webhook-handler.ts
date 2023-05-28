@@ -12,7 +12,8 @@ export class WebhookHandler extends Construct {
     scope: Construct,
     id: string,
     creatorProjectName: codebuild.Project,
-    destroyerProjectName: codebuild.Project
+    destroyerProjectName: codebuild.Project,
+    app: string
   ) {
     super(scope, id);
 
@@ -23,6 +24,7 @@ export class WebhookHandler extends Construct {
       environment: {
         CREATOR_PROJECT_NAME: creatorProjectName.projectName,
         DESTROYER_PROJECT_NAME: destroyerProjectName.projectName,
+        APP: app,
       },
     });
 
