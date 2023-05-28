@@ -1,6 +1,5 @@
-import { RDSData } from "@aws-sdk/client-rds-data";
-import { Generated, Kysely } from "kysely";
-import { DataApiDialect } from "kysely-data-api";
+import { createDb } from "@platform/db";
+import { Generated } from "kysely";
 
 interface UserTable {
   // made optional in inserts and updates.
@@ -13,17 +12,7 @@ export interface Database {
   user: UserTable;
 }
 
-export const db = new Kysely<Database>({
-  dialect: new DataApiDialect({
-    mode: "postgres",
-    driver: {
-      database: process.env.CLUSTER_NAME ?? "",
-      secretArn: process.env.SECRET_ARN ?? "",
-      resourceArn: process.env.CLUSTER_ARN ?? "",
-      client: new RDSData({}),
-    },
-  }),
-});
+export const db = createDb<Database>();
 
 export async function createUser(name: string) {
   return await db
