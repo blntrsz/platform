@@ -1,6 +1,8 @@
 import { readdirSync } from "fs";
 import { join } from "path";
 
+import { Database } from "./database";
+
 import * as cdk from "aws-cdk-lib";
 import { ApiDefinition } from "aws-cdk-lib/aws-apigateway";
 import { PolicyStatement, Role, ServicePrincipal } from "aws-cdk-lib/aws-iam";
@@ -13,6 +15,7 @@ interface OpenApiProps {
   stage: string;
   functionsDir: string;
   openApiFilePath: string;
+  database: Database;
 }
 
 export class OpenApi extends Construct {
@@ -20,12 +23,17 @@ export class OpenApi extends Construct {
   constructor(
     scope: Construct,
     id: string,
-    { stage, functionsDir, openApiFilePath }: OpenApiProps
+    { stage, functionsDir, openApiFilePath, database }: OpenApiProps
   ) {
     super(scope, id);
 
     const lambdas = readdirSync(functionsDir).map((file) => {
-      return createLambda(this, file.replace(".ts", ""), functionsDir);
+      return createLambda(
+        this,
+        file.replace(".ts", ""),
+        functionsDir,
+        database
+      );
     });
 
     const openApiAsset = new Asset(this, "openApiFile", {
@@ -61,15 +69,24 @@ export class OpenApi extends Construct {
   }
 }
 
-function createLambda(stack: Construct, name: string, functionsDir: string) {
+function createLambda(
+  stack: Construct,
+  name: string,
+  functionsDir: string,
+  database: Database
+) {
   const lambda = new NodejsFunction(stack, name, {
     runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
     entry: join(functionsDir, `${name}.ts`),
+    environment: {
+      ...database.getEnv(),
+    },
   });
 
   (lambda.node.defaultChild as CfnFunction).overrideLogicalId(name);
 
   lambda.grantInvoke(new ServicePrincipal("apigateway.amazonaws.com"));
+  database.grantApiAccess(lambda);
 
   return lambda;
 }

@@ -1,5 +1,6 @@
-import { createBackendIfra } from "@platform/app-api/infra";
-import { createFrontendInfra } from "@platform/app-ui/infra";
+import { Backend } from "@platform/app-api/infra";
+import { Frontend } from "@platform/app-ui/infra";
+import { Database } from "@platform/cdk";
 import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
 
@@ -13,13 +14,12 @@ export class AppStack extends cdk.Stack {
       throw new Error("Environment variable STAGE is not defined.");
     }
 
-    const { api } = createBackendIfra(this, "api");
-    createFrontendInfra(
-      this,
-      "fronend",
-      api.urlForPath("/"),
-      this.region,
-      this.account
-    );
+    const database = new Database(this, "database", "myClusterDatabase");
+    const { api } = new Backend(this, "api", database);
+    new Frontend(this, "fronend", {
+      region: this.region,
+      account: this.account,
+      apiUrl: api.urlForPath("/"),
+    });
   }
 }

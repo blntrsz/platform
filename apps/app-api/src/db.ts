@@ -1,5 +1,6 @@
-import { Generated, Kysely, MysqlDialect } from "kysely";
-import mysql from "mysql2";
+import { RDSData } from "@aws-sdk/client-rds-data";
+import { Generated, Kysely } from "kysely";
+import { DataApiDialect } from "kysely-data-api";
 
 interface UserTable {
   // made optional in inserts and updates.
@@ -12,25 +13,15 @@ export interface Database {
   user: UserTable;
 }
 
-const pool = mysql.createPool({
-  password: process.env.DATABASE_PASSWORD,
-  host: process.env.DATABASE_URL,
-  user: process.env.DATABASE_USER,
-  database: process.env.DATABASE_NAME,
-  waitForConnections: true,
-  connectionLimit: 10,
-  maxIdle: 10, // max idle connections, the default value is the same as `connectionLimit`
-  idleTimeout: 120_000, // idle connections timeout, in milliseconds, the default value 60000
-  queueLimit: 0,
-  enableKeepAlive: true,
-  keepAliveInitialDelay: 0,
-});
-
-// You'd create one of these when you start your app.
 export const db = new Kysely<Database>({
-  // Use MysqlDialect for MySQL and SqliteDialect for SQLite.
-  dialect: new MysqlDialect({
-    pool,
+  dialect: new DataApiDialect({
+    mode: "postgres",
+    driver: {
+      database: process.env.CLUSTER_NAME ?? "",
+      secretArn: process.env.SECRET_ARN ?? "",
+      resourceArn: process.env.CLUSTER_ARN ?? "",
+      client: new RDSData({}),
+    },
   }),
 });
 

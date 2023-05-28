@@ -1,7 +1,10 @@
-import { MainPipeline } from "./pipeline/main-pipeline";
-import { CreatorCodeBuild, DestroyerCodeBuild } from "./webhook/codebuild";
-import { WebhookHandler } from "./webhook/webhook-handler";
+import { MainPipeline } from "./main-pipeline";
 
+import {
+  CreatorCodeBuild,
+  DestroyerCodeBuild,
+  WebhookHandler,
+} from "@platform/cdk";
 import * as cdk from "aws-cdk-lib";
 import * as iam from "aws-cdk-lib/aws-iam";
 import { Construct } from "constructs";
