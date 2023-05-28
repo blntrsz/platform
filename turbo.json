@@ -26,7 +26,7 @@
     "run:migrate": {},
     "dev": {
       "cache": false,
-      "persistent": true
+      "persistent": false
     }
   }
 }

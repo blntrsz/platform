@@ -116,6 +116,9 @@ importers:
       '@platform/eslint-config':
         specifier: 0.0.0
         version: link:../../packages/eslint-config
+      '@platform/local-api':
+        specifier: 0.0.0
+        version: link:../../packages/local-api
       '@platform/tsconfig':
         specifier: 0.0.0
         version: link:../../packages/tsconfig
@@ -395,6 +398,88 @@ importers:
       eslint-plugin-unicorn:
         specifier: ^47.0.0
         version: 47.0.0(eslint@8.39.0)
+
+  packages/local-api:
+    dependencies:
+      '@aws-sdk/client-rds-data':
+        specifier: ^3.341.0
+        version: 3.341.0
+      kysely:
+        specifier: ^0.24.2
+        version: 0.24.2
+      kysely-data-api:
+        specifier: ^0.2.1
+        version: 0.2.1(@aws-sdk/client-rds-data@3.341.0)(kysely@0.24.2)
+      mysql2:
+        specifier: ^3.3.2
+        version: 3.3.2
+    devDependencies:
+      '@aws-cdk/aws-apigatewayv2-alpha':
+        specifier: 2.78.0-alpha.0
+        version: 2.78.0-alpha.0(aws-cdk-lib@2.78.0)(constructs@10.2.14)
+      '@aws-cdk/aws-apigatewayv2-integrations-alpha':
+        specifier: 2.78.0-alpha.0
+        version: 2.78.0-alpha.0(@aws-cdk/aws-apigatewayv2-alpha@2.78.0-alpha.0)(aws-cdk-lib@2.78.0)(constructs@10.2.14)
+      '@platform/app-contract':
+        specifier: 0.0.0
+        version: link:../../apps/app-contract
+      '@platform/cdk':
+        specifier: 0.0.0
+        version: link:../cdk
+      '@platform/eslint-config':
+        specifier: 0.0.0
+        version: link:../eslint-config
+      '@platform/tsconfig':
+        specifier: 0.0.0
+        version: link:../tsconfig
+      '@types/fs-extra':
+        specifier: ^11.0.1
+        version: 11.0.1
+      '@types/node':
+        specifier: ^20.1.4
+        version: 20.1.4
+      aws-cdk:
+        specifier: ^2.78.0
+        version: 2.78.0
+      aws-cdk-lib:
+        specifier: ^2.78.0
+        version: 2.78.0(constructs@10.2.14)
+      axios:
+        specifier: ^1.2.2
+        version: 1.4.0
+      constructs:
+        specifier: ^10.2.14
+        version: 10.2.14
+      cors:
+        specifier: ^2.8.5
+        version: 2.8.5
+      esbuild:
+        specifier: ^0.17.18
+        version: 0.17.18
+      express:
+        specifier: ^4.18.2
+        version: 4.18.2
+      jest:
+        specifier: ^29.5.0
+        version: 29.5.0(@types/node@20.1.4)(ts-node@10.9.1)
+      openapi-backend:
+        specifier: ^5.6.0
+        version: 5.9.2
+      source-map-support:
+        specifier: ^0.5.21
+        version: 0.5.21
+      ts-jest:
+        specifier: ^29.1.0
+        version: 29.1.0(@babel/core@7.21.8)(esbuild@0.17.18)(jest@29.5.0)(typescript@5.0.4)
+      ts-node:
+        specifier: ^10.9.1
+        version: 10.9.1(@types/node@20.1.4)(typescript@5.0.4)
+      typescript:
+        specifier: ^5.0.4
+        version: 5.0.4
+      wait-on:
+        specifier: ^7.0.1
+        version: 7.0.1
 
   packages/tsconfig: {}
 
