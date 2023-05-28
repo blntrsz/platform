@@ -1,7 +1,11 @@
 #!/usr/bin/env node
 import * as cdk from "aws-cdk-lib";
 import "source-map-support/register";
-import { AppStack, DeployPipelineStack, ToolsStack } from "@platform/app-tools";
+import {
+  AppStack,
+  DeployPipelineStack,
+  ToolsStack,
+} from "@platform/app-stacks";
 
 const stage = process.env.STAGE;
 

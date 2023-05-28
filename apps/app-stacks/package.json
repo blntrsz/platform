@@ -1,5 +1,5 @@
 {
-  "name": "@platform/app-tools",
+  "name": "@platform/app-stacks",
   "version": "0.0.0",
   "private": true,
   "main": "src/index.ts",

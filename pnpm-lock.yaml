@@ -183,7 +183,7 @@ importers:
         specifier: ^1.34.0
         version: 1.34.0
 
-  apps/app-tools:
+  apps/app-stacks:
     devDependencies:
       '@platform/app-api':
         specifier: 0.0.0
@@ -295,9 +295,9 @@ importers:
         specifier: ^5.0.4
         version: 5.0.4
     devDependencies:
-      '@platform/app-tools':
+      '@platform/app-stacks':
         specifier: 0.0.0
-        version: link:../apps/app-tools
+        version: link:../apps/app-stacks
       '@platform/eslint-config':
         specifier: 0.0.0
         version: link:../packages/eslint-config
