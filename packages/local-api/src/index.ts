@@ -29,6 +29,7 @@ export function createLocalApi({
     async (c: Context, req: Request, res: Response) => {
       const handlerResponse = await h({
         body: JSON.stringify(req.body),
+        pathParameters: JSON.stringify(req.path),
       });
       return res
         .status(handlerResponse.statusCode)

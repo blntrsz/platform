@@ -1,5 +1,5 @@
 import { paths } from "@platform/issues-contract";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import createClient from "openapi-fetch";
 
 const { get, post } = createClient<paths>({
@@ -11,11 +11,12 @@ const { get, post } = createClient<paths>({
   },
 });
 
-export function useGetHello() {
+export function useGetIssues() {
   return useQuery({
-    queryKey: ["get-hello"],
+    queryKey: ["get-issues"],
+    suspense: true,
     queryFn: async () => {
-      const { data, error } = await get("/hello", {});
+      const { data, error } = await get("/issues", {});
 
       if (error) {
         throw error;
@@ -30,11 +31,20 @@ export function useGetHello() {
 
 export function usePostHello() {
   return useMutation({
-    mutationKey: ["post-hello"],
-    mutationFn: async (name: string) => {
-      const { data, error } = await post("/hello", {
+    mutationFn: async ({
+      title,
+      userId,
+      userName,
+    }: {
+      title: string;
+      userId: number;
+      userName: string;
+    }) => {
+      const { data, error } = await post("/issues", {
         body: {
-          name,
+          title,
+          userId,
+          userName,
         },
       });
 
@@ -49,35 +59,14 @@ export function usePostHello() {
   });
 }
 
-export function useGetUsers() {
+export function useGetIssuesForUser(userId: number) {
   return useQuery({
-    queryKey: ["get-users"],
+    queryKey: ["get-issues-for-user"],
+    suspense: true,
     queryFn: async () => {
-      const { data, error } = await get("/users", {});
-
-      if (error) {
-        throw error;
-      }
-
-      if (data) {
-        return data;
-      }
-    },
-  });
-}
-
-export function usePostUsers() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationKey: ["post-hello"],
-    onSuccess: () => {
-      queryClient.invalidateQueries(["get-users"]);
-    },
-    mutationFn: async (name: string) => {
-      const { data, error } = await post("/users", {
-        body: {
-          name,
+      const { data, error } = await get("/issues/{userId}", {
+        params: {
+          path: { userId },
         },
       });
 

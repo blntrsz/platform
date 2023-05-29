@@ -1,11 +1,11 @@
 openapi: 3.0.3
 info:
-  title: hello-world
+  title: issues
   version: "1.0"
-  description: A simple hello-world REST service
+  description: Issues api
 tags:
-  - name: hello
-    description: Hello world services
+  - name: issues
+    description: Issues services
 x-amazon-apigateway-request-validators:
   all:
     validateRequestBody: true
@@ -15,26 +15,45 @@ x-amazon-apigateway-request-validator: all
 ## PATHS ##
 
 paths:
-  /hello:
-    post:
+  /issues:
+    get:
       tags:
-        - hello
-      description: Receive a name in request body and respond with a greeting message for the name informed
-      operationId: postHello
+        - issues
+      description: Receive all issues
+      operationId: getIssues
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/HelloResponse"
-              examples:
-                example-1:
-                  value:
-                    greeting: Hello John!
+                $ref: "#/components/schemas/IssuesResponse"
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${postHello.Arn}/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${getIssues.Arn}/invocations"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "POST"
+        type: "aws_proxy"
+    post:
+      tags:
+        - issues
+      description: Create issue
+      operationId: postIssues
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                required:
+                  - status
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${postIssues.Arn}/invocations"
         passthroughBehavior: "when_no_match"
         httpMethod: "POST"
         type: "aws_proxy"
@@ -43,33 +62,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/HelloRequest"
-            examples:
-              example-1:
-                value:
-                  name: John
-    get:
-      tags:
-        - hello
-      description: Receive a general greeting
-      operationId: getHello
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelloResponse"
-              examples:
-                example-1:
-                  value:
-                    greeting: Hello Traveler!
-      x-amazon-apigateway-integration:
-        uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${getHello.Arn}/invocations"
-        passthroughBehavior: "when_no_match"
-        httpMethod: "POST"
-        type: "aws_proxy"
+              $ref: "#/components/schemas/IssuesRequest"
     options:
       responses:
         "200":
@@ -96,54 +89,29 @@ paths:
               method.response.header.Access-Control-Allow-Headers: "'*'"
               method.response.header.Access-Control-Allow-Methods: "'*'"
               method.response.header.Access-Control-Allow-Origin: "'*'"
-  /users:
-    post:
-      tags:
-        - users
-      description: create user
-      operationId: postUsers
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UsersResponse"
-              examples:
-                example-1:
-                  value:
-                    greeting: Hello John!
-      x-amazon-apigateway-integration:
-        uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${postUsers.Arn}/invocations"
-        passthroughBehavior: "when_no_match"
-        httpMethod: "POST"
-        type: "aws_proxy"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UsersRequest"
-            examples:
-              example-1:
-                value:
-                  name: John
+
+  /issues/{userId}:
     get:
       tags:
-        - users
-      description: Get User
-      operationId: getUsers
+        - issues
+      description: Receive all issues for the user
+      operationId: getIssuesForUserId
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/UsersResponse"
+                $ref: "#/components/schemas/IssuesResponse"
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${getUsers.Arn}/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${getIssuesForUserId.Arn}/invocations"
         passthroughBehavior: "when_no_match"
         httpMethod: "POST"
         type: "aws_proxy"
@@ -178,35 +146,36 @@ paths:
 
 components:
   schemas:
-    HelloRequest:
-      title: HelloRequest
+    IssuesResponse:
+      title: Issues
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: number
+          title:
+            type: string
+          userName:
+            type: string
+          userId:
+            type: number
+        required:
+          - id
+          - title
+          - userName
+          - userId
+    IssuesRequest:
+      title: Issues
       type: object
       properties:
-        name:
+        title:
           type: string
-      required:
-        - name
-    HelloResponse:
-      title: HelloResponse
-      type: object
-      properties:
-        greeting:
+        userName:
           type: string
+        userId:
+          type: number
       required:
-        - greeting
-    UsersRequest:
-      title: UsersRequest
-      type: object
-      properties:
-        name:
-          type: string
-      required:
-        - name
-    UsersResponse:
-      title: UsersResponse
-      type: object
-      properties:
-        name:
-          type: string
-      required:
-        - name
+        - title
+        - userName
+        - userId

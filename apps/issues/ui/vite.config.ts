@@ -17,7 +17,7 @@ export default defineConfig({
         "./Page": "./src/Page.tsx",
         "./ListIssuesForUser": "./src/ListIssuesForUser.tsx",
       },
-      shared: ["react", "react-dom"],
+      shared: ["react", "react-dom", "@tanstack/react-query"],
     }),
   ],
 });

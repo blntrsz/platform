@@ -1,5 +1,6 @@
 import React, { Suspense } from "react";
 
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Link,
   NavLink,
@@ -87,7 +88,7 @@ const router = createBrowserRouter([
         element: <UsersPage />,
       },
       {
-        path: "/users/:userId",
+        path: "/users/:userId/:userName",
         element: <ListIssuesForUser />,
       },
       {
@@ -98,8 +99,14 @@ const router = createBrowserRouter([
   },
 ]);
 
+const queryClient = new QueryClient();
+
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
+  );
 }
 
 export default App;

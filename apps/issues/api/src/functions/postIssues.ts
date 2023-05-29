@@ -1,23 +1,24 @@
-import { createUser } from "../db";
+import { createIssue } from "../db";
 
 import { operations } from "@platform/issues-contract";
 import { APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from "aws-lambda";
 
 type Body =
-  operations["postUsers"]["requestBody"]["content"]["application/json"];
+  operations["postIssues"]["requestBody"]["content"]["application/json"];
 type Response =
-  operations["postUsers"]["responses"]["200"]["content"]["application/json"];
+  operations["postIssues"]["responses"]["200"]["content"]["application/json"];
 
 export async function handler(
   event: APIGatewayProxyEventV2
 ): Promise<APIGatewayProxyResultV2> {
   console.log("event 👉", event);
   const body = JSON.parse(event.body ?? "") as Body;
-  await createUser(body.name);
+
+  await createIssue(body);
 
   return {
     body: JSON.stringify({
-      name: body.name,
+      status: "ok",
     } satisfies Response),
     headers: {
       "Access-Control-Allow-Headers": "*",

@@ -5,11 +5,11 @@
 
 
 export interface paths {
-  "/hello": {
-    /** @description Receive a general greeting */
-    get: operations["getHello"];
-    /** @description Receive a name in request body and respond with a greeting message for the name informed */
-    post: operations["postHello"];
+  "/issues": {
+    /** @description Receive all issues */
+    get: operations["getIssues"];
+    /** @description Create issue */
+    post: operations["postIssues"];
     options: {
       responses: {
         /** @description Default response */
@@ -17,11 +17,9 @@ export interface paths {
       };
     };
   };
-  "/users": {
-    /** @description Get User */
-    get: operations["getUsers"];
-    /** @description create user */
-    post: operations["postUsers"];
+  "/issues/{userId}": {
+    /** @description Receive all issues for the user */
+    get: operations["getIssuesForUserId"];
     options: {
       responses: {
         /** @description Default response */
@@ -35,21 +33,18 @@ export type webhooks = Record<string, never>;
 
 export interface components {
   schemas: {
-    /** HelloRequest */
-    HelloRequest: {
-      name: string;
-    };
-    /** HelloResponse */
-    HelloResponse: {
-      greeting: string;
-    };
-    /** UsersRequest */
-    UsersRequest: {
-      name: string;
-    };
-    /** UsersResponse */
-    UsersResponse: {
-      name: string;
+    /** Issues */
+    IssuesResponse: ({
+        id: number;
+        title: string;
+        userName: string;
+        userId: number;
+      })[];
+    /** Issues */
+    IssuesRequest: {
+      title: string;
+      userName: string;
+      userId: number;
     };
   };
   responses: never;
@@ -63,56 +58,47 @@ export type external = Record<string, never>;
 
 export interface operations {
 
-  /** @description Receive a general greeting */
-  getHello: {
+  /** @description Receive all issues */
+  getIssues: {
     responses: {
       /** @description OK */
       200: {
         content: {
-          "application/json": components["schemas"]["HelloResponse"];
+          "application/json": components["schemas"]["IssuesResponse"];
         };
       };
     };
   };
-  /** @description Receive a name in request body and respond with a greeting message for the name informed */
-  postHello: {
+  /** @description Create issue */
+  postIssues: {
     requestBody: {
       content: {
-        "application/json": components["schemas"]["HelloRequest"];
+        "application/json": components["schemas"]["IssuesRequest"];
       };
     };
     responses: {
       /** @description OK */
       200: {
         content: {
-          "application/json": components["schemas"]["HelloResponse"];
+          "application/json": {
+            status: string;
+          };
         };
       };
     };
   };
-  /** @description Get User */
-  getUsers: {
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "application/json": components["schemas"]["UsersResponse"];
-        };
-      };
-    };
-  };
-  /** @description create user */
-  postUsers: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["UsersRequest"];
+  /** @description Receive all issues for the user */
+  getIssuesForUserId: {
+    parameters: {
+      path: {
+        userId: number;
       };
     };
     responses: {
       /** @description OK */
       200: {
         content: {
-          "application/json": components["schemas"]["UsersResponse"];
+          "application/json": components["schemas"]["IssuesResponse"];
         };
       };
     };
