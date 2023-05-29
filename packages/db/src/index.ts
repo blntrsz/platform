@@ -21,14 +21,17 @@ export function createDb<T>(props: {
   });
 }
 
-export async function migrateToLatest<T>(db: Kysely<T>) {
+export async function migrateToLatest<T>(
+  db: Kysely<T>,
+  migrationFolder: string
+) {
   const migrator = new Migrator({
     db,
     provider: new FileMigrationProvider({
       fs,
       path,
       // This needs to be an absolute path.
-      migrationFolder: path.join(__dirname, "migrations"),
+      migrationFolder,
     }),
   });
 

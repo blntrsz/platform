@@ -4,6 +4,7 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "dotenv -- turbo dev",
+    "dev:all": "dotenv -- turbo dev:all",
     "test": "turbo run test",
     "lint": "turbo run lint && manypkg check",
     "format": "prettier --write \"**/*.{ts,tsx,md}\" --ignore-path .gitignore",

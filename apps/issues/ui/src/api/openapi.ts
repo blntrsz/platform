@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import createClient from "openapi-fetch";
 
 const { get, post } = createClient<paths>({
-  baseUrl: import.meta.env.VITE_API_URL.replace(/\/$/, ""),
+  baseUrl: import.meta.env.VITE_ISSUES_API_URL.replace(/\/$/, ""),
   headers: {
     "Access-Control-Allow-Headers": "*",
     "Access-Control-Allow-Origin": "*",

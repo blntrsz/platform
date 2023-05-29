@@ -5,6 +5,7 @@
   "main": "./stack/index.ts",
   "scripts": {
     "dev": "vite",
+    "dev:all": "vite",
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "typecheck": "tsc --noEmit",

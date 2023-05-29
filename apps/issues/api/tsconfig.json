@@ -3,6 +3,6 @@
   "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"],
   "compilerOptions": {
-    "typeRoots": ["../../node_modules/@types"]
+    "typeRoots": ["../../../node_modules/@types"]
   }
 }

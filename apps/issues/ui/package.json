@@ -5,11 +5,11 @@
   "main": "./stack/index.ts",
   "scripts": {
     "dev": "vite",
+    "dev:all": "vite build --watch & vite preview --port 5001 --strictPort",
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "typecheck": "tsc --noEmit",
-    "preview": "vite preview",
-    "serve": "vite preview --port 5001 --strictPort"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@tanstack/react-query": "^4.29.7",
