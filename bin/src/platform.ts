@@ -17,13 +17,16 @@ import {
   UsersToolsStack,
 } from "@platform/users-stacks";
 
+// eslint-disable-next-line turbo/no-undeclared-env-vars
 const stage = process.env.STAGE;
 
 const app = new cdk.App();
 
 const props = {
   env: {
+    // eslint-disable-next-line turbo/no-undeclared-env-vars
     account: process.env.CDK_DEFAULT_ACCOUNT,
+    // eslint-disable-next-line turbo/no-undeclared-env-vars
     region: process.env.CDK_DEFAULT_REGION,
   },
 };

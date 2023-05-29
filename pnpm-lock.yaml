@@ -567,6 +567,9 @@ importers:
 
   packages/db:
     dependencies:
+      '@aws-sdk/client-rds-data':
+        specifier: ^3.341.0
+        version: 3.341.0
       '@platform/eslint-config':
         specifier: 0.0.0
         version: link:../eslint-config

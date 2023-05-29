@@ -28,7 +28,8 @@ export class PipelineBuilder extends Construct {
     const { pipeline, source: source } = new AbstractPipeline(
       this,
       "pipeline",
-      "microfrontends"
+      "microfrontends",
+      appName
     );
     this.pipeline = pipeline;
     this.source = source;

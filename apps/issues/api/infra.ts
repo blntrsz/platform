@@ -7,6 +7,7 @@ export class Backend extends OpenApi {
   constructor(scope: Construct, id: string, database: Database) {
     super(scope, id, {
       functionsDir: join(__dirname, "src", "functions"),
+      // eslint-disable-next-line turbo/no-undeclared-env-vars
       stage: process.env.STAGE ?? "",
       openApiFilePath: join(__dirname, "..", "contract", "api.yaml"),
       database,

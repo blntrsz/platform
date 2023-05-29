@@ -33,7 +33,8 @@ export class OpenApi extends Construct {
         this,
         file.replace(".ts", ""),
         functionsDir,
-        database
+        database,
+        app.toUpperCase()
       );
     });
 
@@ -74,13 +75,14 @@ function createLambda(
   stack: Construct,
   name: string,
   functionsDir: string,
-  database: Database
+  database: Database,
+  dbEnvPrefix: string
 ) {
   const lambda = new NodejsFunction(stack, name, {
     runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
     entry: join(functionsDir, `${name}.ts`),
     environment: {
-      ...database.getEnv(),
+      ...database.getEnv(dbEnvPrefix),
     },
   });
 

@@ -14,7 +14,7 @@ export class UsersToolsStack extends cdk.Stack {
     super(scope, id, props);
 
     const cacheBucket = new cdk.aws_s3.Bucket(this, "CacheBucket", {
-      bucketName: "platform-remote-pnpm-cache",
+      bucketName: "platform-remote-pnpm-cache-users",
       publicReadAccess: false,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       autoDeleteObjects: true,

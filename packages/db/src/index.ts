@@ -5,14 +5,16 @@ import { RDSData } from "@aws-sdk/client-rds-data";
 import { FileMigrationProvider, Kysely, Migrator } from "kysely";
 import { DataApiDialect } from "kysely-data-api";
 
-export function createDb<T>() {
+export function createDb<T>(props: {
+  database: string;
+  secretArn: string;
+  resourceArn: string;
+}) {
   return new Kysely<T>({
     dialect: new DataApiDialect({
       mode: "postgres",
       driver: {
-        database: process.env.CLUSTER_NAME ?? "",
-        secretArn: process.env.SECRET_ARN ?? "",
-        resourceArn: process.env.CLUSTER_ARN ?? "",
+        ...props,
         client: new RDSData({}),
       },
     }),

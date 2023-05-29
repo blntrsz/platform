@@ -6,6 +6,7 @@ export class HostAppStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props: cdk.StackProps) {
     super(scope, id, props);
 
+    // eslint-disable-next-line turbo/no-undeclared-env-vars
     const stage = process.env.STAGE;
 
     if (!stage) {

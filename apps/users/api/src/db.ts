@@ -12,7 +12,11 @@ export interface Database {
   user: UserTable;
 }
 
-export const db = createDb<Database>();
+export const db = createDb<Database>({
+  database: process.env.USERS_CLUSTER_NAME ?? "",
+  secretArn: process.env.USERS_SECRET_ARN ?? "",
+  resourceArn: process.env.USERS_CLUSTER_ARN ?? "",
+});
 
 export async function createUser(name: string) {
   return await db

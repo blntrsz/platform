@@ -36,11 +36,11 @@ export class Database extends Construct {
     });
   }
 
-  getEnv() {
+  getEnv(dbEnvPrefix: string) {
     return {
-      CLUSTER_ARN: this.cluster.clusterArn,
-      SECRET_ARN: this.cluster.secret?.secretArn ?? "",
-      CLUSTER_NAME: this.clusterName,
+      [`${dbEnvPrefix}_CLUSTER_ARN`]: this.cluster.clusterArn,
+      [`${dbEnvPrefix}_SECRET_ARN`]: this.cluster.secret?.secretArn ?? "",
+      [`${dbEnvPrefix}_CLUSTER_NAME`]: this.clusterName,
     };
   }
 

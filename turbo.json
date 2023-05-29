@@ -2,16 +2,17 @@
   "$schema": "https://turbo.build/schema.json",
   "globalDependencies": ["**/.env.*local"],
   "globalEnv": [
-    "STAGE",
-    "CREATOR_PROJECT_NAME",
-    "DESTROYER_PROJECT_NAME",
-    "CDK_DEFAULT_ACCOUNT",
-    "CDK_DEFAULT_REGION",
-    "VITE_USERS_SITE",
+    "VITE_ISSUES_API_URL",
     "VITE_ISSUES_SITE",
-    "CLUSTER_NAME",
-    "SECRET_ARN",
-    "CLUSTER_ARN"
+    "ISSUES_CLUSTER_ARN",
+    "ISSUES_SECRET_ARN",
+    "ISSUES_CLUSTER_NAME",
+
+    "VITE_USERS_API_URL",
+    "VITE_USERS_SITE",
+    "USERS_CLUSTER_ARN",
+    "USERS_SECRET_ARN",
+    "USERS_CLUSTER_NAME"
   ],
   "pipeline": {
     "build": {

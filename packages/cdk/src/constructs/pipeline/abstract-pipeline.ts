@@ -5,11 +5,11 @@ import { Construct } from "constructs";
 export class AbstractPipeline extends Construct {
   pipeline: Pipeline;
   source: Artifact;
-  constructor(scope: Construct, id: string, branch?: string) {
+  constructor(scope: Construct, id: string, branch: string, appName: string) {
     super(scope, id);
 
     this.pipeline = new Pipeline(this, "pipeline", {
-      pipelineName: `pipeline-${branch}`,
+      pipelineName: `${appName}-${branch}`,
     });
 
     this.source = new Artifact();

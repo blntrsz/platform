@@ -5,5 +5,5 @@ import { createLocalApi } from "@platform/local-api";
 createLocalApi({
   definitionPath: "node_modules/@platform/issues-contract/api.yaml",
   functionsDir: join(__dirname, "functions"),
-  port: 9000,
+  port: 9001,
 });
