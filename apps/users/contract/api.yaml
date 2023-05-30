@@ -1,11 +1,11 @@
 openapi: 3.0.3
 info:
-  title: hello-world
+  title: users
   version: "1.0"
-  description: A simple hello-world REST service
+  description: Users service
 tags:
-  - name: hello
-    description: Hello world services
+  - name: users
+    description: Users service
 x-amazon-apigateway-request-validators:
   all:
     validateRequestBody: true
@@ -15,55 +15,19 @@ x-amazon-apigateway-request-validator: all
 ## PATHS ##
 
 paths:
-  /hello:
-    post:
-      tags:
-        - hello
-      description: Receive a name in request body and respond with a greeting message for the name informed
-      operationId: postHello
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HelloResponse"
-              examples:
-                example-1:
-                  value:
-                    greeting: Hello John!
-      x-amazon-apigateway-integration:
-        uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${postHello.Arn}/invocations"
-        passthroughBehavior: "when_no_match"
-        httpMethod: "POST"
-        type: "aws_proxy"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/HelloRequest"
-            examples:
-              example-1:
-                value:
-                  name: John
+  /users:
     get:
       tags:
-        - hello
-      description: Receive a general greeting
-      operationId: getHello
+        - users
+      description: Get All User
+      operationId: getUsers
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/HelloResponse"
-              examples:
-                example-1:
-                  value:
-                    greeting: Hello Traveler!
+                $ref: "#/components/schemas/UsersResponse"
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${getHello.Arn}/invocations"
@@ -96,26 +60,26 @@ paths:
               method.response.header.Access-Control-Allow-Headers: "'*'"
               method.response.header.Access-Control-Allow-Methods: "'*'"
               method.response.header.Access-Control-Allow-Origin: "'*'"
-  /users:
     post:
       tags:
         - users
-      description: create user
-      operationId: postUsers
+      description: Receive a name in request body and respond with a greeting message for the name informed
+      operationId: postHello
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/UsersResponse"
-              examples:
-                example-1:
-                  value:
-                    greeting: Hello John!
+                type: object
+                properties:
+                  status:
+                    type: string
+                required:
+                  - status
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${postUsers.Arn}/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${postHello.Arn}/invocations"
         passthroughBehavior: "when_no_match"
         httpMethod: "POST"
         type: "aws_proxy"
@@ -125,60 +89,12 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/UsersRequest"
-            examples:
-              example-1:
-                value:
-                  name: John
-    get:
-      tags:
-        - users
-      description: Get User
-      operationId: getUsers
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UsersResponse"
-      x-amazon-apigateway-integration:
-        uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${getUsers.Arn}/invocations"
-        passthroughBehavior: "when_no_match"
-        httpMethod: "POST"
-        type: "aws_proxy"
-    options:
-      responses:
-        "200":
-          description: Default response
-          headers:
-            Access-Control-Allow-Headers:
-              schema:
-                type: string
-            Access-Control-Allow-Methods:
-              schema:
-                type: string
-            Access-Control-Allow-Origin:
-              schema:
-                type: string
-      x-amazon-apigateway-integration:
-        type: mock
-        requestTemplates:
-          application/json: |
-            {"statusCode" : 200}
-        responses:
-          default:
-            statusCode: 200
-            responseParameters:
-              method.response.header.Access-Control-Allow-Headers: "'*'"
-              method.response.header.Access-Control-Allow-Methods: "'*'"
-              method.response.header.Access-Control-Allow-Origin: "'*'"
 
 ## COMPONENTS ##
 
 components:
   schemas:
-    HelloRequest:
+    UsersRequest:
       title: HelloRequest
       type: object
       properties:
@@ -186,27 +102,16 @@ components:
           type: string
       required:
         - name
-    HelloResponse:
-      title: HelloResponse
-      type: object
-      properties:
-        greeting:
-          type: string
-      required:
-        - greeting
-    UsersRequest:
-      title: UsersRequest
-      type: object
-      properties:
-        name:
-          type: string
-      required:
-        - name
     UsersResponse:
-      title: UsersResponse
-      type: object
-      properties:
-        name:
-          type: string
-      required:
-        - name
+      title: HelloResponse
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: number
+          userName:
+            type: string
+        required:
+          - id
+          - userName

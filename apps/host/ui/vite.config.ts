@@ -24,7 +24,12 @@ export default defineConfig({
           )}/assets/remoteEntry.js` ??
           "http://localhost:5002/assets/remoteEntry.js",
       },
-      shared: ["react", "react-dom", "@tanstack/react-query"],
+      shared: [
+        "react",
+        "react-dom",
+        "@tanstack/react-query",
+        "react-router-dom",
+      ],
     }),
   ],
 });

@@ -16,7 +16,12 @@ export default defineConfig({
       exposes: {
         "./Page": "./src/Page.tsx",
       },
-      shared: ["react", "react-dom"],
+      shared: [
+        "react",
+        "react-dom",
+        "@tanstack/react-query",
+        "react-router-dom",
+      ],
     }),
   ],
 });

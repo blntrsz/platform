@@ -5,23 +5,11 @@
 
 
 export interface paths {
-  "/hello": {
-    /** @description Receive a general greeting */
-    get: operations["getHello"];
+  "/users": {
+    /** @description Get All User */
+    get: operations["getUsers"];
     /** @description Receive a name in request body and respond with a greeting message for the name informed */
     post: operations["postHello"];
-    options: {
-      responses: {
-        /** @description Default response */
-        200: never;
-      };
-    };
-  };
-  "/users": {
-    /** @description Get User */
-    get: operations["getUsers"];
-    /** @description create user */
-    post: operations["postUsers"];
     options: {
       responses: {
         /** @description Default response */
@@ -36,21 +24,14 @@ export type webhooks = Record<string, never>;
 export interface components {
   schemas: {
     /** HelloRequest */
-    HelloRequest: {
-      name: string;
-    };
-    /** HelloResponse */
-    HelloResponse: {
-      greeting: string;
-    };
-    /** UsersRequest */
     UsersRequest: {
       name: string;
     };
-    /** UsersResponse */
-    UsersResponse: {
-      name: string;
-    };
+    /** HelloResponse */
+    UsersResponse: ({
+        id: number;
+        userName: string;
+      })[];
   };
   responses: never;
   parameters: never;
@@ -63,34 +44,7 @@ export type external = Record<string, never>;
 
 export interface operations {
 
-  /** @description Receive a general greeting */
-  getHello: {
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "application/json": components["schemas"]["HelloResponse"];
-        };
-      };
-    };
-  };
-  /** @description Receive a name in request body and respond with a greeting message for the name informed */
-  postHello: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["HelloRequest"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "application/json": components["schemas"]["HelloResponse"];
-        };
-      };
-    };
-  };
-  /** @description Get User */
+  /** @description Get All User */
   getUsers: {
     responses: {
       /** @description OK */
@@ -101,8 +55,8 @@ export interface operations {
       };
     };
   };
-  /** @description create user */
-  postUsers: {
+  /** @description Receive a name in request body and respond with a greeting message for the name informed */
+  postHello: {
     requestBody: {
       content: {
         "application/json": components["schemas"]["UsersRequest"];
@@ -112,7 +66,9 @@ export interface operations {
       /** @description OK */
       200: {
         content: {
-          "application/json": components["schemas"]["UsersResponse"];
+          "application/json": {
+            status: string;
+          };
         };
       };
     };

@@ -15,7 +15,8 @@
     "@tanstack/react-query": "^4.29.7",
     "openapi-fetch": "^0.1.2",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.11.2"
   },
   "devDependencies": {
     "@originjs/vite-plugin-federation": "^1.2.3",
