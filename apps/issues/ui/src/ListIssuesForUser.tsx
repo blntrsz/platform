@@ -6,9 +6,15 @@ import { Link, useParams } from "react-router-dom";
 
 export default function ListIssuesForUser() {
   const { userId, userName } = useParams();
-  const { error, data } = useGetIssuesForUser(parseInt(userId ?? ""));
+  const { error, data, isFetching } = useGetIssuesForUser(
+    parseInt(userId ?? "")
+  );
   const { mutate } = usePostHello();
   const ref = useRef<HTMLInputElement>(null);
+
+  if (isFetching) {
+    return null;
+  }
 
   if (error || !data) {
     return <>Error</>;
@@ -19,7 +25,7 @@ export default function ListIssuesForUser() {
       <ul>
         {data.map((item) => (
           <li key={item.id}>
-            <div>
+            <div className="flex justify-between">
               <div>{item.title}</div>
               <div>
                 <Link to={`/users/${userId}/${userName}`}>{item.userName}</Link>

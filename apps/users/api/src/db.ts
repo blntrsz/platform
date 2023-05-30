@@ -13,7 +13,7 @@ export interface Database {
   users: UsersTable;
 }
 
-export const db = new Kysely<T>({
+export const db = new Kysely<Database>({
   dialect: new DataApiDialect({
     mode: "postgres",
     driver: {

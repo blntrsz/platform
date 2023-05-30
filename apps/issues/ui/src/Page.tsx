@@ -1,5 +1,7 @@
 import { useGetIssues } from "./api/openapi";
 
+import { Link } from "react-router-dom";
+
 export default function Page() {
   const { data, error } = useGetIssues();
 
@@ -12,9 +14,11 @@ export default function Page() {
       <ul>
         {data.map((item) => (
           <li key={item.id}>
-            <div>
+            <div className="flex justify-between">
               <div>{item.title}</div>
-              <div>{item.userName}</div>
+              <Link to={`/users/${item.userId}/${item.userName}`}>
+                {item.userName}
+              </Link>
             </div>
           </li>
         ))}

@@ -14,7 +14,9 @@ export async function handler(
   const { userId } = event.pathParameters as unknown as PathParameteres;
 
   return {
-    body: JSON.stringify((await getIssuesForUserId(userId)) satisfies Response),
+    body: JSON.stringify(
+      (await getIssuesForUserId(+userId)) satisfies Response
+    ),
     headers: {
       "Access-Control-Allow-Headers": "*",
       "Access-Control-Allow-Origin": "*",

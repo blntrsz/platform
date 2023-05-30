@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit",
     "test": "jest -i --forceExit --passWithNoTests",
     "dev": "ts-node src/server.ts",
+    "dev:all": "ts-node src/server.ts",
     "run:migrate": "ts-node src/run-migration.ts"
   },
   "devDependencies": {

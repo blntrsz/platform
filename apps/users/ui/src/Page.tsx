@@ -28,8 +28,8 @@ export default function Page() {
           </li>
         ))}
       </ul>
-      <div className="flex gap-4">
-        <input ref={ref} />
+      <div className="flex gap-4 text-dark">
+        <input style={{ color: "black" }} ref={ref} />
         <button onClick={() => mutate(ref.current?.value ?? "")}>Create</button>
       </div>
     </>
