@@ -13,11 +13,12 @@ export async function handler(
 ): Promise<APIGatewayProxyResultV2> {
   console.log("event 👉", event);
   const body = JSON.parse(event.body ?? "") as Body;
-  await createUser(body.name);
+
+  await createUser({ userName: body.name });
 
   return {
     body: JSON.stringify({
-      name: body.name,
+      status: "ok",
     } satisfies Response),
     headers: {
       "Access-Control-Allow-Headers": "*",

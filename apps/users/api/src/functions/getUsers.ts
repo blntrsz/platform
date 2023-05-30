@@ -1,6 +1,6 @@
-import { getUsers } from "../db";
+import { getAllUsers } from "../db";
 
-import { operations } from "@platform/users-contract";
+import { operations } from "@platform/issues-contract";
 import { APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from "aws-lambda";
 
 type Response =
@@ -10,12 +10,9 @@ export async function handler(
   event: APIGatewayProxyEventV2
 ): Promise<APIGatewayProxyResultV2> {
   console.log("event 👉", event);
-  const result = await getUsers();
 
   return {
-    body: JSON.stringify({
-      name: result.at(-1)?.name ?? "",
-    } satisfies Response),
+    body: JSON.stringify((await getAllUsers()) satisfies Response),
     headers: {
       "Access-Control-Allow-Headers": "*",
       "Access-Control-Allow-Origin": "*",

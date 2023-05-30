@@ -30,7 +30,7 @@ paths:
                 $ref: "#/components/schemas/UsersResponse"
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${getHello.Arn}/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${getUsers.Arn}/invocations"
         passthroughBehavior: "when_no_match"
         httpMethod: "POST"
         type: "aws_proxy"
@@ -64,7 +64,7 @@ paths:
       tags:
         - users
       description: Receive a name in request body and respond with a greeting message for the name informed
-      operationId: postHello
+      operationId: postUsers
       responses:
         "200":
           description: OK
@@ -79,7 +79,7 @@ paths:
                   - status
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${postHello.Arn}/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${postUsers.Arn}/invocations"
         passthroughBehavior: "when_no_match"
         httpMethod: "POST"
         type: "aws_proxy"
@@ -95,7 +95,7 @@ paths:
 components:
   schemas:
     UsersRequest:
-      title: HelloRequest
+      title: UsersRequest
       type: object
       properties:
         name:
@@ -103,7 +103,7 @@ components:
       required:
         - name
     UsersResponse:
-      title: HelloResponse
+      title: UsersResponse
       type: array
       items:
         type: object

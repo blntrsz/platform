@@ -9,7 +9,7 @@ export interface paths {
     /** @description Get All User */
     get: operations["getUsers"];
     /** @description Receive a name in request body and respond with a greeting message for the name informed */
-    post: operations["postHello"];
+    post: operations["postUsers"];
     options: {
       responses: {
         /** @description Default response */
@@ -23,11 +23,11 @@ export type webhooks = Record<string, never>;
 
 export interface components {
   schemas: {
-    /** HelloRequest */
+    /** UsersRequest */
     UsersRequest: {
       name: string;
     };
-    /** HelloResponse */
+    /** UsersResponse */
     UsersResponse: ({
         id: number;
         userName: string;
@@ -56,7 +56,7 @@ export interface operations {
     };
   };
   /** @description Receive a name in request body and respond with a greeting message for the name informed */
-  postHello: {
+  postUsers: {
     requestBody: {
       content: {
         "application/json": components["schemas"]["UsersRequest"];

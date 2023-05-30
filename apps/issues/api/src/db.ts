@@ -1,6 +1,5 @@
-import { RDSData } from "@aws-sdk/client-rds-data";
-import { Generated, Kysely } from "kysely";
-import { DataApiDialect } from "kysely-data-api";
+import { createDb } from "@platform/db";
+import { Generated } from "kysely";
 
 interface IssuesTable {
   // made optional in inserts and updates.
@@ -15,16 +14,10 @@ export interface Database {
   issues: IssuesTable;
 }
 
-export const db = new Kysely<Database>({
-  dialect: new DataApiDialect({
-    mode: "postgres",
-    driver: {
-      database: process.env.ISSUES_CLUSTER_NAME ?? "",
-      secretArn: process.env.ISSUES_SECRET_ARN ?? "",
-      resourceArn: process.env.ISSUES_CLUSTER_ARN ?? "",
-      client: new RDSData({}),
-    },
-  }),
+export const db = createDb<Database>({
+  database: process.env.ISSUES_CLUSTER_NAME ?? "",
+  secretArn: process.env.ISSUES_SECRET_ARN ?? "",
+  resourceArn: process.env.ISSUES_CLUSTER_ARN ?? "",
 });
 
 export async function createIssue(issue: Omit<IssuesTable, "id">) {

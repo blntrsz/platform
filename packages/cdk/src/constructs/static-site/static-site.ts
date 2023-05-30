@@ -48,7 +48,9 @@ export class StaticSite extends Construct {
                 stdio: "inherit",
                 env: {
                   ...process.env,
-                  ...getBuildCmdEnvironment(props.environment),
+                  ...(props.environment
+                    ? getBuildCmdEnvironment(props.environment)
+                    : {}),
                 },
               });
               copySync(props.distDir, outputDir, {
@@ -144,54 +146,56 @@ function handler(event) {
       }
     );
 
-    const envReplacerFunction = new NodejsFunction(this, "env-replacer", {
-      runtime: Runtime.NODEJS_18_X,
-      environment: {
-        ...props.environment,
-        BUCKET: this.bucket.bucketName,
-        DISTRIBUTON_ID: distribution.distributionId,
-      },
-      initialPolicy: [
-        // TODO: stricter policy -> get S3, upload S3, invalidate distributon
-        new iam.PolicyStatement({
-          effect: iam.Effect.ALLOW,
-          actions: ["*"],
-          resources: ["*"],
-        }),
-      ],
-    });
-
-    const lifecycleHandler = {
-      service: "Lambda",
-      action: "invoke",
-      parameters: {
-        FunctionName: envReplacerFunction.functionName,
-        InvocationType: "Event",
-      },
-      physicalResourceId: PhysicalResourceId.of(
-        new Date().getTime().toString()
-      ),
-    };
-
-    //Run lambda on Create and on Update
-    const s3HandlerAwsCustomResource = new AwsCustomResource(
-      this,
-      "s3-handler-trigger",
-      {
-        policy: AwsCustomResourcePolicy.fromStatements([
+    if (props.environment) {
+      const envReplacerFunction = new NodejsFunction(this, "env-replacer", {
+        runtime: Runtime.NODEJS_18_X,
+        environment: {
+          ...props.environment,
+          BUCKET: this.bucket.bucketName,
+          DISTRIBUTON_ID: distribution.distributionId,
+        },
+        initialPolicy: [
+          // TODO: stricter policy -> get S3, upload S3, invalidate distributon
           new iam.PolicyStatement({
-            actions: ["lambda:InvokeFunction"],
             effect: iam.Effect.ALLOW,
-            resources: [envReplacerFunction.functionArn],
+            actions: ["*"],
+            resources: ["*"],
           }),
-        ]),
-        timeout: cdk.Duration.minutes(15),
-        onCreate: lifecycleHandler,
-        onUpdate: lifecycleHandler,
-      }
-    );
+        ],
+      });
 
-    s3HandlerAwsCustomResource.node.addDependency(s3Deployment, distribution);
+      const lifecycleHandler = {
+        service: "Lambda",
+        action: "invoke",
+        parameters: {
+          FunctionName: envReplacerFunction.functionName,
+          InvocationType: "Event",
+        },
+        physicalResourceId: PhysicalResourceId.of(
+          new Date().getTime().toString()
+        ),
+      };
+
+      //Run lambda on Create and on Update
+      const s3HandlerAwsCustomResource = new AwsCustomResource(
+        this,
+        "s3-handler-trigger",
+        {
+          policy: AwsCustomResourcePolicy.fromStatements([
+            new iam.PolicyStatement({
+              actions: ["lambda:InvokeFunction"],
+              effect: iam.Effect.ALLOW,
+              resources: [envReplacerFunction.functionArn],
+            }),
+          ]),
+          timeout: cdk.Duration.minutes(15),
+          onCreate: lifecycleHandler,
+          onUpdate: lifecycleHandler,
+        }
+      );
+
+      s3HandlerAwsCustomResource.node.addDependency(s3Deployment, distribution);
+    }
 
     new cdk.CfnOutput(this, "frontend-endpoint", {
       exportName: `frontendUrl-${props.app}-${props.stage}`,
