@@ -143,6 +143,12 @@ function handler(event) {
       {
         sources: [bundle],
         destinationBucket: this.bucket,
+        ...(props.environment
+          ? {}
+          : {
+              distribution,
+              distributionPaths: ["/*"],
+            }),
       }
     );
 
