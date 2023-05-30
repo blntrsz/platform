@@ -1,0 +1,13 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1685474943951,
+      "tag": "0000_faithful_doctor_faustus",
+      "breakpoints": false
+    }
+  ]
+}

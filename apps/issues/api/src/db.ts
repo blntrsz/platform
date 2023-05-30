@@ -1,37 +1,44 @@
-import { createDb } from "@platform/db";
-import { Generated } from "kysely";
+import { issuesTable } from "./db/schema";
 
-interface IssuesTable {
-  // made optional in inserts and updates.
-  id: Generated<number>;
+import { RDSDataClient } from "@aws-sdk/client-rds-data";
+import { fromIni } from "@aws-sdk/credential-providers";
+import { eq } from "drizzle-orm";
+import { drizzle } from "drizzle-orm/aws-data-api/pg";
+
+const rdsClient = new RDSDataClient({
+  credentials: fromIni({ profile: process.env["PROFILE"] }),
+  region: process.env["REGION"],
+});
+
+export const db = drizzle(rdsClient, {
+  database: process.env["ISSUES_CLUSTER_ARN"] ?? "",
+  secretArn: process.env["ISSUES_SECRET_ARN"] ?? "",
+  resourceArn: process.env["ISSUES_CLUSTER_NAME"] ?? "",
+});
+
+export async function createIssue({
+  title,
+  userId,
+  userName,
+}: {
   title: string;
   userId: number;
   userName: string;
-}
-
-// Keys of this interface are table names.
-export interface Database {
-  issues: IssuesTable;
-}
-
-export const db = createDb<Database>({
-  database: process.env.ISSUES_CLUSTER_NAME ?? "",
-  secretArn: process.env.ISSUES_SECRET_ARN ?? "",
-  resourceArn: process.env.ISSUES_CLUSTER_ARN ?? "",
-});
-
-export async function createIssue(issue: Omit<IssuesTable, "id">) {
-  return await db.insertInto("issues").values(issue).execute();
+}) {
+  return await db.insert(issuesTable).values({
+    title,
+    userId,
+    userName,
+  });
 }
 
 export async function getIssues() {
-  return await db.selectFrom("issues").selectAll().execute();
+  return await db.select().from(issuesTable);
 }
 
 export async function getIssuesForUserId(userId: number) {
   return await db
-    .selectFrom("issues")
-    .selectAll()
-    .where("issues.userId", "=", userId)
-    .execute();
+    .select()
+    .from(issuesTable)
+    .where(eq(issuesTable.userId, userId));
 }

@@ -1,7 +1,5 @@
-import path from "path";
-
 import { db } from "./db";
 
-import { migrateToLatest } from "@platform/db";
+import { migrate } from "drizzle-orm/postgres-js/migrator";
 
-migrateToLatest(db, path.join(__dirname, "migrations"));
+migrate(db, { migrationsFolder: "./drizzle" });
