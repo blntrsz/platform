@@ -56,9 +56,7 @@ export class CreatorCodeBuild extends Construct {
             ],
           },
           build: {
-            commands: [
-              "pnpm cdk deploy pipeline-$STAGE --require-approval never",
-            ],
+            commands: ["pnpm cdk deploy $APP-$STAGE --require-approval never"],
           },
         },
         cache: {
@@ -90,8 +88,8 @@ export class DestroyerCodeBuild extends Construct {
           },
           build: {
             commands: [
-              "aws cloudformation delete-stack --stack-name pipeline-$STAGE",
-              "aws cloudformation delete-stack --stack-name app-$STAGE",
+              "aws cloudformation delete-stack --stack-name $APP-$STAGE",
+              "aws cloudformation delete-stack --stack-name $APP-app-$STAGE",
             ],
           },
         },

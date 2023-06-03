@@ -1,8 +1,0 @@
-{
-  "extends": "@platform/tsconfig/cdk.json",
-  "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"],
-  "compilerOptions": {
-    "typeRoots": ["../../node_modules/@types"]
-  }
-}

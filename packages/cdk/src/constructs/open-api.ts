@@ -16,6 +16,7 @@ interface OpenApiProps {
   functionsDir: string;
   openApiFilePath: string;
   database: Database;
+  app: string;
 }
 
 export class OpenApi extends Construct {
@@ -23,7 +24,7 @@ export class OpenApi extends Construct {
   constructor(
     scope: Construct,
     id: string,
-    { stage, functionsDir, openApiFilePath, database }: OpenApiProps
+    { stage, functionsDir, openApiFilePath, database, app }: OpenApiProps
   ) {
     super(scope, id);
 
@@ -32,7 +33,8 @@ export class OpenApi extends Construct {
         this,
         file.replace(".ts", ""),
         functionsDir,
-        database
+        database,
+        app.toUpperCase()
       );
     });
 
@@ -64,7 +66,7 @@ export class OpenApi extends Construct {
 
     this.api = new cdk.aws_apigateway.SpecRestApi(this, "api", {
       apiDefinition,
-      endpointExportName: `apiUrl-${stage}`,
+      endpointExportName: `apiUrl-${app}-${stage}`,
     });
   }
 }
@@ -73,13 +75,14 @@ function createLambda(
   stack: Construct,
   name: string,
   functionsDir: string,
-  database: Database
+  database: Database,
+  dbEnvPrefix: string
 ) {
   const lambda = new NodejsFunction(stack, name, {
     runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
     entry: join(functionsDir, `${name}.ts`),
     environment: {
-      ...database.getEnv(),
+      ...database.getEnv(dbEnvPrefix),
     },
   });
 

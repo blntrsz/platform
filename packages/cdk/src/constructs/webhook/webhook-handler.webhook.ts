@@ -40,14 +40,22 @@ export const handler: Handler = async (event) => {
   const parsedBranchBody = branchEvent.safeParse(JSON.parse(event.body));
   const parsedHeader = headersParser.safeParse(event.headers);
 
+  // eslint-disable-next-line turbo/no-undeclared-env-vars
+  const appName = process.env.APP ?? "";
+
   if (parsedBranchBody.success && parsedHeader.success) {
     await codebuild
       .startBuild({
+        // eslint-disable-next-line turbo/no-undeclared-env-vars
         projectName: process.env.DESTROYER_PROJECT_NAME ?? "",
         environmentVariablesOverride: [
           {
             name: "STAGE",
             value: parsedBranchBody.data.branch,
+          },
+          {
+            name: "APP",
+            value: appName,
           },
         ],
       })
@@ -56,7 +64,7 @@ export const handler: Handler = async (event) => {
     return {
       statusCode: 200,
       body: JSON.stringify({
-        message: `Deletion of pipeline-${parsedBranchBody.data.branch} has been started.`,
+        message: `Deletion of ${appName}-${parsedBranchBody.data.branch} pipeline has been started.`,
       }),
     };
   }
@@ -65,7 +73,7 @@ export const handler: Handler = async (event) => {
 
   if (parsedPushBody.success) {
     function testIsAppChanged(toTest: string) {
-      return /^apps\/app/.test(toTest);
+      return new RegExp(`^apps\/${appName}`).test(toTest);
     }
 
     if (
@@ -80,24 +88,29 @@ export const handler: Handler = async (event) => {
       try {
         await codepipeline
           .startPipelineExecution({
-            name: `pipeline-${parsedPushBody.data.branch}`,
+            name: `${appName}-${parsedPushBody.data.branch}`,
           })
           .promise();
 
         return {
           statusCode: 200,
           body: JSON.stringify({
-            message: `Pipeline: pipeline-${parsedPushBody.data.branch} has been started`,
+            message: `Pipeline: ${appName}-${parsedPushBody.data.branch} has been started`,
           }),
         };
       } catch (e) {
         await codebuild
           .startBuild({
+            // eslint-disable-next-line turbo/no-undeclared-env-vars
             projectName: process.env.CREATOR_PROJECT_NAME ?? "",
             environmentVariablesOverride: [
               {
                 name: "STAGE",
                 value: parsedPushBody.data.branch,
+              },
+              {
+                name: "APP",
+                value: appName,
               },
             ],
           })
@@ -106,7 +119,7 @@ export const handler: Handler = async (event) => {
         return {
           statusCode: 200,
           body: JSON.stringify({
-            message: `Pipeline creation with STAGE=${parsedPushBody.data.branch} has been started`,
+            message: `Pipeline creation with STAGE=${parsedPushBody.data.branch} and APP=${appName} has been started`,
           }),
         };
       }

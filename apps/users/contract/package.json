@@ -1,0 +1,12 @@
+{
+  "name": "@platform/users-contract",
+  "version": "0.0.0",
+  "main": "index.ts",
+  "scripts": {
+    "dev": "npx openapi-typescript api.yaml --output index.ts"
+  },
+  "devDependencies": {
+    "@openapi-codegen/cli": "^2.0.0",
+    "@openapi-codegen/typescript": "^6.2.2"
+  }
+}

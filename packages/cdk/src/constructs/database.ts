@@ -12,7 +12,7 @@ export class Database extends Construct {
     this.clusterName = clusterName;
 
     this.cluster = new rds.ServerlessCluster(this, "Cluster", {
-      clusterIdentifier: "cluster",
+      clusterIdentifier: `${this.clusterName}Cluster`,
       defaultDatabaseName: this.clusterName,
       enableDataApi: true,
       engine: rds.DatabaseClusterEngine.auroraPostgres({
@@ -21,26 +21,26 @@ export class Database extends Construct {
     });
 
     new CfnOutput(this, "cluster-arn", {
-      exportName: `cluster-arn-${process.env.STAGE}`,
+      exportName: `${clusterName}-cluster-arn`,
       value: this.cluster.clusterArn,
     });
 
     new CfnOutput(this, "secret-arn", {
-      exportName: `secret-arn-${process.env.STAGE}`,
+      exportName: `${this.clusterName}-secret-arn`,
       value: this.cluster.secret?.secretArn ?? "",
     });
 
     new CfnOutput(this, "cluster-name", {
-      exportName: `cluster-name-${process.env.STAGE}`,
+      exportName: `${this.clusterName}-cluster-name`,
       value: this.clusterName,
     });
   }
 
-  getEnv() {
+  getEnv(dbEnvPrefix: string) {
     return {
-      CLUSTER_ARN: this.cluster.clusterArn,
-      SECRET_ARN: this.cluster.secret?.secretArn ?? "",
-      CLUSTER_NAME: this.clusterName,
+      [`${dbEnvPrefix}_CLUSTER_ARN`]: this.cluster.clusterArn,
+      [`${dbEnvPrefix}_SECRET_ARN`]: this.cluster.secret?.secretArn ?? "",
+      [`${dbEnvPrefix}_CLUSTER_NAME`]: this.clusterName,
     };
   }
 
