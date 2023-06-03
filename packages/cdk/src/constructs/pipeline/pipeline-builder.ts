@@ -22,13 +22,20 @@ export class PipelineBuilder extends Construct {
   private source: Artifact;
   private cache: IBucket;
   appName: string;
-  constructor(scope: Construct, id: string, appName: string, cache: IBucket) {
+  constructor(
+    scope: Construct,
+    id: string,
+    appName: string,
+    cache: IBucket,
+
+    branch: string
+  ) {
     super(scope, id);
 
-    const { pipeline, source: source } = new AbstractPipeline(
+    const { pipeline, source } = new AbstractPipeline(
       this,
       "pipeline",
-      "microfrontends",
+      branch,
       appName
     );
     this.pipeline = pipeline;
