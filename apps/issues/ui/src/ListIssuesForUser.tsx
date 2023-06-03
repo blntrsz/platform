@@ -35,7 +35,7 @@ export default function ListIssuesForUser() {
         ))}
       </ul>
       <div className="flex gap-4">
-        <input ref={ref} />
+        <input style={{ color: "black" }} ref={ref} />
         <button
           onClick={() =>
             mutate({
